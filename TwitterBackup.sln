@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Web", "TwitterBackup.Web\TwitterBackup.Web.csproj", "{A2F9CE05-BCF4-4342-8815-C86AB5CECE5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Web", "TwitterBackup.Web\TwitterBackup.Web.csproj", "{A2F9CE05-BCF4-4342-8815-C86AB5CECE5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{BD8C3029-6FA9-4638-8B2C-46F084B10D18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{7DFACEC8-CBFF-4811-99E0-50446181D9AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{C9655217-9FA7-4A72-A9F8-E97315938994}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
