@@ -15,8 +15,7 @@ namespace TwitterBackup.Web
             var result = ts.GetTweetsJson(sN[0].ToString());
 
             Console.WriteLine(result);
-            Console.WriteLine();
-
+            
             BuildWebHost(args).Run();
 
 
