@@ -20,4 +20,8 @@
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TwitterBackup.Services.TwitterAPI\TwitterBackup.Services.TwitterAPI.csproj" />
+  </ItemGroup>
+
 </Project>

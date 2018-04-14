@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using TwitterBackup.Services.TwitterAPI;
 
 namespace TwitterBackup.Web
 {
@@ -14,7 +10,16 @@ namespace TwitterBackup.Web
     {
         public static void Main(string[] args)
         {
+            var ts = new TwitterService();
+            var sN = new List<string>() { "Twitain" }; //"bbcnews", "bbcbreaking", "bbcworld", "bbcarabic", "alarabiya", "cnn", "cnnbrk", "cnnarabic", "reuters", "skynews", "skynewsarabia", "washingtonpost", "ap", "guardian", "nytimes", "time", "wsj", "vgnett", "dagbladet", "Aftenposten", "nrknyheter", "tv2nyhetene", "morgenbladet"
+            var result = ts.GetTweetsJson(sN[0].ToString());
+
+            Console.WriteLine(result);
+            Console.WriteLine();
+
             BuildWebHost(args).Run();
+
+
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
@@ -22,4 +27,6 @@ namespace TwitterBackup.Web
                 .UseStartup<Startup>()
                 .Build();
     }
+
+
 }
