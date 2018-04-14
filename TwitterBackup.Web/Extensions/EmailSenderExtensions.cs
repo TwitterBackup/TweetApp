@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using TwitterBackup.Web.Services;
 
-namespace TwitterBackup.Web.Services
+namespace TwitterBackup.Web.Extensions
 {
     public static class EmailSenderExtensions
     {
