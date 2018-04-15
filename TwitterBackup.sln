@@ -15,13 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.DTO", "Twitte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Services.Data", "TwitterBackup.Services.Data\TwitterBackup.Services.Data.csproj", "{2B13AA14-58E8-438D-B497-6FCC75A9D135}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services.TwitterAPI", "TwitterBackup.Services.TwitterAPI\TwitterBackup.Services.TwitterAPI.csproj", "{375A4205-9B28-48AA-B71B-918807123559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Services.TwitterAPI", "TwitterBackup.Services.TwitterAPI\TwitterBackup.Services.TwitterAPI.csproj", "{375A4205-9B28-48AA-B71B-918807123559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Data", "TwitterBackup.Data\TwitterBackup.Data.csproj", "{4EAE7690-650E-48B0-BBDC-1BB8B91D2B87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Data", "TwitterBackup.Data\TwitterBackup.Data.csproj", "{4EAE7690-650E-48B0-BBDC-1BB8B91D2B87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Models", "TwitterBackup.Models\TwitterBackup.Models.csproj", "{2CA6EDB7-F9B9-4B48-90EE-FCEC86DE10C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Models", "TwitterBackup.Models\TwitterBackup.Models.csproj", "{2CA6EDB7-F9B9-4B48-90EE-FCEC86DE10C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Infrastructure", "TwitterBackup.Infrastructure\TwitterBackup.Infrastructure.csproj", "{079F9255-FE77-4563-ADC7-504425BFF4D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Infrastructure", "TwitterBackup.Infrastructure\TwitterBackup.Infrastructure.csproj", "{079F9255-FE77-4563-ADC7-504425BFF4D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services.ApiClient", "TwitterBackup.Services.ApiClient\TwitterBackup.Services.ApiClient.csproj", "{CE2E5F6C-B587-471C-A776-C6FF7109F210}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{079F9255-FE77-4563-ADC7-504425BFF4D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{079F9255-FE77-4563-ADC7-504425BFF4D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{079F9255-FE77-4563-ADC7-504425BFF4D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE2E5F6C-B587-471C-A776-C6FF7109F210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE2E5F6C-B587-471C-A776-C6FF7109F210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE2E5F6C-B587-471C-A776-C6FF7109F210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE2E5F6C-B587-471C-A776-C6FF7109F210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{4EAE7690-650E-48B0-BBDC-1BB8B91D2B87} = {7DFACEC8-CBFF-4811-99E0-50446181D9AF}
 		{2CA6EDB7-F9B9-4B48-90EE-FCEC86DE10C9} = {7DFACEC8-CBFF-4811-99E0-50446181D9AF}
 		{079F9255-FE77-4563-ADC7-504425BFF4D2} = {BD8C3029-6FA9-4638-8B2C-46F084B10D18}
+		{CE2E5F6C-B587-471C-A776-C6FF7109F210} = {BD8C3029-6FA9-4638-8B2C-46F084B10D18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D93CA799-D62C-45E2-89B3-C1E4F00178A6}
