@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TwitterBackup.Web.Models;
+using TwitterBackup.Models;
 
 namespace TwitterBackup.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base((DbContextOptions) options)
+            : base((DbContextOptions)options)
         {
         }
 
