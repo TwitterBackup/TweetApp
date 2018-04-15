@@ -11,11 +11,11 @@ namespace TwitterBackup.Web
         public static void Main(string[] args)
         {
             var ts = new TwitterService();
-            var sN = new List<string>() { "Twitain" }; //"bbcnews", "bbcbreaking", "bbcworld", "bbcarabic", "alarabiya", "cnn", "cnnbrk", "cnnarabic", "reuters", "skynews", "skynewsarabia", "washingtonpost", "ap", "guardian", "nytimes", "time", "wsj", "vgnett", "dagbladet", "Aftenposten", "nrknyheter", "tv2nyhetene", "morgenbladet"
+            var sN = new List<string>() { "Twittain" }; //"bbcnews", "bbcbreaking", "bbcworld", "bbcarabic", "alarabiya", "cnn", "cnnbrk", "cnnarabic", "reuters", "skynews", "skynewsarabia", "washingtonpost", "ap", "guardian", "nytimes", "time", "wsj", "vgnett", "dagbladet", "Aftenposten", "nrknyheter", "tv2nyhetene", "morgenbladet"
             var result = ts.GetTweetsJson(sN[0].ToString());
 
             Console.WriteLine(result);
-            
+
             BuildWebHost(args).Run();
 
 

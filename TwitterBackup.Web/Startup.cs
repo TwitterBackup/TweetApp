@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TwitterBackup.DTO.Tweets;
-using TwitterBackup.Services.TwitterAPI;
 using TwitterBackup.Web.Data;
 using TwitterBackup.Web.Models;
 using TwitterBackup.Web.Services;
@@ -17,6 +15,10 @@ namespace TwitterBackup.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+
+
+
         }
 
         public IConfiguration Configuration { get; }
@@ -42,7 +44,7 @@ namespace TwitterBackup.Web
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
-            services.AddTransient<ITwitterService, TwitterService>();
+
 
         }
 
