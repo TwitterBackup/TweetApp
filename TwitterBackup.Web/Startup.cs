@@ -16,6 +16,10 @@ namespace TwitterBackup.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+
+
+
         }
 
         public IConfiguration Configuration { get; }
@@ -42,6 +46,7 @@ namespace TwitterBackup.Web
 
             services.AddMvc();
             services.AddTransient<ITweeterService, TweeterService>();
+
 
         }
 
