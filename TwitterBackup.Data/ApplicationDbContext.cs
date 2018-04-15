@@ -9,6 +9,7 @@ namespace TwitterBackup.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base((DbContextOptions)options)
         {
+            //
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
