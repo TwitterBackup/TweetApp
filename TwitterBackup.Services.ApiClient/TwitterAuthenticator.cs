@@ -6,7 +6,7 @@ using TwitterBackup.Services.ApiClient.Contracts;
 
 namespace TwitterBackup.Services.ApiClient
 {
-    public class TwitterAuthenticator : IOAuth1Authenticator
+    public class TwitterAuthenticator : Contracts.ITwitterAuthenticator
     {
         private const string ClientNullExceptionMessage = "Could not authenticate null Client";
         private const string RequestNullExceptionMessage = "Could not authenticate null Request";

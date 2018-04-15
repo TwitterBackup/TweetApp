@@ -17,9 +17,6 @@ namespace TwitterBackup.DTO.Tweets
         [JsonProperty("text")]
         public string Text { get; set; }
 
-        [JsonProperty("user")]
-        public User User { get; set; }
-
         [JsonProperty("entities")]
         public Entity Entity { get; set; }
 
@@ -28,20 +25,6 @@ namespace TwitterBackup.DTO.Tweets
 
     }
 
-    public class User
-    {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("screen_name")]
-        public string ScreenName { get; set; }
-
-        [JsonProperty("profile_image_url")]
-        public string ProfileImageUrl { get; set; }
-
-        [JsonProperty("profile_image_url_https")]
-        public string ProfileImageUrlHttps { get; set; }
-    }
 
     public class Entity
     {

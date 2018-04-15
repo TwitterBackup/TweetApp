@@ -5,7 +5,7 @@ using TwitterBackup.Services.ApiClient.Contracts;
 
 namespace TwitterBackup.Services.ApiClient
 {
-    public class ApiClient : IRestApiClient
+    public class ApiClient : IApiClient
     {
         private const string BaseUrlExceptionMessage = "Base url cannot be null or whitespace.";
         private const string ResourceExceptionMessage = "Resource cannot be null or whitespace.";

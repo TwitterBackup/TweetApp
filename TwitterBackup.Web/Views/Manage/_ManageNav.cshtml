@@ -1,4 +1,6 @@
-﻿@using TwitterBackup.Web.Views.Manage
+﻿@using Microsoft.AspNetCore.Identity
+@using TwitterBackup.Web.Models
+@using TwitterBackup.Web.Views.Manage
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

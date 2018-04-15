@@ -2,7 +2,7 @@
 
 namespace TwitterBackup.Services.ApiClient.Contracts
 {
-    public interface IOAuth1Authenticator : IAuthenticator
+    public interface ITwitterAuthenticator : IAuthenticator
     {
         string ОauthToken { get; set; }
 

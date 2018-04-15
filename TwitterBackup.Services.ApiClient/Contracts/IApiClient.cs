@@ -3,7 +3,7 @@ using RestSharp.Authenticators;
 
 namespace TwitterBackup.Services.ApiClient.Contracts
 {
-    public interface IRestApiClient
+    public interface IApiClient
     {
         IAuthenticator Authenticator { get; set; }
 

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TwitterBackup.DTO\TwitterBackup.DTO.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Services.ApiClient\TwitterBackup.Services.ApiClient.csproj" />
   </ItemGroup>
 
 </Project>
