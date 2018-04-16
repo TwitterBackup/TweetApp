@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 using RestSharp.Authenticators;
 using System;
+using System.Threading.Tasks;
 using TwitterBackup.Services.ApiClient.Contracts;
 
 namespace TwitterBackup.Services.ApiClient
@@ -21,9 +22,53 @@ namespace TwitterBackup.Services.ApiClient
             this.uriFactory = uriFactory ?? throw new ArgumentNullException(nameof(uriFactory));
         }
 
-        public IAuthenticator Authenticator { get; set; }
+        public IRestResponse Get(string baseUri, string resource, IAuthenticator authenticator = null)
+        {
+            this.ValidateFullUrl(baseUri, resource);
 
-        public IRestResponse Get(string baseUri, string resource)
+            this.client.BaseUrl = this.uriFactory.CreateUri(baseUri);
+
+            this.request.Resource = resource;
+            this.request.Method = Method.GET;
+
+            authenticator?.Authenticate(this.client, this.request);
+
+            var response = this.client.Execute(this.request);
+
+            return response;
+        }
+
+        public async Task<IRestResponse> GetAsync(string baseUri, string resource, IAuthenticator authenticator = null)
+        {
+            this.ValidateFullUrl(baseUri, resource);
+
+            this.client.BaseUrl = this.uriFactory.CreateUri(baseUri);
+
+            this.request.Resource = resource;
+            this.request.Method = Method.GET;
+
+            authenticator?.Authenticate(this.client, this.request);
+
+            var response = await this.client.ExecuteTaskAsync(this.request);
+
+            return response;
+        }
+
+        public IRestResponse Post(string baseUri, string resource, IAuthenticator authenticator = null)
+        {
+            this.ValidateFullUrl(baseUri, resource);
+
+            throw new NotImplementedException();
+        }
+
+        public async Task<IRestResponse> PostAsync(string baseUri, string resource, IAuthenticator authenticator = null)
+        {
+            this.ValidateFullUrl(baseUri, resource);
+
+            throw new NotImplementedException();
+        }
+
+        private void ValidateFullUrl(string baseUri, string resource)
         {
             if (string.IsNullOrWhiteSpace(baseUri))
             {
@@ -34,22 +79,6 @@ namespace TwitterBackup.Services.ApiClient
             {
                 throw new ArgumentException(ResourceExceptionMessage);
             }
-
-            this.client.BaseUrl = this.uriFactory.CreateUri(baseUri);
-
-            this.request.Resource = resource;
-            this.request.Method = Method.GET;
-
-            this.Authenticator?.Authenticate(this.client, this.request);
-
-            var response = this.client.Execute(this.request);
-
-            return response;
-        }
-
-        public IRestResponse Post(string baseUri, string resource)
-        {
-            throw new NotImplementedException();
         }
     }
 }

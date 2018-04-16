@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
 
 namespace TwitterBackup.Services.TwitterAPI
 {
     public interface ITweeterService
     {
-        GetTweeterDto GetTwitterByScreenName(string tweeterName);
+        Task<GetTweeterDto> GetTwitterByScreenNameAsync(string tweeterName);
 
-        IEnumerable<GetTweeterDto> SearchTweeters(string searchCriteria);
+        Task<IEnumerable<GetTweeterDto>> SearchTweetersAsync(string searchCriteria);
     }
 }

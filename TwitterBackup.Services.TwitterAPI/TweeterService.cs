@@ -2,18 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.Services.ApiClient.Contracts;
 
 namespace TwitterBackup.Services.TwitterAPI
 {
-
-
     public class TweeterService : ITweeterService
     {
-        private const string baseUrl = "https://api.twitter.com";
+        private const string BaseUrl = "https://api.twitter.com";
         private const string ResourceFormat = "1.1/users/{0}.json?{1}={2}";
-
 
         private readonly IApiClient restApiClient;
         private readonly ITwitterAuthenticator authenticator;
@@ -24,14 +22,11 @@ namespace TwitterBackup.Services.TwitterAPI
             this.authenticator = authenticator ?? throw new ArgumentNullException(nameof(authenticator));
         }
 
-
-        public GetTweeterDto GetTwitterByScreenName(string tweeterName)
+        public async Task<GetTweeterDto> GetTwitterByScreenNameAsync(string tweeterName)
         {
             var resource = string.Format(ResourceFormat, "show", "screen_name", tweeterName);
 
-            restApiClient.Authenticator = this.authenticator;
-
-            var response = restApiClient.Get(baseUrl, resource);
+            var response = await this.restApiClient.GetAsync(BaseUrl, resource, this.authenticator);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -43,13 +38,11 @@ namespace TwitterBackup.Services.TwitterAPI
             throw new ArgumentException(invalidResponseCode);
         }
 
-        public IEnumerable<GetTweeterDto> SearchTweeters(string searchCriteria)
+        public async Task<IEnumerable<GetTweeterDto>> SearchTweetersAsync(string searchCriteria)
         {
             var resource = string.Format(ResourceFormat, "search", "q", searchCriteria);
 
-            restApiClient.Authenticator = this.authenticator;
-
-            var response = restApiClient.Get(baseUrl, resource);
+            var response = await this.restApiClient.GetAsync(BaseUrl, resource, this.authenticator);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -61,6 +54,4 @@ namespace TwitterBackup.Services.TwitterAPI
             throw new ArgumentException(invalidResponseCode);
         }
     }
-
 }
-
