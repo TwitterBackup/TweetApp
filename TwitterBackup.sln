@@ -27,9 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Services.Emai
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6AF4BB8E-BF7C-4453-9EA6-98426596B885}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Web", "TwitterBackup.Web\TwitterBackup.Web.csproj", "{4AECD304-52B1-47BD-821D-A6BCD074A58A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Web", "TwitterBackup.Web\TwitterBackup.Web.csproj", "{4AECD304-52B1-47BD-821D-A6BCD074A58A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Data", "TwitterBackup.Data\TwitterBackup.Data.csproj", "{E724F802-19FF-4E62-98EE-F9E462D8CBE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Data", "TwitterBackup.Data\TwitterBackup.Data.csproj", "{E724F802-19FF-4E62-98EE-F9E462D8CBE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services.ApiClient.Tests", "TwitterBackup.Services.ApiClient.Tests\TwitterBackup.Services.ApiClient.Tests.csproj", "{207D9FAB-2218-42F5-937D-3CD255AD0413}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{E724F802-19FF-4E62-98EE-F9E462D8CBE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E724F802-19FF-4E62-98EE-F9E462D8CBE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E724F802-19FF-4E62-98EE-F9E462D8CBE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207D9FAB-2218-42F5-937D-3CD255AD0413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207D9FAB-2218-42F5-937D-3CD255AD0413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207D9FAB-2218-42F5-937D-3CD255AD0413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207D9FAB-2218-42F5-937D-3CD255AD0413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{201C5620-32FC-486C-AED0-66351F13E31E} = {CA36A165-7EB9-4FB7-8365-6A464E4FBC50}
 		{4AECD304-52B1-47BD-821D-A6BCD074A58A} = {C9655217-9FA7-4A72-A9F8-E97315938994}
 		{E724F802-19FF-4E62-98EE-F9E462D8CBE7} = {7DFACEC8-CBFF-4811-99E0-50446181D9AF}
+		{207D9FAB-2218-42F5-937D-3CD255AD0413} = {6AF4BB8E-BF7C-4453-9EA6-98426596B885}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D93CA799-D62C-45E2-89B3-C1E4F00178A6}
