@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
 
-namespace TwitterBackup.Services.TwitterAPI
+namespace TwitterBackup.Services.TwitterAPI.Contracts
 {
     public interface ITweeterService
     {
-        Task<GetTweeterDto> GetTwitterByScreenNameAsync(string tweeterName);
+        Task<GetTweeterDto> GetTweeterByScreenNameAsync(string tweeterName);
 
         Task<IEnumerable<GetTweeterDto>> SearchTweetersAsync(string searchCriteria);
     }

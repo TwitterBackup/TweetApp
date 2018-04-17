@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.Services.ApiClient.Contracts;
+using TwitterBackup.Services.TwitterAPI.Contracts;
 
 namespace TwitterBackup.Services.TwitterAPI
 {
@@ -22,7 +23,7 @@ namespace TwitterBackup.Services.TwitterAPI
             this.authenticator = authenticator ?? throw new ArgumentNullException(nameof(authenticator));
         }
 
-        public async Task<GetTweeterDto> GetTwitterByScreenNameAsync(string tweeterName)
+        public async Task<GetTweeterDto> GetTweeterByScreenNameAsync(string tweeterName)
         {
             var resource = string.Format(ResourceFormat, "show", "screen_name", tweeterName);
 
