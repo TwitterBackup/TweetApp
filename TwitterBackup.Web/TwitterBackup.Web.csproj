@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <UserSecretsId>aspnet-TwitterBackup.Web-06D9AC43-BD44-43B1-B5CB-B26A0A5B7AE8</UserSecretsId>
+    <UserSecretsId>aspnet-TwitterBackup.Web-4A8595D9-A0F5-44E2-BB62-47F7CFB45669</UserSecretsId>
   </PropertyGroup>
 
 
@@ -17,14 +17,11 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.2" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj" />
-    <ProjectReference Include="..\TwitterBackup.Models\TwitterBackup.Models.csproj" />
-    <ProjectReference Include="..\TwitterBackup.Services.ApiClient\TwitterBackup.Services.ApiClient.csproj" />
-    <ProjectReference Include="..\TwitterBackup.Services.TwitterAPI\TwitterBackup.Services.TwitterAPI.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Services.Email\TwitterBackup.Services.Email.csproj" />
   </ItemGroup>
 
 </Project>

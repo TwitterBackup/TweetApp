@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TwitterBackup.DTO
+﻿namespace TwitterBackup.DTO
 {
     public class Class1
     {

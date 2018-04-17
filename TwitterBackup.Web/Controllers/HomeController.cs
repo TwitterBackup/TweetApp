@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using TwitterBackup.Web.Models;
 
 namespace TwitterBackup.Web.Controllers
@@ -12,26 +8,26 @@ namespace TwitterBackup.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            this.ViewData["Message"] = "Your application description page.";
 
-            return View();
+            return this.View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            this.ViewData["Message"] = "Your contact page.";
 
-            return View();
+            return this.View();
         }
 
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
     }
 }

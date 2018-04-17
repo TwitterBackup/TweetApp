@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TwitterBackup.Data;
-using TwitterBackup.Services.TwitterAPI;
-using TwitterBackup.Web.Models;
-using TwitterBackup.Web.Services;
+using TwitterBackup.Models;
+using TwitterBackup.Services.Email;
 
 namespace TwitterBackup.Web
 {
@@ -15,11 +14,7 @@ namespace TwitterBackup.Web
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
-
-
-
-
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -28,7 +23,7 @@ namespace TwitterBackup.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -36,18 +31,14 @@ namespace TwitterBackup.Web
 
             services.AddAuthentication().AddTwitter(twitterOptions =>
             {
-                twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
-                twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                twitterOptions.ConsumerKey = this.Configuration["Authentication:Twitter:ConsumerKey"];
+                twitterOptions.ConsumerSecret = this.Configuration["Authentication:Twitter:ConsumerSecret"];
             });
-
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
-            services.AddTransient<ITweeterService, TweeterService>();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
