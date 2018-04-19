@@ -12,7 +12,7 @@ namespace TwitterBackup.DTO.Tweets
         public long Id { get; set; }
 
         [JsonProperty("id_str")]
-        public string IdString { get; set; }
+        public string IdStr { get; set; }
 
         [JsonProperty("text")]
         public string Text { get; set; }
