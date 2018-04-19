@@ -15,8 +15,10 @@ namespace TwitterBackup.Models
             this.FavouriteTweeters = new HashSet<UserTweeter>();
         }
 
+        [StringLength(20, MinimumLength = 2)]
         public string FirstName { get; set; }
 
+        [StringLength(20, MinimumLength = 2)]
         public string LastName { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -25,7 +27,7 @@ namespace TwitterBackup.Models
         public DateTime? DeletedOn { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime? CreatedOn { get; set; }
+        public DateTime? SavedOn { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }

@@ -11,7 +11,7 @@ namespace TwitterBackup.Models.Abstracts
         public bool IsDeleted { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime? CreatedOn { get; set; }
+        public DateTime? SavedOn { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }

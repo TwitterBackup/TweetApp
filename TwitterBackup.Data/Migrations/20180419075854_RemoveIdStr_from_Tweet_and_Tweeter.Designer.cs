@@ -11,9 +11,10 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180419075854_RemoveIdStr_from_Tweet_and_Tweeter")]
+    partial class RemoveIdStr_from_Tweet_and_Tweeter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,6 +134,8 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("HashtagId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("CreatedOn");
+
                     b.Property<DateTime?>("DeletedOn");
 
                     b.Property<int>("Id");
@@ -141,10 +144,7 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<DateTime?>("SavedOn");
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(300);
+                    b.Property<string>("Text");
 
                     b.HasKey("HashtagId");
 
@@ -156,12 +156,15 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("TweetId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedAt")
-                        .IsRequired();
+                    b.Property<string>("CreatedAt");
+
+                    b.Property<DateTime?>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
 
                     b.Property<int>("FavoriteCount");
+
+                    b.Property<bool>("Favorited");
 
                     b.Property<bool>("IsDeleted");
 
@@ -173,15 +176,13 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<int>("RetweetCount");
 
+                    b.Property<bool>("Retweeted");
+
                     b.Property<string>("RetweetedStatusTweetId");
 
-                    b.Property<DateTime?>("SavedOn");
+                    b.Property<string>("Text");
 
-                    b.Property<string>("Text")
-                        .IsRequired();
-
-                    b.Property<string>("TweeterId")
-                        .IsRequired();
+                    b.Property<string>("TweeterId");
 
                     b.HasKey("TweetId");
 
@@ -199,9 +200,13 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("CreatedAt");
 
+                    b.Property<DateTime?>("CreatedOn");
+
                     b.Property<DateTime?>("DeletedOn");
 
                     b.Property<string>("Description");
+
+                    b.Property<int>("FavouritesCount");
 
                     b.Property<int>("FollowersCount");
 
@@ -217,11 +222,7 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<DateTime?>("SavedOn");
-
-                    b.Property<string>("ScreenName")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("ScreenName");
 
                     b.Property<int>("TweetsCount");
 
@@ -255,6 +256,8 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTime?>("CreatedOn");
+
                     b.Property<DateTime?>("DeletedOn");
 
                     b.Property<string>("Email")
@@ -262,13 +265,11 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(20);
+                    b.Property<string>("FirstName");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastName")
-                        .HasMaxLength(20);
+                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -287,8 +288,6 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<DateTime?>("SavedOn");
 
                     b.Property<string>("SecurityStamp");
 
@@ -389,8 +388,7 @@ namespace TwitterBackup.Data.Migrations
 
                     b.HasOne("TwitterBackup.Models.Tweeter", "Tweeter")
                         .WithMany("Tweets")
-                        .HasForeignKey("TweeterId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TweeterId");
                 });
 
             modelBuilder.Entity("TwitterBackup.Models.TweetHashtag", b =>

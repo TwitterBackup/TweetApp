@@ -90,9 +90,9 @@ namespace TwitterBackup.Data
             {
                 var entity = (IAuditable)entry.Entity;
 
-                if (entry.State == EntityState.Added && entity.CreatedOn == null)
+                if (entry.State == EntityState.Added && entity.SavedOn == null)
                 {
-                    entity.CreatedOn = DateTime.Now;
+                    entity.SavedOn = DateTime.Now;
                 }
                 else
                 {

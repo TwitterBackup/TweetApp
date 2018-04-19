@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
@@ -12,19 +13,19 @@ namespace TwitterBackup.Models
             this.TweetHashtags = new HashSet<TweetHashtag>();
         }
 
-        public string TweetId { get; set; }
+        [Required]
+        public string TweetId { get; set; } //Id_str
 
+        [Required]
         public string CreatedAt { get; set; } //Created_at
 
-        public string IdStr { get; set; }
-
+        [Required]
         public string Text { get; set; }
 
+        [Required]
         public Tweeter Tweeter { get; set; } //User
 
         public int FavoriteCount { get; set; } //Favorite_count 
-
-        public bool Favorited { get; set; }
 
         public string Lang { get; set; }
 
@@ -32,22 +33,21 @@ namespace TwitterBackup.Models
 
         public int RetweetCount { get; set; } //Retweet_count
 
-        public bool Retweeted { get; set; }
-
         public Tweet RetweetedStatus { get; set; } //Retweeted_status 
 
         public bool IsDeleted { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
 
-        public DateTime? CreatedOn { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? SavedOn { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
 
         public ICollection<UserTweet> TweetUsers { get; set; }
 
         public ICollection<TweetHashtag> TweetHashtags { get; set; }
-
-
     }
 }

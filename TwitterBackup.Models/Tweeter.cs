@@ -13,24 +13,22 @@ namespace TwitterBackup.Models
             this.TweeterUsers = new HashSet<UserTweeter>();
         }
 
-        [Key]
-        public string TweeterId { get; set; }
+        [Required]
+        public string TweeterId { get; set; } //Id_str
+
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "Length should be between 1 and 50 characters")]
+        public string ScreenName { get; set; } //Screen_name
 
         public string CreatedAt { get; set; } //created_at
 
         public string Description { get; set; }
 
-        public int FavouritesCount { get; set; } //Favourites_count 
-
         public int FollowersCount { get; set; } //Followers_count
 
         public int FriendsCount { get; set; } //Friends_count
-
-        public string IdStr { get; set; } //Id_str
-
-        public string Name { get; set; }
-
-        public string ScreenName { get; set; } //Screen_name
 
         public string Lang { get; set; }
 
@@ -42,10 +40,13 @@ namespace TwitterBackup.Models
 
         public bool IsDeleted { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
 
-        public DateTime? CreatedOn { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? SavedOn { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
 
         public ICollection<Tweet> Tweets { get; set; }

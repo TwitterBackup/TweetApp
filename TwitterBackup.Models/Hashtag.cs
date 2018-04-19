@@ -14,6 +14,7 @@ namespace TwitterBackup.Models
         [Key]
         public string HashtagId { get; set; }
 
+        [StringLength(300, MinimumLength = 0)]
         public string Text { get; set; }
 
         public ICollection<TweetHashtag> HashtagTweets { get; set; }
