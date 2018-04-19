@@ -36,9 +36,7 @@ namespace TwitterBackup.Services.TwitterAPI
                 return this.jsonProvider.DeserializeObject<GetTweeterDto>(response.Content);
             }
 
-            var invalidResponseCode = response.StatusCode.ToString();
-
-            throw new ArgumentException(invalidResponseCode);
+            return null;
         }
 
         public async Task<IEnumerable<GetTweeterDto>> SearchTweetersAsync(string searchCriteria)
