@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
+using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Services.ApiClient.Contracts;
 using TwitterBackup.Services.TwitterAPI.Contracts;
 
@@ -16,11 +16,13 @@ namespace TwitterBackup.Services.TwitterAPI
 
         private readonly IApiClient restApiClient;
         private readonly ITwitterAuthenticator authenticator;
+        private readonly IJsonProvider jsonProvider;
 
-        public TweeterService(IApiClient restApiClient, ITwitterAuthenticator authenticator)
+        public TweeterService(IApiClient restApiClient, ITwitterAuthenticator authenticator, IJsonProvider jsonProvider)
         {
             this.restApiClient = restApiClient ?? throw new ArgumentNullException();
             this.authenticator = authenticator ?? throw new ArgumentNullException(nameof(authenticator));
+            this.jsonProvider = jsonProvider ?? throw new ArgumentNullException(nameof(jsonProvider));
         }
 
         public async Task<GetTweeterDto> GetTweeterByScreenNameAsync(string tweeterName)
@@ -31,7 +33,7 @@ namespace TwitterBackup.Services.TwitterAPI
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return JsonConvert.DeserializeObject<GetTweeterDto>(response.Content);
+                return this.jsonProvider.DeserializeObject<GetTweeterDto>(response.Content);
             }
 
             var invalidResponseCode = response.StatusCode.ToString();
@@ -47,7 +49,7 @@ namespace TwitterBackup.Services.TwitterAPI
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return JsonConvert.DeserializeObject<IEnumerable<GetTweeterDto>>(response.Content);
+                return this.jsonProvider.DeserializeObject<IEnumerable<GetTweeterDto>>(response.Content);
             }
 
             var invalidResponseCode = response.StatusCode.ToString();
