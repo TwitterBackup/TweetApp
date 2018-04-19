@@ -29,30 +29,30 @@ namespace TwitterBackup.Services.TwitterAPI
         {
             var resource = string.Format(ResourceFormat, "show", "screen_name", tweeterName);
 
-            var response = await this.restApiClient.GetAsync(BaseUrl, resource, this.authenticator);
+            var result = await this.CallApiClientGetAsync<GetTweeterDto>(resource);
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                return this.jsonProvider.DeserializeObject<GetTweeterDto>(response.Content);
-            }
-
-            return null;
+            return result;
         }
 
         public async Task<IEnumerable<GetTweeterDto>> SearchTweetersAsync(string searchCriteria)
         {
             var resource = string.Format(ResourceFormat, "search", "q", searchCriteria);
 
-            var response = await this.restApiClient.GetAsync(BaseUrl, resource, this.authenticator);
+            var result = await this.CallApiClientGetAsync<IEnumerable<GetTweeterDto>>(resource);
 
-            if (response.StatusCode == HttpStatusCode.OK)
+            return result;
+        }
+
+        private async Task<T> CallApiClientGetAsync<T>(string resource) where T : class
+        {
+            var responce = await this.restApiClient.GetAsync(BaseUrl, resource, this.authenticator);
+
+            if (responce.StatusCode == HttpStatusCode.OK)
             {
-                return this.jsonProvider.DeserializeObject<IEnumerable<GetTweeterDto>>(response.Content);
+                return this.jsonProvider.DeserializeObject<T>(responce.Content);
             }
 
-            var invalidResponseCode = response.StatusCode.ToString();
-
-            throw new ArgumentException(invalidResponseCode);
+            return null;
         }
     }
 }
