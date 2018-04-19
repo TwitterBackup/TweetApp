@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TwitterBackup.Data;
+using TwitterBackup.Infrastructure.Providers;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Email;
 
@@ -39,6 +41,10 @@ namespace TwitterBackup.Web
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+            services.AddAutoMapper();
+
+            services.AddScoped<IMappingProvider, MappingProvider>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
