@@ -14,7 +14,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
     public class GetTweeterByScreenNameAsyncShould
     {
         [TestMethod]
-        public async Task Return_Corect_Result_When_Called_With_Valid_Parameter()
+        public async Task Return_Correct_Result_When_Called_With_Valid_Parameter()
         {
             var apiClientMock = new Mock<IApiClient>();
             var authMock = new Mock<ITwitterAuthenticator>();
@@ -26,8 +26,8 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var expected = new GetTweeterDto();
-            jsonProviderMock.Setup(x => x.DeserializeObject<GetTweeterDto>(It.IsAny<string>())).Returns(expected);
+            var expected = new Mock<GetTweeterDto>();
+            jsonProviderMock.Setup(x => x.DeserializeObject<GetTweeterDto>(It.IsAny<string>())).Returns(expected.Object);
 
             var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
@@ -35,7 +35,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
 
             var actual = await tweeterService.GetTweeterByScreenNameAsync(screenName);
 
-            Assert.AreSame(expected, actual);
+            Assert.AreSame(expected.Object, actual);
         }
 
         [TestMethod]
