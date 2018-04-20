@@ -10,7 +10,7 @@ using TwitterBackup.Data;
 
 namespace TwitterBackup.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(TwitterDbContext))]
     [Migration("20180418184543_FN_LN_on_User_added")]
     partial class FN_LN_on_User_added
     {

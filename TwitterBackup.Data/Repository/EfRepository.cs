@@ -1,62 +1,99 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Data.Repository
 {
-    public class EfRepository<T> //: IRepository<T>
-            where T : class //, IDeletable
+    public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class, IDeletable
     {
-        private readonly ApplicationDbContext context;
+        private readonly DbContext Context;
+        private readonly DbSet<TEntity> TEntities;
 
-        public EfRepository(ApplicationDbContext context)
+        public EfRepository(DbContext context, DbSet<TEntity> tentities)
         {
-            this.context = context;
+            this.Context = context ?? throw new ArgumentNullException(nameof(context));
+            this.TEntities = this.TEntities ?? throw new ArgumentNullException(nameof(EfRepository<TEntity>.TEntities));
         }
 
-        //public IQueryable<T> All
-        //{
-        //    get { return this.context.Set<T>().Where(x => !x.IsDeleted); }
-        //}
-
-        public IQueryable<T> AllAndDeleted
+        public TEntity Get(int id)
         {
-            get { return this.context.Set<T>(); }
+            return TEntities.Find(id);
         }
 
-        public void Add(T entity)
+        public async Task<TEntity> GetAsync(int id)
         {
-            EntityEntry entry = this.context.Entry(entity);
-
-            if (entry.State != EntityState.Detached)
-            {
-                entry.State = EntityState.Added;
-            }
-            else
-            {
-                this.context.Set<T>().Add(entity);
-            }
+            return await TEntities.FindAsync(id);
         }
 
-        //public void Delete(T entity)
-        //{
-        //    entity.IsDeleted = true;
-        //    entity.DeletedOn = DateTime.Now;
-
-        //    var entry = this.context.Entry(entity);
-        //    entry.State = EntityState.Modified;
-        //}
-
-        public void Update(T entity)
+        public IEnumerable<TEntity> GetAll()
         {
-            EntityEntry entry = this.context.Entry(entity);
-            if (entry.State == EntityState.Detached)
-            {
-                this.context.Set<T>().Attach(entity);
-            }
+            return Enumerable.ToList(TEntities);
+        }
 
-            entry.State = EntityState.Modified;
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await EntityFrameworkQueryableExtensions.ToListAsync(TEntities);
+        }
+
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return TEntities.Where(predicate);
+        }
+
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await TEntities.Where(predicate).ToListAsync();
+        }
+
+        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+        {
+            return TEntities.SingleOrDefault(predicate);
+        }
+
+        public void Add(TEntity entity)
+        {
+            TEntities.Add(entity);
+        }
+
+        public async Task<TEntity> AddAsync(TEntity entity)
+        {
+            TEntities.Add(entity);
+            await Context.SaveChangesAsync();
+            return entity;
+        }
+
+        public void AddRange(IEnumerable<TEntity> entities)
+        {
+            TEntities.AddRange(entities);
+        }
+
+        public void Remove(TEntity entity)
+        {
+            TEntities.Remove(entity);
+        }
+
+        public async Task RemoveAsync(TEntity entity)
+        {
+            TEntities.Remove(entity);
+            await Context.SaveChangesAsync();
+
+        }
+
+        public void RemoveRange(IEnumerable<TEntity> entities)
+        {
+            TEntities.RemoveRange(entities);
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<TEntity> entities)
+        {
+            Context.Set<TEntity>().RemoveRange(entities);
+            await Context.SaveChangesAsync();
         }
     }
+
 }
 

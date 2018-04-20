@@ -27,4 +27,8 @@
     <ProjectReference Include="..\TwitterBackup.Services.Email\TwitterBackup.Services.Email.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\" />
+  </ItemGroup>
+
 </Project>

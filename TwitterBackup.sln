@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Web", "Twitte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Data", "TwitterBackup.Data\TwitterBackup.Data.csproj", "{E724F802-19FF-4E62-98EE-F9E462D8CBE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services.ApiClient.Tests", "TwitterBackup.Services.ApiClient.Tests\TwitterBackup.Services.ApiClient.Tests.csproj", "{207D9FAB-2218-42F5-937D-3CD255AD0413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Services.ApiClient.Tests", "TwitterBackup.Services.ApiClient.Tests\TwitterBackup.Services.ApiClient.Tests.csproj", "{207D9FAB-2218-42F5-937D-3CD255AD0413}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

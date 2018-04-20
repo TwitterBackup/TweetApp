@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace TwitterBackup.Web
+namespace TwitterBackup.Web.Properties
 {
     public class MappingSettings : Profile
     {

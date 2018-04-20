@@ -10,7 +10,7 @@ using TwitterBackup.Data;
 
 namespace TwitterBackup.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(TwitterDbContext))]
     [Migration("20180419075854_RemoveIdStr_from_Tweet_and_Tweeter")]
     partial class RemoveIdStr_from_Tweet_and_Tweeter
     {

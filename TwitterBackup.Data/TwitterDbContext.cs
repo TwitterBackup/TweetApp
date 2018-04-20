@@ -7,9 +7,9 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public class TwitterDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public TwitterDbContext(DbContextOptions<TwitterDbContext> options)
             : base(options)
         {
         }
@@ -35,6 +35,8 @@ namespace TwitterBackup.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
 
+
+            //builder.ApplyConfiguration()
 
             //define many 2 many - User - Tweet
             builder.Entity<UserTweet>()

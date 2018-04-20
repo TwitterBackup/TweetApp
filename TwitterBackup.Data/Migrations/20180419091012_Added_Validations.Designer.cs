@@ -10,7 +10,7 @@ using TwitterBackup.Data;
 
 namespace TwitterBackup.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(TwitterDbContext))]
     [Migration("20180419091012_Added_Validations")]
     partial class Added_Validations
     {
