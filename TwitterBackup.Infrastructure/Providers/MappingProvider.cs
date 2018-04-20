@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using System.Collections.Generic;
 using System.Linq;
+using TwitterBackup.Infrastructure.Providers.Contracts;
 
 namespace TwitterBackup.Infrastructure.Providers
 {
