@@ -17,10 +17,9 @@ namespace TwitterBackup.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewData["ConsumerKey"] = Configuration["Authentication:Twitter:ConsumerKey"];
-            ViewData["ConsumerSecret"] = Configuration["Authentication:Twitter:ConsumerSecret"];
-
-
+            //ViewData["ConsumerKey"] = Configuration["Authentication:Twitter:ConsumerKey"];
+            //ViewData["ConsumerSecret"] = Configuration["Authentication:Twitter:ConsumerSecret"];
+            
             return this.View();
         }
 
