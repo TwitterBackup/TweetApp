@@ -7,7 +7,7 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Data
 {
-    public class TwitterDbContext : IdentityDbContext<User>
+    public class TwitterDbContext : IdentityDbContext<ApplicationUser>
     {
         public TwitterDbContext(DbContextOptions<TwitterDbContext> options)
             : base(options)
@@ -81,6 +81,11 @@ namespace TwitterBackup.Data
                 .WithMany(t => t.HashtagTweets)
                 .HasForeignKey(th => th.HashtagId);
 
+            builder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasIndex(x => x.UserName).IsUnique();
+                entity.HasIndex(x => x.Email).IsUnique();
+            });
         }
 
         private void ApplyAuditInfoRules()

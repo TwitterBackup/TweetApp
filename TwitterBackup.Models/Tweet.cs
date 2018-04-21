@@ -33,8 +33,6 @@ namespace TwitterBackup.Models
 
         public int RetweetCount { get; set; } //Retweet_count
 
-        public Tweet RetweetedStatus { get; set; } //Retweeted_status 
-
         public bool IsDeleted { get; set; }
 
         [DataType(DataType.DateTime)]

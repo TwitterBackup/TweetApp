@@ -7,9 +7,9 @@ using TwitterBackup.Models.Contracts;
 namespace TwitterBackup.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
-    public class User : IdentityUser, IAuditable, IDeletable
+    public class ApplicationUser : IdentityUser, IAuditable, IDeletable
     {
-        public User()
+        public ApplicationUser()
         {
             this.SavedTweets = new HashSet<UserTweet>();
             this.FavouriteTweeters = new HashSet<UserTweeter>();

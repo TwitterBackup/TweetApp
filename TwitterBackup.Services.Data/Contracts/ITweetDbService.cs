@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.DTO.Tweets;
 using TwitterBackup.DTO.User;
 
@@ -6,18 +7,18 @@ namespace TwitterBackup.Services.Data.Contracts
 {
     public interface ITweetDbService
     {
-        void Add(TweetDto tweet);
+        void AddTweetToDb(TweetDto tweet);
 
-        void AddMany(IEnumerable<TweetDto> tweets);
+        void AddManyTweetsToDb(IEnumerable<TweetDto> tweets);
 
-        TweetDto GetById(string id);
+        TweetDto GetTweetById(string id);
 
         IEnumerable<TweetDto> GetTweetsByUser(UserDto user);
 
-        IEnumerable<TweetDto> GetTweetsByTweeter(TweetDto user);
+        IEnumerable<TweetDto> GetTweetsByTweeterIdAsync(string id);
 
-        void Update(TweetDto tweet);
+        void UpdateTweet(TweetDto tweet);
 
-        void Delete(TweetDto tweet);
+        void DeleteTweet(TweetDto tweet);
     }
 }

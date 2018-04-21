@@ -4,7 +4,7 @@ using TwitterBackup.Models.Abstracts;
 
 namespace TwitterBackup.Models
 {
-    public class Hashtag : DataModel
+    public class Hashtag
     {
         public Hashtag()
         {

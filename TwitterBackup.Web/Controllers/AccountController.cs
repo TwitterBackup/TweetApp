@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Email;
@@ -16,14 +17,14 @@ namespace TwitterBackup.Web.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IEmailSender emailSender;
         private readonly ILogger logger;
 
         public AccountController(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
@@ -53,16 +54,64 @@ namespace TwitterBackup.Web.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             this.ViewData["ReturnUrl"] = returnUrl;
+
+            string userName = string.Empty;
+
+            if (model.Email.IndexOf('@') > -1)
+            {
+                //Validate email format
+                string emailRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
+                                    @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
+                                    @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+                Regex re = new Regex(emailRegex);
+                if (!re.IsMatch(model.Email))
+                {
+                    ModelState.AddModelError("Email", "Email format is not valid");
+                }
+            }
+            else
+            {
+                //validate Username format
+                string userNameRegex = @"^[a-zA-Z0-9]*$";
+                Regex re = new Regex(userNameRegex);
+                if (!re.IsMatch(model.Email))
+                {
+                    ModelState.AddModelError("Email", "Username is not valid");
+                }
+            }
+
             if (this.ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                if (model.Email.IndexOf('@') > -1) //if entered data is Email
+                {
+                    var user = await userManager.FindByEmailAsync(model.Email);
+                    if (user == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return View(model);
+                    }
+                    else
+                    {
+                        userName = user.UserName;
+                    }
+
+                }
+                else
+                {
+                    userName = model.Email;
+                }
+
+                // This does count login failures towards account lockout
+                // To disable password failures to trigger account lockout, set lockoutOnFailure: false 
+                var result = await this.signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: true);
+
                 if (result.Succeeded)
                 {
                     this.logger.LogInformation("User logged in.");
                     return this.RedirectToLocal(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return this.RedirectToAction(nameof(this.LoginWith2Fa), new { returnUrl, model.RememberMe });
@@ -214,9 +263,25 @@ namespace TwitterBackup.Web.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             this.ViewData["ReturnUrl"] = returnUrl;
+
+            var foundUser = await userManager.FindByEmailAsync(model.Email);
+            if (foundUser != null) 
+            {
+                ModelState.AddModelError(string.Empty, "This Email is already taken.");
+                return View(model);
+            }
+
             if (this.ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    Email = model.Email
+                };
+
+
                 var result = await this.userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -307,7 +372,7 @@ namespace TwitterBackup.Web.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await this.userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

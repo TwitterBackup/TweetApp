@@ -11,9 +11,10 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180420185950_MakeEmailUnique")]
+    partial class MakeEmailUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,10 +195,6 @@ namespace TwitterBackup.Data.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("UserName")
-                        .IsUnique()
-                        .HasFilter("[UserName] IS NOT NULL");
-
                     b.ToTable("AspNetUsers");
                 });
 
@@ -205,6 +202,16 @@ namespace TwitterBackup.Data.Migrations
                 {
                     b.Property<string>("HashtagId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<int>("Id");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<DateTime?>("SavedOn");
 
                     b.Property<string>("Text")
                         .HasMaxLength(300);
@@ -236,6 +243,8 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<int>("RetweetCount");
 
+                    b.Property<string>("RetweetedStatusTweetId");
+
                     b.Property<DateTime?>("SavedOn");
 
                     b.Property<string>("Text")
@@ -245,6 +254,8 @@ namespace TwitterBackup.Data.Migrations
                         .IsRequired();
 
                     b.HasKey("TweetId");
+
+                    b.HasIndex("RetweetedStatusTweetId");
 
                     b.HasIndex("TweeterId");
 
@@ -377,6 +388,10 @@ namespace TwitterBackup.Data.Migrations
 
             modelBuilder.Entity("TwitterBackup.Models.Tweet", b =>
                 {
+                    b.HasOne("TwitterBackup.Models.Tweet", "RetweetedStatus")
+                        .WithMany()
+                        .HasForeignKey("RetweetedStatusTweetId");
+
                     b.HasOne("TwitterBackup.Models.Tweeter", "Tweeter")
                         .WithMany("Tweets")
                         .HasForeignKey("TweeterId")

@@ -24,11 +24,12 @@
   <ItemGroup>
     <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj" />
     <ProjectReference Include="..\TwitterBackup.Infrastructure\TwitterBackup.Infrastructure.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Services.Data\TwitterBackup.Services.Data.csproj" />
     <ProjectReference Include="..\TwitterBackup.Services.Email\TwitterBackup.Services.Email.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
+    <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
 
 </Project>

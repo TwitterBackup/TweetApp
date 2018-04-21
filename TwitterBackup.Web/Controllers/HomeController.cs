@@ -1,13 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using TwitterBackup.Web.Models;
 
 namespace TwitterBackup.Web.Controllers
 {
     public class HomeController : Controller
     {
+        public IConfiguration Configuration { get; set; }
+
+        public HomeController(IConfiguration config)
+        {
+            Configuration = config;
+        }
+
+
         public IActionResult Index()
         {
+            ViewData["ConsumerKey"] = Configuration["Authentication:Twitter:ConsumerKey"];
+            ViewData["ConsumerSecret"] = Configuration["Authentication:Twitter:ConsumerSecret"];
+
+
             return this.View();
         }
 

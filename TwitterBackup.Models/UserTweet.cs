@@ -8,7 +8,7 @@ namespace TwitterBackup.Models
         public string UserId { get; set; }
 
         [Required]
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
         [Required]
         public string TweetId { get; set; }

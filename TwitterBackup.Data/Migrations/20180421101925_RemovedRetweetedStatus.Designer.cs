@@ -11,9 +11,10 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180421101925_RemovedRetweetedStatus")]
+    partial class RemovedRetweetedStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,6 +206,16 @@ namespace TwitterBackup.Data.Migrations
                 {
                     b.Property<string>("HashtagId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<int>("Id");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<DateTime?>("SavedOn");
 
                     b.Property<string>("Text")
                         .HasMaxLength(300);
