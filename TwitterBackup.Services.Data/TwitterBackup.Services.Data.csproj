@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj" />
     <ProjectReference Include="..\TwitterBackup.DTO\TwitterBackup.DTO.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Infrastructure\TwitterBackup.Infrastructure.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Models\TwitterBackup.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,94 @@
+﻿@model TwitterBackup.Web.Models.TweeterViewModels.TweeterViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+
+    <!-- code start -->
+    <div class="tweeter-card col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <div class="twPc-div">
+            <a class="twPc-bg twPc-block" style="background-image: url(@Model.ProfileBannerUrl)"></a>
+            <div>
+                <div class="twPc-button">
+                    <!-- Twitter Button | you can get from: https://about.twitter.com/tr/resources/buttons#follow -->
+                    <a href="https://twitter.com/@Model.ScreenName" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false" data-dnt="true">Follow</a>
+                    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+                    <!-- Twitter Button -->
+                </div>
+                <a title="@Model.Name" class="twPc-avatarLink">
+                    <img alt="@Model.Name" src="@Model.ProfileImageUrl" class="twPc-avatarImg">
+                </a>
+                <div class="twPc-divUser">
+                    <div class="twPc-divName">
+                        <a href="https://twitter.com/@Model.ScreenName">@Model.Name</a>
+                    </div>
+                    <span>
+                        <a href="https://twitter.com/@Model.ScreenName">@@<span>@Model.ScreenName</span></a>
+                    </span>
+                </div>
+                <div class="twPc-divStats">
+                    <ul class="twPc-Arrange">
+                        <li class="twPc-ArrangeSizeFit">
+                            <a href="https://twitter.com/@Model.ScreenName" title="9.840 Tweet">
+                                <span class="twPc-StatLabel twPc-block">Tweets</span>
+                                <span class="twPc-StatValue">@Model.TweetsCount</span>
+                            </a>
+                        </li>
+                        <li class="twPc-ArrangeSizeFit">
+                            <a href="https://twitter.com/@Model.ScreenName/following" title="885 Following">
+                                <span class="twPc-StatLabel twPc-block">Friends</span>
+                                <span class="twPc-StatValue">@Model.FriendsCount</span>
+                            </a>
+                        </li>
+                        <li class="twPc-ArrangeSizeFit">
+                            <a href="https://twitter.com/@Model.ScreenName/followers" title="1.810 Followers">
+                                <span class="twPc-StatLabel twPc-block">Followers</span>
+                                <span class="twPc-StatValue">@Model.FollowersCount</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div><!-- code end -->
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+</body>
+</html>

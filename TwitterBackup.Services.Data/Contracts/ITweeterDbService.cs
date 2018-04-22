@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
-using TwitterBackup.DTO.User;
 
 namespace TwitterBackup.Services.Data.Contracts
 {
@@ -10,7 +10,9 @@ namespace TwitterBackup.Services.Data.Contracts
 
         TweeterDto GetById(string id);
 
-        IEnumerable<TweeterDto> GetUserFavouriteTweeters(UserDto user);
+        Task<IEnumerable<TweeterDto>> GetUserFavouriteTweetersAsync(string userName);
+
+        Task<IEnumerable<TweeterDto>> GetUserFavouriteTweetersByCriteriaAsync(string userName, string searchCriteria);
 
         void Update(TweeterDto tweeter);
 
