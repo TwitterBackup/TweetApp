@@ -47,9 +47,9 @@ namespace TwitterBackup.Web.Controllers
                 return this.View();
             }
 
-            if (userFavourites == null)
+            if (searchResult == null)
             {
-                var result = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(searchResult);
+                var result = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(userFavourites);
 
                 foreach (var tweeterViewModel in result)
                 {
@@ -59,10 +59,10 @@ namespace TwitterBackup.Web.Controllers
                 return this.View(result);
             }
 
-            if (searchResult == null)
+            if (userFavourites == null)
             {
-                var result = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(userFavourites);
-
+                var result = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(searchResult).ToList();
+                result[0].IsLikedFromUser = true;
                 return this.View(result);
             }
 

@@ -2,6 +2,9 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+<link rel="stylesheet" href="~/css/tweeter.css" />
+
+
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="col-sm-3 col-md-3">
