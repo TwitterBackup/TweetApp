@@ -32,8 +32,7 @@ namespace TwitterBackup.Web.Controllers
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> SearchResults(string searchString)
         {
             var searchResult = await this.tweeterService.SearchTweetersAsync(searchString);
@@ -77,6 +76,19 @@ namespace TwitterBackup.Web.Controllers
             var mergedResult = userFavouriteSet.Union(searchResultSet);
 
             return this.View(mergedResult);
+        }
+
+        [HttpPost]
+        public IActionResult AddTweeterToFavourite(TweeterViewModel tweeterViewModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var tweeterDto = this.mappingProvider.MapTo<TweeterDto>(tweeterViewModel);
+
+                return this.Json("success");
+            }
+
+            return this.Json("error");
         }
     }
 }

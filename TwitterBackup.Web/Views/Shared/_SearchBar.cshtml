@@ -1,14 +1,9 @@
 ﻿@using TwitterBackup.Models
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
 
-<link rel="stylesheet" href="~/css/tweeter.css" />
-
-
-@if (SignInManager.IsSignedIn(User))
+@if (this.User.Identity.IsAuthenticated)
 {
     <div class="col-sm-3 col-md-3">
-        <form class="navbar-form" asp-controller="FavouriteTweeters" asp-action="SearchResults" method="post" role="search">
+        <form class="navbar-form" asp-controller="FavouriteTweeters" asp-action="SearchResults" method="get" role="search">
             <div class="input-group">
                 <input name="searchString" type="text" class="form-control" placeholder="Search tweeter">
                 <div class="input-group-btn">
@@ -18,4 +13,3 @@
         </form>
     </div>
 }
-

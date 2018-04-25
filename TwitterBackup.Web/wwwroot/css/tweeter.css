@@ -309,7 +309,7 @@ ul.twPc-Arrange {
     color: black;
 }
 
-.btn-follow{text-align:center;}
+.follow-div{text-align:center;}
 .btn-follow-pic {
     display:inline-block;
     width:100px;
@@ -326,7 +326,7 @@ ul.twPc-Arrange {
     transition:color .3s;
 }
 
-.following {
+.btn-following {
     text-align: center;
     color: white;
     background-color: #427fed
