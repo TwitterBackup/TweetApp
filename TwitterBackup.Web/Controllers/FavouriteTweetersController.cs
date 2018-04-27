@@ -62,6 +62,8 @@ namespace TwitterBackup.Web.Controllers
             {
                 var result = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(searchResult).ToList();
                 result[0].IsLikedFromUser = true;
+                result[1].IsLikedFromUser = true;
+
                 return this.View(result);
             }
 
@@ -79,16 +81,27 @@ namespace TwitterBackup.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddTweeterToFavourite(TweeterViewModel tweeterViewModel)
         {
             if (this.ModelState.IsValid)
             {
                 var tweeterDto = this.mappingProvider.MapTo<TweeterDto>(tweeterViewModel);
 
-                return this.Json("success");
+                tweeterViewModel.IsLikedFromUser = true;
+                return this.PartialView("_FavouriteTweeter", tweeterViewModel);
             }
 
             return this.Json("error");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveTweeterFromFavourite(TweeterViewModel tweeterViewModel)
+        {
+
+            tweeterViewModel.IsLikedFromUser = false;
+            return this.PartialView("_FavouriteTweeter", tweeterViewModel);
         }
     }
 }

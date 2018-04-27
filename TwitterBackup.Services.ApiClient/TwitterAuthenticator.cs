@@ -93,7 +93,7 @@ namespace TwitterBackup.Services.ApiClient
 
                     if (sides.Length == 2)
                     {
-                        baseString += $"&{sides[0]}={Uri.EscapeDataString(sides[1])}";
+                        baseString += $"&{sides[0]}={sides[1]}";
                     }
                 }
             }

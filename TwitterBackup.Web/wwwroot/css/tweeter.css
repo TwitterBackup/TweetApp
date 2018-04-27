@@ -321,7 +321,7 @@ ul.twPc-Arrange {
     color:#427fed;
     border:1px solid;
     border-radius: 15px;
-    background:#fff;
+    background:white;
     overflow:hidden;
     transition:color .3s;
 }
@@ -330,4 +330,10 @@ ul.twPc-Arrange {
     text-align: center;
     color: white;
     background-color: #427fed
+}
+
+.btn-unfollow {
+    background-color: red;
+    color: red;
+    background: red;
 }

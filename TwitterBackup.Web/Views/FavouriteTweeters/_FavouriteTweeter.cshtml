@@ -2,9 +2,9 @@
 <!------ Include the above in your HEAD tag ---------->
 
 <link rel="stylesheet" href="~/css/tweeter.css" />
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-
-<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tweeter-card">
 
     <div class="card hovercard">
         <div class="cardheader" style="background: url(@Model.ProfileBannerUrl)">
@@ -40,9 +40,11 @@
             </div>
         </div>
         <div class="bottom">
-            <form class="tweeter-form" asp-controller="FavouriteTweeters" asp-action="AddTweeterToFavourite" method="post" tweeter-id="@Model.TweeterId">
+            @{
+                var action = Model.IsLikedFromUser ? "RemoveTweeterFromFavourite" : "AddTweeterToFavourite";
 
-                @{
+                <form class="tweeter-form" asp-controller="FavouriteTweeters" asp-action=@action method="post" tweeter-id="@Model.TweeterId">
+
                     <div class="tweeter-model-hiden-input" style="display: none;">
                         <input asp-for="TweeterId" class="form-control" />
                         <input asp-for="Name" class="form-control" />
@@ -59,26 +61,28 @@
                         <input asp-for="Verified" class="form-control" />
                         <input asp-for="IsLikedFromUser" class="form-control" />
                     </div>
-                    if (Model.IsLikedFromUser)
-                    {
-                        <div class="follow-div">
-                            <button type="submit" class="btn-tweeter btn-following btn-follow-pic" id="@Model.TweeterId">
-                                <i class="fa fa-twitter"></i>
-                                Following
-                            </button>
-                        </div>
+                    @{
+                        if (Model.IsLikedFromUser)
+                        {
+                            <div class="follow-div">
+                                <button type="submit" class="btn-tweeter btn-following btn-follow-pic" id="@Model.TweeterId">
+                                    <i class="fa fa-twitter"></i>
+                                    Following
+                                </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="follow-div">
+                                <button type="submit" class="btn-tweeter btn-follow btn-follow-pic" id="@Model.TweeterId">
+                                    <i class="fa fa-twitter"></i>
+                                    Follow
+                                </button>
+                            </div>
+                        }
                     }
-                    else
-                    {
-                        <div class="follow-div">
-                            <button type="submit" class="btn-tweeter btn-follow btn-follow-pic" id="@Model.TweeterId">
-                                <i class="fa fa-twitter"></i>
-                                Follow
-                            </button>
-                        </div>
-                    }
-                }
-            </form>
+                </form>
+            }
         </div>
     </div>
 </div>

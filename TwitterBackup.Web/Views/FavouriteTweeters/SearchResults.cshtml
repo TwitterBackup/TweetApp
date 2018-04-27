@@ -36,11 +36,12 @@
 
 
 @section Scripts {
+
+
     <script>
         $(function () {
-            $('.tweeter-form').on('submit',
+            $(document).on('submit', '.tweeter-form',
                 function (event) {
-
                     event.preventDefault();
 
                     var url = this.action;
@@ -48,30 +49,38 @@
                     var tweeterId = this.getAttribute('tweeter-id');
 
                     $.post(url, data, function (response) {
-
-
-                        if (String(response) === "success") {
-
-                            var tweeterBtn = $('#' + tweeterId);
-
-                            console.log(this);
-                            console.log(tweeterBtn);
-                            if (tweeterBtn.hasClass('btn-following')) {
-                                tweeterBtn.removeClass('btn-following');
-                                tweeterBtn.addClass('btn-follow');
-                                tweeterBtn.text('Follow');
-                            } else {
-                                tweeterBtn.removeClass('btn-follow');
-                                tweeterBtn.addClass('btn-following');
-                                tweeterBtn.text('Following');
-                            }
-
-                        } else {
-                            alert('failure');
-                        }
+                        var tweeterCard = $('#' + tweeterId).closest('.tweeter-card');
+                        tweeterCard.replaceWith(response);
                     });
-
                 });
+        });
+
+    </script>
+
+    <script>
+        $(document).on("mouseenter", ".btn-following", function () {
+            var btn = $(this);
+
+            btn.css("background-color", "red");
+            btn.html('Unfollow');
+        });
+
+        $(document).on("mouseleave", ".btn-following", function () {
+            var btn = $(this);
+
+            btn.html('<i class="fa fa-twitter"></i> Following');
+            btn.css("background-color", "#427fed");
+        });
+
+        $(document).on("mouseenter", ".btn-follow", function () {
+            var btn = $(this);
+            btn.css("background-color", "#E8F5FD");
+
+        });
+
+        $(document).on("mouseleave", ".btn-follow", function () {
+            var btn = $(this);
+            btn.css("background-color", "white");
         });
     </script>
 }

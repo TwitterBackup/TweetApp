@@ -27,6 +27,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<TweeterDto> GetTweeterByScreenNameAsync(string tweeterName)
         {
+            tweeterName = Uri.EscapeDataString(tweeterName);
+
             var resource = string.Format(ResourceFormat, "show", "screen_name", tweeterName);
 
             var result = await this.CallApiClientGetAsync<TweeterDto>(resource);
@@ -36,6 +38,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<IEnumerable<TweeterDto>> SearchTweetersAsync(string searchCriteria)
         {
+            searchCriteria = Uri.EscapeDataString(searchCriteria);
+
             var resource = string.Format(ResourceFormat, "search", "q", searchCriteria);
 
             var result = await this.CallApiClientGetAsync<IEnumerable<TweeterDto>>(resource);
