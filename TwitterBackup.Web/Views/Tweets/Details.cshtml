@@ -1,0 +1,54 @@
+﻿@model TwitterBackup.Web.Models.TweetViewModels.TweetViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tweet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FavoriteCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FavoriteCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RetweetCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RetweetCount)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.TweetId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

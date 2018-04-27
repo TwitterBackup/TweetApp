@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.DTO.User;
 
@@ -10,7 +11,7 @@ namespace TwitterBackup.Services.Data.Contracts
 
         TweeterDto GetById(string id);
 
-        IEnumerable<TweeterDto> GetUserFavouriteTweeters(UserDto user);
+        Task<IEnumerable<TweeterDto>> GetUserFavouriteTweetersAsync(string userId);
 
         void Update(TweeterDto tweeter);
 

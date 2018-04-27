@@ -6,9 +6,9 @@ namespace TwitterBackup.Services.TwitterAPI.Contracts
 {
     public interface ITweetMessageService
     {
-        Task<IEnumerable<TweetFromTwitterDto>> GetUserTimelineAsync(GetUserTimelineDto getUserTimelineDto);
+        Task<IEnumerable<TweetDto>> GetUserTimelineAsync(GetUserTimelineDto getUserTimelineDto);
 
-        Task<IEnumerable<TweetFromTwitterDto>> SearchTweetsAsync(SearchTweetDto searchTweetDto);
+        Task<IEnumerable<TweetDto>> SearchTweetsAsync(SearchTweetDto searchTweetDto);
 
         Task<RetweetResultDto> RetweetAsync(RetweetDto retweet);
     }

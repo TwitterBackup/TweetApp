@@ -11,9 +11,10 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180426183904_Validation")]
+    partial class Validation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,10 +303,6 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("HashtagId");
 
-                    b.Property<DateTime?>("DeletedOn");
-
-                    b.Property<bool>("IsDeleted");
-
                     b.HasKey("TweetId", "HashtagId");
 
                     b.HasIndex("HashtagId");
@@ -323,11 +320,7 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.Property<DateTime?>("SavedOn");
-
-                    b.Property<string>("TweetComments")
+                    b.Property<string>("TweetComment")
                         .HasMaxLength(500);
 
                     b.HasKey("UserId", "TweetId");
@@ -346,10 +339,6 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<DateTime?>("DeletedOn");
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.Property<DateTime?>("SavedOn");
 
                     b.Property<string>("TweeterComment")
                         .HasMaxLength(500);

@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Data.Contracts;
 
 namespace TwitterBackup.Web.Controllers
 {
-    public class TweeterDbController : Controller
+    public class TweetController : Controller
     {
         private readonly ITweetDbService tweetDbService;
         private readonly UserManager<ApplicationUser> user;
         private readonly IMappingProvider mapper;
 
-        public TweeterDbController(ITweetDbService tweetDbService, UserManager<ApplicationUser> user, IMappingProvider mapper)
+        public TweetController(ITweetDbService tweetDbService, UserManager<ApplicationUser> user, IMappingProvider mapper)
         {
             this.tweetDbService = tweetDbService;
             this.user = user;
@@ -25,31 +27,27 @@ namespace TwitterBackup.Web.Controllers
         }
 
 
-        // GET: TweeterDb
-        public ActionResult Index()
+        // GET: TweetDb
+        public IActionResult Index()
         {
+            
             return View();
         }
 
-        // GET: TweeterDb/Details/5
+        // GET: TweetDb/Details/5
         public ActionResult Details(string id)
         {
-            //find id of given tweeter
-
-            var tweetsDto = tweetDbService.GetTweetsByTweeterIdAsync(id);
-            //var tweetsVM = mapper.ProjectTo<TweeterDbViewModel>(tweetsDto);
-
 
             return View();
         }
 
-        // GET: TweeterDb/Create
+        // GET: TweetDb/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: TweeterDb/Create
+        // POST: TweetDb/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -66,13 +64,13 @@ namespace TwitterBackup.Web.Controllers
             }
         }
 
-        // GET: TweeterDb/Edit/5
+        // GET: TweetDb/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: TweeterDb/Edit/5
+        // POST: TweetDb/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -89,13 +87,13 @@ namespace TwitterBackup.Web.Controllers
             }
         }
 
-        // GET: TweeterDb/Delete/5
+        // GET: TweetDb/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: TweeterDb/Delete/5
+        // POST: TweetDb/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

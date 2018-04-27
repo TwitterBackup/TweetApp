@@ -1,0 +1,71 @@
+﻿@model TwitterBackup.Web.Models.TweetViewModels.TweetViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3 position="center">Are you sure you want to delete this tweet?</h3>
+<div>
+
+    <dl class="dl-horizontal">
+        @if ((bool)ViewData["IsAdmin"])
+        {
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.TweeterName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TweeterName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FavoriteCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FavoriteCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RetweetCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RetweetCount)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="UserName" asp />
+        <input type="hidden" asp-for="TweetId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

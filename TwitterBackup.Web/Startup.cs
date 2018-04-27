@@ -2,13 +2,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TwitterBackup.Data;
+using TwitterBackup.Data.Repository;
 using TwitterBackup.Infrastructure.Providers;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
+using TwitterBackup.Services.Data;
+using TwitterBackup.Services.Data.Contracts;
 using TwitterBackup.Services.Email;
 
 namespace TwitterBackup.Web
@@ -41,10 +45,22 @@ namespace TwitterBackup.Web
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+
+                //options.Filters.Add(new RequireHttpsAttribute());
+            });
             services.AddAutoMapper();
 
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IMappingProvider, MappingProvider>();
+            services.AddTransient<ITweeterDbService, TweeterDbService>();
+            services.AddTransient<ITweetDbService, TweetDbService>();
+            services.AddTransient<IUserDbService, UserDbService>();
 
         }
 
@@ -62,6 +78,11 @@ namespace TwitterBackup.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            //var options = new RewriteOptions()
+            //    //.AddRedirectToHttpsPermanent()
+            //    .AddRedirectToHttps(301, 44342);
+            //app.UseRewriter(options);
+
             app.UseStaticFiles();
 
             app.UseAuthentication();
@@ -76,7 +97,9 @@ namespace TwitterBackup.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
             });
+
         }
     }
 }

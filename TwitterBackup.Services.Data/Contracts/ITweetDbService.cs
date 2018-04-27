@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TwitterBackup.DTO.Tweeters;
+using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweets;
 using TwitterBackup.DTO.User;
 
@@ -11,14 +11,18 @@ namespace TwitterBackup.Services.Data.Contracts
 
         void AddManyTweetsToDb(IEnumerable<TweetDto> tweets);
 
-        TweetDto GetTweetById(string id);
+        TweetDto TweetById(string tweetId, string userId);
 
-        IEnumerable<TweetDto> GetTweetsByUser(UserDto user);
+        Task<IEnumerable<TweetDto>> GetAllTweetsAsync();
+
+        Task<IEnumerable<TweetDto>> GetTweetsByUserIdAsync(string userId);
 
         IEnumerable<TweetDto> GetTweetsByTweeterIdAsync(string id);
 
-        void UpdateTweet(TweetDto tweet);
+        void UpdateTweet(EditTweetDto editTweetDto, string userId);
 
-        void DeleteTweet(TweetDto tweet);
+        void SoftDeleteTweetByIdPerUserId(string tweetId, string userId);
+
+        void SoftDeleteTweetByIdForAllUsers(string tweetId);
     }
 }

@@ -1,22 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
 using TwitterBackup.Models;
 
-namespace TwitterBackup.DTO.Tweets
+namespace TwitterBackup.DTO.User
 {
-    public class TweetDto
+    public class UserTweetDto
     {
-        public string UserName { get; set; }
-
         public ApplicationUser User { get; set; }
 
-        public string TweeterName { get; set; }
-
-        public string Hashtags { get; set; }
-
-        public string TweetComments { get; set; }
-
-        public string ErrorMessage { get; set; }
+        public string UserId { get; set; }
 
         [JsonProperty("created_at")]
         public string CreatedAt { get; set; }
@@ -42,12 +36,13 @@ namespace TwitterBackup.DTO.Tweets
         [JsonProperty("Retweet_count")]
         public int RetweetCount { get; set; } //Retweet_count
 
-        //public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
-        //public DateTime? DeletedOn { get; set; }
+        public DateTime? DeletedOn { get; set; }
 
-        //public DateTime? SavedOn { get; set; }
+        public DateTime? SavedOn { get; set; }
 
-        //public DateTime? ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+
     }
 }

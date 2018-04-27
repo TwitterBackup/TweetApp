@@ -22,18 +22,25 @@ namespace TwitterBackup.Models
         [StringLength(50, MinimumLength = 1, ErrorMessage = "Length should be between 1 and 50 characters")]
         public string ScreenName { get; set; } //Screen_name
 
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Parameter should be between 6 and 50 characters")]
         public string CreatedAt { get; set; } //created_at
 
+        [StringLength(200, MinimumLength = 10, ErrorMessage = "Parameter should be between 10 and 200 characters")]
         public string Description { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public int FollowersCount { get; set; } //Followers_count
 
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public int FriendsCount { get; set; } //Friends_count
 
-        public string Lang { get; set; }
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Parameter should be between 2 and 10 characters")]
+        public string Language { get; set; }
 
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Parameter should be between 2 and 50 characters")]
         public string Location { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public int TweetsCount { get; set; } //Statuses_count
 
         public bool Verified { get; set; }

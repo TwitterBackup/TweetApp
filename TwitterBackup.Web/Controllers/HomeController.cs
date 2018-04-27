@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using TwitterBackup.Web.Models;
@@ -13,7 +14,6 @@ namespace TwitterBackup.Web.Controllers
         {
             Configuration = config;
         }
-
 
         public IActionResult Index()
         {

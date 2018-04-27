@@ -11,9 +11,10 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180423114830_SmallChange")]
+    partial class SmallChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,8 +229,7 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Language")
-                        .HasMaxLength(10);
+                    b.Property<string>("Language");
 
                     b.Property<DateTime?>("ModifiedOn");
 
@@ -257,13 +257,11 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("TweeterId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedAt")
-                        .HasMaxLength(50);
+                    b.Property<string>("CreatedAt");
 
                     b.Property<DateTime?>("DeletedOn");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(200);
+                    b.Property<string>("Description");
 
                     b.Property<int>("FollowersCount");
 
@@ -271,11 +269,9 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Language")
-                        .HasMaxLength(10);
+                    b.Property<string>("Language");
 
-                    b.Property<string>("Location")
-                        .HasMaxLength(50);
+                    b.Property<string>("Location");
 
                     b.Property<DateTime?>("ModifiedOn");
 
@@ -302,10 +298,6 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("HashtagId");
 
-                    b.Property<DateTime?>("DeletedOn");
-
-                    b.Property<bool>("IsDeleted");
-
                     b.HasKey("TweetId", "HashtagId");
 
                     b.HasIndex("HashtagId");
@@ -323,13 +315,6 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.Property<DateTime?>("SavedOn");
-
-                    b.Property<string>("TweetComments")
-                        .HasMaxLength(500);
-
                     b.HasKey("UserId", "TweetId");
 
                     b.HasIndex("TweetId");
@@ -346,13 +331,6 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<DateTime?>("DeletedOn");
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.Property<DateTime?>("SavedOn");
-
-                    b.Property<string>("TweeterComment")
-                        .HasMaxLength(500);
 
                     b.HasKey("UserId", "TweeterId");
 

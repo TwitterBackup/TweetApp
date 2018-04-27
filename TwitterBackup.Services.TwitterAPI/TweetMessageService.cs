@@ -7,12 +7,12 @@ namespace TwitterBackup.Services.TwitterAPI
 {
     public class TweetMessageService : ITweetMessageService
     {
-        public Task<IEnumerable<TweetFromTwitterDto>> GetUserTimelineAsync(GetUserTimelineDto getUserTimelineDto)
+        public Task<IEnumerable<TweetDto>> GetUserTimelineAsync(GetUserTimelineDto getUserTimelineDto)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<TweetFromTwitterDto>> SearchTweetsAsync(SearchTweetDto searchTweetDto)
+        public Task<IEnumerable<TweetDto>> SearchTweetsAsync(SearchTweetDto searchTweetDto)
         {
             throw new System.NotImplementedException();
         }

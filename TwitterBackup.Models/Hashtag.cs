@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TwitterBackup.Models.Abstracts;
 
 namespace TwitterBackup.Models
 {
@@ -14,7 +13,7 @@ namespace TwitterBackup.Models
         [Key]
         public string HashtagId { get; set; }
 
-        [StringLength(300, MinimumLength = 0)]
+        [StringLength(300, MinimumLength = 1, ErrorMessage = "Parameter length - 1 to 300 characters")]
         public string Text { get; set; }
 
         public ICollection<TweetHashtag> HashtagTweets { get; set; }

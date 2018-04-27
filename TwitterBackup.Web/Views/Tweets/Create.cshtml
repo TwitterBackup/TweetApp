@@ -1,0 +1,77 @@
+﻿@model TwitterBackup.Models.Tweet
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Tweet</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CreatedAt" class="control-label"></label>
+                <input asp-for="CreatedAt" class="form-control" />
+                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Text" class="control-label"></label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FavoriteCount" class="control-label"></label>
+                <input asp-for="FavoriteCount" class="form-control" />
+                <span asp-validation-for="FavoriteCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lang" class="control-label"></label>
+                <input asp-for="Lang" class="form-control" />
+                <span asp-validation-for="Lang" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuoteCount" class="control-label"></label>
+                <input asp-for="QuoteCount" class="form-control" />
+                <span asp-validation-for="QuoteCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RetweetCount" class="control-label"></label>
+                <input asp-for="RetweetCount" class="form-control" />
+                <span asp-validation-for="RetweetCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeletedOn" class="control-label"></label>
+                <input asp-for="DeletedOn" class="form-control" />
+                <span asp-validation-for="DeletedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SavedOn" class="control-label"></label>
+                <input asp-for="SavedOn" class="form-control" />
+                <span asp-validation-for="SavedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModifiedOn" class="control-label"></label>
+                <input asp-for="ModifiedOn" class="form-control" />
+                <span asp-validation-for="ModifiedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

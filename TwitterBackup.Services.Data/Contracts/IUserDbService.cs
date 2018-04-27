@@ -7,5 +7,8 @@ namespace TwitterBackup.Services.Data.Contracts
         void Update(UserDto user);
 
         void Delete(UserDto user);
+
+        string FindUserIdByUserName(string userName);
+
     }
 }
