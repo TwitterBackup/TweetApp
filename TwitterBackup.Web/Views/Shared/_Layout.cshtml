@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using TwitterBackup.Models
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -33,8 +35,11 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @*  <li>@await Html.PartialAsync("_SearchBar")</li>*@
                 </ul>
+                @await Html.PartialAsync("_SearchBar")
                 @await Html.PartialAsync("_LoginPartial")
+
             </div>
         </div>
     </nav>

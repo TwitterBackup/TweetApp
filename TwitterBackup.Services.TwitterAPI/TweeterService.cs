@@ -25,20 +25,24 @@ namespace TwitterBackup.Services.TwitterAPI
             this.jsonProvider = jsonProvider ?? throw new ArgumentNullException(nameof(jsonProvider));
         }
 
-        public async Task<GetTweeterDto> GetTweeterByScreenNameAsync(string tweeterName)
+        public async Task<TweeterDto> GetTweeterByScreenNameAsync(string tweeterName)
         {
+            tweeterName = Uri.EscapeDataString(tweeterName);
+
             var resource = string.Format(ResourceFormat, "show", "screen_name", tweeterName);
 
-            var result = await this.CallApiClientGetAsync<GetTweeterDto>(resource);
+            var result = await this.CallApiClientGetAsync<TweeterDto>(resource);
 
             return result;
         }
 
-        public async Task<IEnumerable<GetTweeterDto>> SearchTweetersAsync(string searchCriteria)
+        public async Task<IEnumerable<TweeterDto>> SearchTweetersAsync(string searchCriteria)
         {
+            searchCriteria = Uri.EscapeDataString(searchCriteria);
+
             var resource = string.Format(ResourceFormat, "search", "q", searchCriteria);
 
-            var result = await this.CallApiClientGetAsync<IEnumerable<GetTweeterDto>>(resource);
+            var result = await this.CallApiClientGetAsync<IEnumerable<TweeterDto>>(resource);
 
             return result;
         }

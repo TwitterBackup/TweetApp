@@ -32,13 +32,22 @@ namespace TwitterBackup.Services.ApiClient
 
         private readonly DateTime unixDateTimeStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-        public string ОauthToken { get; set; }
-
-        public string OauthTokenSecret { get; set; }
+        public TwitterAuthenticator(string oauthConsumerKey, string oauthConsumerSecret,
+            string oauthToken = "", string oauthTokenSecret = "")
+        {
+            this.OauthConsumerKey = oauthConsumerKey;
+            this.OauthConsumerSecret = oauthConsumerSecret;
+            this.ОauthToken = oauthToken;
+            this.OauthTokenSecret = oauthTokenSecret;
+        }
 
         public string OauthConsumerKey { get; set; }
 
         public string OauthConsumerSecret { get; set; }
+
+        public string ОauthToken { get; set; }
+
+        public string OauthTokenSecret { get; set; }
 
         public string OauthVersion { get; set; } = "1.0";
 
@@ -84,7 +93,7 @@ namespace TwitterBackup.Services.ApiClient
 
                     if (sides.Length == 2)
                     {
-                        baseString += $"&{sides[0]}={Uri.EscapeDataString(sides[1])}";
+                        baseString += $"&{sides[0]}={sides[1]}";
                     }
                 }
             }
@@ -94,7 +103,7 @@ namespace TwitterBackup.Services.ApiClient
             var fullUrl = client.BaseUrl + request.Resource;
             var resourceUrl = fullUrl.Split("?")[0];
 
-            baseString = string.Concat(method + "&", Uri.EscapeDataString(resourceUrl), "&", Uri.EscapeDataString(baseString));
+            baseString = string.Concat(method, "&", Uri.EscapeDataString(resourceUrl), "&", Uri.EscapeDataString(baseString));
 
             var compositeKey = this.GetCompositKey();
 
