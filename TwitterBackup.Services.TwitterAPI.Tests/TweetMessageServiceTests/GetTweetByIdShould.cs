@@ -4,14 +4,14 @@ using RestSharp;
 using RestSharp.Authenticators;
 using System.Net;
 using System.Threading.Tasks;
-using TwitterBackup.DTO.Tweeters;
+using TwitterBackup.DTO.Tweets;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Services.ApiClient.Contracts;
 
-namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
+namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
 {
     [TestClass]
-    public class GetTweeterByScreenNameAsyncShould
+    public class GetTweetByIdShould
     {
         [TestMethod]
         public async Task Return_Correct_Result_When_Called_With_Valid_Parameter()
@@ -26,14 +26,14 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var expected = new Mock<TweeterDto>();
-            jsonProviderMock.Setup(x => x.DeserializeObject<TweeterDto>(It.IsAny<string>())).Returns(expected.Object);
+            var expected = new Mock<TweetFromTwitterDto>();
+            jsonProviderMock.Setup(x => x.DeserializeObject<TweetFromTwitterDto>(It.IsAny<string>())).Returns(expected.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var id = "1234567890";
 
-            var actual = await tweeterService.GetTweeterByScreenNameAsync(screenName);
+            var actual = await tweetMessageService.GetTweetById(id);
 
             Assert.AreSame(expected.Object, actual);
         }
@@ -51,11 +51,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var id = "1234567890";
 
-            var _ = await tweeterService.GetTweeterByScreenNameAsync(screenName);
+            var _ = await tweetMessageService.GetTweetById(id);
 
             apiClientMock.Verify(x => x.GetAsync(
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()), Times.Once());
@@ -74,11 +74,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var id = "1234567890";
 
-            var _ = await tweeterService.GetTweeterByScreenNameAsync(screenName);
+            var _ = await tweetMessageService.GetTweetById(id);
 
             apiClientMock.Verify(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), authMock.Object), Times.Once());
         }
@@ -96,13 +96,13 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var id = "1234567890";
 
-            var _ = await tweeterService.GetTweeterByScreenNameAsync(screenName);
+            var _ = await tweetMessageService.GetTweetById(id);
 
-            jsonProviderMock.Verify(x => x.DeserializeObject<TweeterDto>(It.IsAny<string>()), Times.Once());
+            jsonProviderMock.Verify(x => x.DeserializeObject<TweetFromTwitterDto>(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
@@ -121,13 +121,13 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var id = "1234567890";
 
-            var _ = await tweeterService.GetTweeterByScreenNameAsync(screenName);
+            var _ = await tweetMessageService.GetTweetById(id);
 
-            jsonProviderMock.Verify(x => x.DeserializeObject<TweeterDto>(responceContent), Times.Once());
+            jsonProviderMock.Verify(x => x.DeserializeObject<TweetFromTwitterDto>(responceContent), Times.Once());
         }
 
         [TestMethod]
@@ -144,11 +144,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var id = "1234567890";
 
-            var result = await tweeterService.GetTweeterByScreenNameAsync(screenName);
+            var result = await tweetMessageService.GetTweetById(id);
 
             Assert.IsNull(result);
         }

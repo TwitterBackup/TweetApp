@@ -42,7 +42,7 @@ namespace TwitterBackup.Services.TwitterAPI
 
             var tweets = await this.CallApiClientGetAsync<IEnumerable<TweetFromTwitterDto>>(resource);
 
-            if (!tweets.Any())
+            if (tweets == null || !tweets.Any())
             {
                 return null;
             }
@@ -58,7 +58,7 @@ namespace TwitterBackup.Services.TwitterAPI
 
             var tweets = await this.CallApiClientGetAsync<IEnumerable<TweetFromTwitterDto>>(resource);
 
-            if (!tweets.Any())
+            if (tweets == null || !tweets.Any())
             {
                 return null;
             }

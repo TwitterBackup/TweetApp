@@ -45,7 +45,7 @@ namespace TwitterBackup.Services.TwitterAPI
 
             var result = await this.CallApiClientGetAsync<IEnumerable<TweeterDto>>(resource);
 
-            if (!result.Any())
+            if (result == null || !result.Any())
             {
                 return null;
             }
