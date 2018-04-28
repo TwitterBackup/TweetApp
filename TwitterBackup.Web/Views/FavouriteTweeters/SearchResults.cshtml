@@ -31,6 +31,13 @@
             }
         }
     </div>
+    <div class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content error-modal">
+                <!-- load dynamically event modal html -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
@@ -47,10 +54,32 @@
                     var url = this.action;
                     var data = $(this).serialize();
                     var tweeterId = this.getAttribute('tweeter-id');
+                    var form = $(this);
 
                     $.post(url, data, function (response) {
-                        var tweeterCard = $('#' + tweeterId).closest('.tweeter-card');
-                        tweeterCard.replaceWith(response);
+
+                        if (response !== 'success') {
+
+                            console.log(response);
+                            //add error modal
+                            return;
+                        }
+
+                        var tweeterBtn = $('#' + tweeterId);
+
+                        tweeterBtn.toggleClass('btn-following');
+                        tweeterBtn.toggleClass('btn-follow');
+
+                        if (tweeterBtn.hasClass('btn-follow')) {
+                            form.attr('action', '/FavouriteTweeters/AddTweeterToFavourite');
+                            tweeterBtn.html('<i class="fa fa-twitter"></i> Follow');
+                        } else {
+                            form.attr('action', '/FavouriteTweeters/RemoveTweeterFromFavourite');
+                            tweeterBtn.html('<i class="fa fa-twitter"></i> Following');
+                        }
+
+                        //var tweeterCard = $('#' + tweeterId).closest('.tweeter-card');
+                        //tweeterCard.replaceWith(response);
                     });
                 });
         });
@@ -58,29 +87,29 @@
     </script>
 
     <script>
-        $(document).on("mouseenter", ".btn-following", function () {
-            var btn = $(this);
+                //$(document).on("mouseenter", ".btn-following", function () {
+                //    var btn = $(this);
 
-            btn.css("background-color", "red");
-            btn.html('Unfollow');
-        });
+                //    btn.css("background-color", "red");
+                //    btn.html('Unfollow');
+                //});
 
-        $(document).on("mouseleave", ".btn-following", function () {
-            var btn = $(this);
+                //$(document).on("mouseleave", ".btn-following", function () {
+                //    var btn = $(this);
 
-            btn.html('<i class="fa fa-twitter"></i> Following');
-            btn.css("background-color", "#427fed");
-        });
+                //    btn.html('<i class="fa fa-twitter"></i> Following');
+                //    btn.css("background-color", "#427fed");
+                //});
 
-        $(document).on("mouseenter", ".btn-follow", function () {
-            var btn = $(this);
-            btn.css("background-color", "#E8F5FD");
+                //$(document).on("mouseenter", ".btn-follow", function () {
+                //    var btn = $(this);
+                //    btn.css("background-color", "#E8F5FD");
 
-        });
+                //});
 
-        $(document).on("mouseleave", ".btn-follow", function () {
-            var btn = $(this);
-            btn.css("background-color", "white");
-        });
+                //$(document).on("mouseleave", ".btn-follow", function () {
+                //    var btn = $(this);
+                //    btn.css("background-color", "white");
+                //});
     </script>
 }

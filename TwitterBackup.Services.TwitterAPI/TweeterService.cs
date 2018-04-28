@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
@@ -43,6 +44,11 @@ namespace TwitterBackup.Services.TwitterAPI
             var resource = string.Format(ResourceFormat, "search", "q", searchCriteria);
 
             var result = await this.CallApiClientGetAsync<IEnumerable<TweeterDto>>(resource);
+
+            if (!result.Any())
+            {
+                return null;
+            }
 
             return result;
         }
