@@ -55,11 +55,11 @@ namespace TwitterBackup.Services.TwitterAPI
 
         private async Task<T> CallApiClientGetAsync<T>(string resource) where T : class
         {
-            var responce = await this.restApiClient.GetAsync(BaseUrl, resource, this.authenticator);
+            var response = await this.restApiClient.GetAsync(BaseUrl, resource, this.authenticator);
 
-            if (responce.StatusCode == HttpStatusCode.OK)
+            if (response.StatusCode == HttpStatusCode.OK)
             {
-                return this.jsonProvider.DeserializeObject<T>(responce.Content);
+                return this.jsonProvider.DeserializeObject<T>(response.Content);
             }
 
             return null;
