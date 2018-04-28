@@ -29,7 +29,17 @@ namespace TwitterBackup.Services.Data
 
         public void Add(TweeterDto tweeter)
         {
-            throw new NotImplementedException();
+
+        }
+
+        public void AddTweeterToFavourite(TweeterDto tweeter, string userName)
+        {
+            this.Add(tweeter);
+        }
+
+        public void RemoveTweeterFromFavourite(TweeterDto tweeter, string userName)
+        {
+
         }
 
         public TweeterDto GetById(string id)

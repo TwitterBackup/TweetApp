@@ -26,9 +26,9 @@ namespace TwitterBackup.Web.Controllers
             IHttpContextAccessor httpContextAccessor,
             IMappingProvider mappingProvider)
         {
-            this.tweeterService = tweeterService ?? throw new System.ArgumentNullException(nameof(tweeterService));
-            this.tweeterDbService = tweeterDbService ?? throw new System.ArgumentNullException(nameof(tweeterDbService));
-            this.httpContextAccessor = httpContextAccessor ?? throw new System.ArgumentNullException(nameof(httpContextAccessor));
+            this.tweeterService = tweeterService ?? throw new ArgumentNullException(nameof(tweeterService));
+            this.tweeterDbService = tweeterDbService ?? throw new ArgumentNullException(nameof(tweeterDbService));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
         }
 
@@ -61,8 +61,6 @@ namespace TwitterBackup.Web.Controllers
             if (userFavourites == null)
             {
                 var result = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(searchResult).ToList();
-                result[0].IsLikedFromUser = true;
-                result[1].IsLikedFromUser = true;
 
                 return this.View(result);
             }
@@ -82,14 +80,29 @@ namespace TwitterBackup.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddTweeterToFavourite(TweeterViewModel tweeterViewModel)
+        public async Task<IActionResult> AddTweeterToFavourite(TweeterViewModel tweeterViewModel)
         {
             if (this.ModelState.IsValid)
             {
-                var tweeterDto = this.mappingProvider.MapTo<TweeterDto>(tweeterViewModel);
+                var tweeterDto = await this.tweeterService.GetTweeterByScreenNameAsync(tweeterViewModel.ScreenName);
 
-                tweeterViewModel.IsLikedFromUser = true;
-                return this.PartialView("_FavouriteTweeter", tweeterViewModel);
+                if (tweeterDto == null)
+                {
+                    return this.Json("Invalid tweeter");
+                }
+
+                var usernName = this.httpContextAccessor.HttpContext.User.Identity.Name;
+
+                try
+                {
+                    this.tweeterDbService.AddTweeterToFavourite(tweeterDto, usernName);
+                }
+                catch (Exception e)
+                {
+                    return this.Json("unable to add tweeter to favourite");
+                }
+
+                return this.Json("success");
             }
 
             return this.Json("error");
@@ -97,11 +110,32 @@ namespace TwitterBackup.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RemoveTweeterFromFavourite(TweeterViewModel tweeterViewModel)
+        public async Task<IActionResult> RemoveTweeterFromFavourite(TweeterViewModel tweeterViewModel)
         {
+            if (this.ModelState.IsValid)
+            {
+                var tweeterDto = await this.tweeterService.GetTweeterByScreenNameAsync(tweeterViewModel.ScreenName);
 
-            tweeterViewModel.IsLikedFromUser = false;
-            return this.PartialView("_FavouriteTweeter", tweeterViewModel);
+                if (tweeterDto == null)
+                {
+                    return this.Json("Invalid tweeter");
+                }
+
+                var usernName = this.httpContextAccessor.HttpContext.User.Identity.Name;
+
+                try
+                {
+                    this.tweeterDbService.RemoveTweeterFromFavourite(tweeterDto, usernName);
+                }
+                catch (Exception e)
+                {
+                    return this.Json("unable to remove tweeter to favourite.");
+                }
+
+                return this.Json("success");
+            }
+
+            return this.Json("error");
         }
     }
 }

@@ -42,45 +42,22 @@
         <div class="bottom">
             @{
                 var action = Model.IsLikedFromUser ? "RemoveTweeterFromFavourite" : "AddTweeterToFavourite";
+                var btnClass = Model.IsLikedFromUser ? "btn-following" : "btn-follow";
+                var btnText = Model.IsLikedFromUser ? "Following" : "Follow";
 
                 <form class="tweeter-form" asp-controller="FavouriteTweeters" asp-action=@action method="post" tweeter-id="@Model.TweeterId">
 
                     <div class="tweeter-model-hiden-input" style="display: none;">
                         <input asp-for="TweeterId" class="form-control" />
-                        <input asp-for="Name" class="form-control" />
                         <input asp-for="ScreenName" class="form-control" />
-                        <input asp-for="ProfileImageUrl" class="form-control" />
-                        <input asp-for="ProfileBannerUrl" class="form-control" />
-                        <input asp-for="CreatedAt" class="form-control" />
-                        <input asp-for="Description" class="form-control" />
-                        <input asp-for="FollowersCount" class="form-control" />
-                        <input asp-for="FriendsCount" class="form-control" />
-                        <input asp-for="Lang" class="form-control" />
-                        <input asp-for="Location" class="form-control" />
-                        <input asp-for="TweetsCount" class="form-control" />
-                        <input asp-for="Verified" class="form-control" />
-                        <input asp-for="IsLikedFromUser" class="form-control" />
                     </div>
-                    @{
-                        if (Model.IsLikedFromUser)
-                        {
-                            <div class="follow-div">
-                                <button type="submit" class="btn-tweeter btn-following btn-follow-pic" id="@Model.TweeterId">
-                                    <i class="fa fa-twitter"></i>
-                                    Following
-                                </button>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="follow-div">
-                                <button type="submit" class="btn-tweeter btn-follow btn-follow-pic" id="@Model.TweeterId">
-                                    <i class="fa fa-twitter"></i>
-                                    Follow
-                                </button>
-                            </div>
-                        }
-                    }
+
+                    <div class="follow-div">
+                        <button type="submit" class="@btnClass btn-tweeter btn-follow-pic" id="@Model.TweeterId">
+                            <i class="fa fa-twitter"></i>
+                            @btnText
+                        </button>
+                    </div>
                 </form>
             }
         </div>

@@ -1,4 +1,6 @@
-﻿namespace TwitterBackup.Web.Models.TweeterViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TwitterBackup.Web.Models.TweeterViewModels
 {
     public class TweeterViewModel
     {
@@ -6,6 +8,7 @@
 
         public string Name { get; set; }
 
+        [Required]
         public string ScreenName { get; set; }
 
         public string ProfileImageUrl { get; set; }

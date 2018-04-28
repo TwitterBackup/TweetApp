@@ -8,6 +8,10 @@ namespace TwitterBackup.Services.Data.Contracts
     {
         void Add(TweeterDto tweeter);
 
+        void AddTweeterToFavourite(TweeterDto tweeter, string userName);
+
+        void RemoveTweeterFromFavourite(TweeterDto tweeter, string userName);
+
         TweeterDto GetById(string id);
 
         Task<IEnumerable<TweeterDto>> GetUserFavouriteTweetersAsync(string userName);
