@@ -2,6 +2,7 @@
 using Moq;
 using RestSharp;
 using RestSharp.Authenticators;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweets;
@@ -36,6 +37,45 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             var actual = await tweetMessageService.RetweetAsync(tweetId);
 
             Assert.AreSame(expected, actual);
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_Null_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.RetweetAsync(null));
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_Empty_String_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.RetweetAsync(string.Empty));
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_White_Space_String_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.RetweetAsync("       "));
         }
 
         [TestMethod]

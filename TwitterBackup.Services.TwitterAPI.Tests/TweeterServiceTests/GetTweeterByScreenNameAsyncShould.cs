@@ -2,6 +2,7 @@
 using Moq;
 using RestSharp;
 using RestSharp.Authenticators;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
@@ -36,6 +37,45 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var actual = await tweeterService.GetTweeterByScreenNameAsync(screenName);
 
             Assert.AreSame(expected.Object, actual);
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_Null_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.GetTweeterByScreenNameAsync(null));
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_Empty_String_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.GetTweeterByScreenNameAsync(string.Empty));
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_White_Space_String_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.GetTweeterByScreenNameAsync("       "));
         }
 
         [TestMethod]

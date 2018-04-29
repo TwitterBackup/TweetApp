@@ -2,6 +2,7 @@
 using Moq;
 using RestSharp;
 using RestSharp.Authenticators;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -37,6 +38,45 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var actual = await tweeterService.SearchTweetersAsync(screenName);
 
             Assert.AreSame(expected, actual);
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_Null_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.SearchTweetersAsync(null));
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_Empty_String_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.SearchTweetersAsync(string.Empty));
+        }
+
+        [TestMethod]
+        public async Task Throw_ArgumentException_When_Called_With_White_Space_String_Parameter()
+        {
+            var apiClientMock = new Mock<IApiClient>();
+            var authMock = new Mock<ITwitterAuthenticator>();
+            var jsonProviderMock = new Mock<IJsonProvider>();
+
+            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await tweeterService.SearchTweetersAsync("       "));
         }
 
         [TestMethod]
