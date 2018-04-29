@@ -10,6 +10,7 @@ using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Data.Contracts;
+using TwitterBackup.Services.TwitterAPI.Contracts;
 using TwitterBackup.Web.Models.TweeterViewModels;
 
 namespace TwitterBackup.Web.Controllers
@@ -17,6 +18,7 @@ namespace TwitterBackup.Web.Controllers
     [Authorize]
     public class TweetersController : Controller
     {
+        private readonly ITweeterApiService tweeterApiService;
         private readonly IUserService userService;
         private readonly IUserService userDbService;
         private readonly ITweeterService tweeterService;
@@ -24,8 +26,10 @@ namespace TwitterBackup.Web.Controllers
         private readonly IMappingProvider mappingProvider;
 
         public TweetersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider,
-            ITweeterService tweeterService, IUserService userDbService, IUserService userService)
+            ITweeterService tweeterService, IUserService userDbService, IUserService userService,
+            ITweeterApiService tweeterApiService)
         {
+            this.tweeterApiService = tweeterApiService ?? throw new ArgumentNullException(nameof(tweeterApiService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.userDbService = userDbService ?? throw new ArgumentNullException(nameof(userDbService));
             this.tweeterService = tweeterService ?? throw new ArgumentNullException(nameof(tweeterService));
@@ -144,10 +148,13 @@ namespace TwitterBackup.Web.Controllers
             {
                 try
                 {
-                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(tweeterForEdit.UserName) : currentUser.Id;
+                    var userId = CurrentUserIsAdmin()
+                        ? userService.FindUserIdByUserName(tweeterForEdit.UserName)
+                        : currentUser.Id;
 
                     var tweetDto = mappingProvider.MapTo<EditTweeterDto>(tweeterForEdit);
-                    await tweeterService.AddNoteToSavedTweeterForUserAsync(userId, tweeterForEdit.TweeterId, tweeterForEdit.TweeterComments);
+                    await tweeterService.AddNoteToSavedTweeterForUserAsync(userId, tweeterForEdit.TweeterId,
+                        tweeterForEdit.TweeterComments);
                     TempData["Result"] = "Tweet was successfully edited";
                     return RedirectToAction(nameof(Index));
                 }
@@ -276,5 +283,152 @@ namespace TwitterBackup.Web.Controllers
             }
         }
 
+
+
+
+
+        //---------------------
+
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> SearchResults(string searchString)
+        {
+            var searchResult = await this.tweeterApiService.SearchTweetersAsync(searchString);
+
+            var userId = this.userManager.GetUserId(HttpContext.User);
+
+            var tweeterDtos = this.tweeterService.SearchFavoriteTweetersForUser(userId, searchString);
+
+            if (searchResult == null && !tweeterDtos.Any())
+            {
+                return this.View();
+            }
+
+            if (searchResult == null)
+            {
+                var result = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(tweeterDtos);
+
+                foreach (var tweeterViewModel in result)
+                {
+                    tweeterViewModel.IsLikedFromUser = true;
+                }
+
+                return this.View(result);
+            }
+
+            ICollection<TweeterDto> resultsList = null;
+
+            if (searchResult != null)
+            {
+                resultsList = searchResult.ToList();
+                foreach (var result in resultsList)
+                {
+                    result.User = new ApplicationUser();
+                    result.UserName = string.Empty;
+                }
+            }
+
+            if (!tweeterDtos.Any())
+            {
+                var resultViewModel = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(resultsList);
+
+                return this.View(resultViewModel);
+            }
+
+            var userFavouriteSet = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(tweeterDtos)
+                .ToHashSet();
+            var searchResultSet = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(resultsList)
+                .ToHashSet();
+
+            //foreach (var tweeterViewModel in userFavouriteSet)
+            //{
+            //    tweeterViewModel.IsLikedFromUser = true;
+            //}
+
+            //var mergedResult = userFavouriteSet.Union(searchResultSet);
+
+            //return this.View(mergedResult);
+
+            foreach (var tweeterViewModel in userFavouriteSet)
+            {
+                if(searchResultSet.Any(x => x.TweeterId == tweeterViewModel.TweeterId))
+                    searchResultSet
+                        .SingleOrDefault(x => x.TweeterId == tweeterViewModel.TweeterId)
+                        .IsLikedFromUser = true;
+                else
+                {
+                    tweeterViewModel.IsLikedFromUser = true;
+                    searchResultSet.Add(tweeterViewModel);
+                }
+            }
+            return this.View(searchResultSet);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTweeterToFavourite(TweeterViewModel tweeterViewModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var tweeterDto = await this.tweeterApiService.GetTweeterByScreenNameAsync(tweeterViewModel.ScreenName);
+
+                if (tweeterDto == null)
+                {
+                    return this.Json("Invalid tweeter.");
+                }
+
+                var userId = this.userManager.GetUserId(HttpContext.User);
+
+                try
+                {
+                    await this.tweeterService.AddFavoriteTweeterForUserAsync(userId, tweeterDto);
+                }
+                catch (Exception e)
+                {
+                    var error = e.Message;
+
+                    return this.Json("Unable to add tweeter to favourite.");
+                }
+
+                return this.Json("success");
+            }
+
+            return this.Json("Tweeter shoud have screen name.");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveTweeterFromFavourite(TweeterViewModel tweeterViewModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var tweeterDto = await this.tweeterApiService.GetTweeterByScreenNameAsync(tweeterViewModel.ScreenName);
+
+                if (tweeterDto == null)
+                {
+                    return this.Json("Invalid tweeter.");
+                }
+
+                var userId = this.userManager.GetUserId(HttpContext.User);
+
+                try
+                {
+                    await this.tweeterService.RemoveSavedTweeterForUserAsync(userId, tweeterDto.TweeterId);
+                }
+                catch (Exception)
+                {
+                    return this.Json("Unable to remove tweeter to favourite.");
+                }
+
+                return this.Json("success");
+            }
+
+            return this.Json("Tweeter shoud have screen name.");
+
+
+        }
     }
 }

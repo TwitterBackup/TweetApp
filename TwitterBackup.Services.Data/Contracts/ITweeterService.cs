@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
+using TwitterBackup.Models;
 
 namespace TwitterBackup.Services.Data.Contracts
 {
     public interface ITweeterService
     {
-        void AddFavoriteTweeterForUser(string userId, TweeterDto tweeter);
+        Task AddFavoriteTweeterForUserAsync(string userId, TweeterDto tweeterDto);
 
         TweeterDto GetTweeterForUser(string userId, string tweeterId);
 
@@ -22,5 +24,6 @@ namespace TwitterBackup.Services.Data.Contracts
 
         void RemoveSavedTweeterForAllUsers(string tweeterId);
 
+        IEnumerable<TweeterDto> SearchFavoriteTweetersForUser(string userId, string searchString);
     }
 }

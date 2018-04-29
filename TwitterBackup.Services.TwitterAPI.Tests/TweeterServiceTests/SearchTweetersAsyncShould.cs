@@ -47,7 +47,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.SearchTweetersAsync(null));
@@ -60,7 +60,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.SearchTweetersAsync(string.Empty));
@@ -73,7 +73,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.SearchTweetersAsync("       "));
@@ -95,7 +95,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var content = new List<TweeterDto>();
             jsonProviderMock.Setup(x => x.DeserializeObject<IEnumerable<TweeterDto>>(It.IsAny<string>())).Returns(content);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             var screenName = "screen_name";
 

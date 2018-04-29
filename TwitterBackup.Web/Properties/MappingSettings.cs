@@ -44,7 +44,13 @@ namespace TwitterBackup.Infrastructure.Providers
             this.CreateMap<TweeterDto, EditTweeterViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
-            this.CreateMap<TweetDto, TweeterViewModel>().ReverseMap();
+            this.CreateMap<TweeterDto, Tweeter>()
+                .ForMember(destination => destination.IsDeleted, opt => opt.Ignore())
+                .ForMember(destination => destination.DeletedOn, opt => opt.Ignore())
+                .ForMember(destination => destination.Tweets, opt => opt.Ignore())
+                .ForMember(destination => destination.UserTweeters, opt => opt.Ignore());
+
+            //this.CreateMap<TweetDto, TweeterViewModel>().ReverseMap();
 
             //this.CreateMap<>()
         }

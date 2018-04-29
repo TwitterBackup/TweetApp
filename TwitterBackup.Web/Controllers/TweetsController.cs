@@ -44,7 +44,7 @@ namespace TwitterBackup.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var apiTweetDto = tweetApiService.GetTweet(tweetId);
+                var apiTweetDto = await tweetApiService.GetTweetByIdAsync(tweetId);
                 var userId = userManager.GetUserId(HttpContext.User);
 
                 await tweetService.AddTweetForUserAsync(userId, apiTweetDto);

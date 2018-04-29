@@ -46,7 +46,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.GetTweeterByScreenNameAsync(null));
@@ -59,7 +59,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.GetTweeterByScreenNameAsync(string.Empty));
@@ -72,7 +72,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.GetTweeterByScreenNameAsync("       "));

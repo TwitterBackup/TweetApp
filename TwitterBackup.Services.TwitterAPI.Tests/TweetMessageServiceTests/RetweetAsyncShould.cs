@@ -9,7 +9,7 @@ using TwitterBackup.DTO.Tweets;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Services.ApiClient.Contracts;
 
-namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
+namespace TwitterBackup.Services.TwitterAPI.Tests.TweetApiServiceTests
 {
     [TestClass]
     public class RetweetAsyncShould
@@ -30,11 +30,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             var expected = new RetweetResultDto();
             jsonProviderMock.Setup(x => x.DeserializeObject<RetweetResultDto>(It.IsAny<string>())).Returns(expected);
 
-            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var TweetApiService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             var tweetId = "1234567890";
 
-            var actual = await tweetMessageService.RetweetAsync(tweetId);
+            var actual = await TweetApiService.RetweetAsync(tweetId);
 
             Assert.AreSame(expected, actual);
         }
@@ -46,7 +46,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.RetweetAsync(null));
@@ -59,7 +59,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.RetweetAsync(string.Empty));
@@ -72,7 +72,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await tweeterService.RetweetAsync("       "));
@@ -91,11 +91,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             apiClientMock.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var TweetApiService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             var tweetId = "1234567890";
 
-            var _ = await tweetMessageService.RetweetAsync(tweetId);
+            var _ = await TweetApiService.RetweetAsync(tweetId);
 
             apiClientMock.Verify(x => x.PostAsync(
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()), Times.Once());
@@ -114,11 +114,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             apiClientMock.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var TweetApiService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             var tweetId = "1234567890";
 
-            var _ = await tweetMessageService.RetweetAsync(tweetId);
+            var _ = await TweetApiService.RetweetAsync(tweetId);
 
             apiClientMock.Verify(x => x.PostAsync(It.IsAny<string>(), It.IsAny<string>(), authMock.Object), Times.Once());
         }
@@ -136,11 +136,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             apiClientMock.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var TweetApiService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             var tweetId = "1234567890";
 
-            var _ = await tweetMessageService.RetweetAsync(tweetId);
+            var _ = await TweetApiService.RetweetAsync(tweetId);
 
             jsonProviderMock.Verify(x => x.DeserializeObject<RetweetResultDto>(It.IsAny<string>()), Times.Once());
         }
@@ -161,11 +161,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             apiClientMock.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var TweetApiService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             var tweetId = "1234567890";
 
-            var _ = await tweetMessageService.RetweetAsync(tweetId);
+            var _ = await TweetApiService.RetweetAsync(tweetId);
 
             jsonProviderMock.Verify(x => x.DeserializeObject<RetweetResultDto>(responceContent), Times.Once());
         }
@@ -184,11 +184,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
             apiClientMock.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var TweetApiService = new TweetApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             var tweetId = "123456790";
 
-            var result = await tweetMessageService.RetweetAsync(tweetId);
+            var result = await TweetApiService.RetweetAsync(tweetId);
 
             Assert.IsNull(result);
         }

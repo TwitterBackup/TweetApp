@@ -27,18 +27,50 @@ namespace TwitterBackup.Services.Data
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
         }
 
-        public void AddFavoriteTweeterForUser(string userId, TweeterDto tweeter)
+        public async Task AddFavoriteTweeterForUserAsync(string userId, TweeterDto tweeterDto)
         {
-            //Does exist in db allready KOQ E PROVERKATA
-            try
+            //check whether such tweeterId exist
+            if (tweeterRepository.Any(tweeter => tweeter.TweeterId == tweeterDto.TweeterId))
             {
-                //DA SE GETNE
-                //PROVERQWAME DALI E ISTRIT I GO PRAIM VIDIM
+                //check whether link between tweeter and user exist
+                if (userTweeterRepository.Any(userTweeter => userTweeter.TweeterId == tweeterDto.TweeterId && userTweeter.UserId == userId))
+                {
+                    //this link is probably softdeleted, make it active
+                    var existingRelationUserTweeter = userTweeterRepository.SingleOrDefault(userTweeter =>
+                        userTweeter.TweeterId == tweeterDto.TweeterId && userTweeter.UserId == userId);
+
+                    existingRelationUserTweeter.IsDeleted = false;
+                    existingRelationUserTweeter.ModifiedOn = DateTime.Now;
+                    await unitOfWork.CompleteWorkAsync();
+                }
+                else
+                {
+                    await AddRelationUserTweeterAsync(userId, tweeterDto);
+                }
             }
-            catch (Exception)
+            else
             {
-                //AKO NE SE GETNE DA SE DOBAVI
+                //no such tweeter => 1. create it, 2. add relation User - Tweet
+                //tweeterDto.TweeterComments = string.Empty;
+                var newTweeter = mappingProvider.MapTo<Tweeter>(tweeterDto);
+                await tweeterRepository.AddAsync(newTweeter);
+                await unitOfWork.CompleteWorkAsync();
+
+                await AddRelationUserTweeterAsync(userId, tweeterDto);
             }
+
+        }
+
+        private async Task AddRelationUserTweeterAsync(string userId, TweeterDto tweeterDto)
+        {
+            var newRelationUserTweeter = new UserTweeter()
+            {
+                UserId = userId,
+                TweeterId = tweeterDto.TweeterId,
+                SavedOn = DateTime.Now
+            };
+            await userTweeterRepository.AddAsync(newRelationUserTweeter);
+            await unitOfWork.CompleteWorkAsync();
         }
 
         public TweeterDto GetTweeterForUser(string userId, string tweeterId)
@@ -118,6 +150,16 @@ namespace TwitterBackup.Services.Data
         public void RemoveSavedTweeterForAllUsers(string tweeterId)
         {
             //ZA VSI4ki USERI OBIKALQME I SMENQME FLAGA
+        }
+
+        public IEnumerable<TweeterDto> SearchFavoriteTweetersForUser(string userId, string searchString)
+        {
+            var favoriteTweeters = this.userTweeterRepository
+                .IncludeDbSet(x => x.User, x => x.Tweeter)
+                .Where(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false 
+                && userTweeter.Tweeter.ScreenName.ToLower().Contains(searchString.ToLower()));
+
+            return this.mappingProvider.ProjectTo<UserTweeter, TweeterDto>(favoriteTweeters);
         }
     }
 }

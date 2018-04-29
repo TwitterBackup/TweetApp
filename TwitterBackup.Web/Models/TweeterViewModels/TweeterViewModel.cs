@@ -49,9 +49,9 @@ namespace TwitterBackup.Web.Models.TweeterViewModels
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
 
-    }
-}
-
         public bool IsLikedFromUser { get; set; }
         public string ProfileImageUrl { get; set; }
         public string ProfileBannerUrl { get; set; }
+    }
+}
+

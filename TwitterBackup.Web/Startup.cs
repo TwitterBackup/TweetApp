@@ -14,9 +14,6 @@ using TwitterBackup.Data.Repository;
 using TwitterBackup.Infrastructure.Providers;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
-using TwitterBackup.Services.ApiClient.Contracts;
-using TwitterBackup.Services.Data;
-using TwitterBackup.Services.Data.Contracts;
 using TwitterBackup.Services.ApiClient;
 using TwitterBackup.Services.ApiClient.Contracts;
 using TwitterBackup.Services.Data;
@@ -72,10 +69,9 @@ namespace TwitterBackup.Web
             services.AddTransient<ITweetService, TweetService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITweetApiService, TweetApiService>();
+            services.AddTransient<ITweeterApiService, TweeterApiService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddScoped<ITweeterService, TweeterService>();
-            services.AddScoped<ITweeterDbService, TweeterDbService>();
             services.AddScoped<IApiClient, ApiClient>();
 
             var tokens = new RequestToken();

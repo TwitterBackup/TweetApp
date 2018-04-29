@@ -63,7 +63,9 @@ namespace TwitterBackup.Services.TwitterAPI
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                return this.jsonProvider.DeserializeObject<T>(response.Content);
+                var resultFromApi = this.jsonProvider.DeserializeObject<T>(response.Content);
+
+                return resultFromApi;
             }
 
             return null;
