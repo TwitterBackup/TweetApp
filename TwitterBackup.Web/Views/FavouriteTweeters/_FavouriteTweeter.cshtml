@@ -1,0 +1,65 @@
+﻿@model TwitterBackup.Web.Models.TweeterViewModels.TweeterViewModel
+<!------ Include the above in your HEAD tag ---------->
+
+<link rel="stylesheet" href="~/css/tweeter.css" />
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tweeter-card">
+
+    <div class="card hovercard">
+        <div class="cardheader" style="background: url(@Model.ProfileBannerUrl)">
+
+        </div>
+        <div class="avatar">
+            <img alt="@Model.Name" src="@Model.ProfileImageUrl">
+        </div>
+        <div class="info">
+            <div class="twPc-divUser">
+                <div class="twPc-divName">
+                    <a class="twName" href="https://twitter.com/@Model.ScreenName">@Model.Name</a>
+                </div>
+                <span>
+                    <a class="twScreenName" href="https://twitter.com/@Model.ScreenName"><span>@@@Model.ScreenName</span></a>
+                </span>
+            </div>
+            <div class="twPc-divStats">
+                <ul class="twPc-Arrange">
+                    <li class="twPc-ArrangeSizeFit">
+                        <span class="twPc-StatLabel twPc-block">Tweets</span>
+                        <span class="twPc-StatValue">@Model.TweetsCount</span>
+                    </li>
+                    <li class="twPc-ArrangeSizeFit">
+                        <span class="twPc-StatLabel twPc-block">Followers</span>
+                        <span class="twPc-StatValue">@Model.FollowersCount</span>
+                    </li>
+                    <li class="twPc-ArrangeSizeFit">
+                        <span class="twPc-StatLabel twPc-block">Friends</span>
+                        <span class="twPc-StatValue">@Model.FriendsCount</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="bottom">
+            @{
+                var action = Model.IsLikedFromUser ? "RemoveTweeterFromFavourite" : "AddTweeterToFavourite";
+                var btnClass = Model.IsLikedFromUser ? "btn-following" : "btn-follow";
+                var btnText = Model.IsLikedFromUser ? "Following" : "Follow";
+
+                <form class="tweeter-form" asp-controller="FavouriteTweeters" asp-action=@action method="post" tweeter-id="@Model.TweeterId">
+
+                    <div class="tweeter-model-hiden-input" style="display: none;">
+                        <input asp-for="TweeterId" class="form-control" />
+                        <input asp-for="ScreenName" class="form-control" />
+                    </div>
+
+                    <div class="follow-div">
+                        <button type="submit" class="@btnClass btn-tweeter btn-follow-pic" id="@Model.TweeterId">
+                            <i class="fa fa-twitter"></i>
+                            @btnText
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

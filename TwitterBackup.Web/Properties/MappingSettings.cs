@@ -5,7 +5,7 @@ using TwitterBackup.Models;
 using TwitterBackup.Web.Models.TweeterViewModels;
 using TwitterBackup.Web.Models.TweetViewModels;
 
-namespace TwitterBackup.Web.Properties
+namespace TwitterBackup.Infrastructure.Providers
 {
     public class MappingSettings : Profile
     {
@@ -44,6 +44,9 @@ namespace TwitterBackup.Web.Properties
             this.CreateMap<TweeterDto, EditTweeterViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
+            this.CreateMap<TweetDto, TweeterViewModel>().ReverseMap();
+
+            //this.CreateMap<>()
         }
     }
 }

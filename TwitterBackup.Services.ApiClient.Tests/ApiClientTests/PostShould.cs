@@ -3,16 +3,15 @@ using Moq;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
-using System.Threading.Tasks;
 using TwitterBackup.Services.ApiClient.Contracts;
 
 namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 {
     [TestClass]
-    public class GetAsyncShould
+    public class PostShould
     {
         [TestMethod]
-        public async Task Return_IRestResponse_When_Called_With_Valid_Parameters()
+        public void Return_IRestResponse_When_Called_With_Valid_Parameters()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -22,18 +21,18 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var expectedResult = new Mock<IRestResponse>();
 
-            clientMock.Setup(c => c.ExecuteTaskAsync(It.IsAny<IRestRequest>())).ReturnsAsync(expectedResult.Object);
+            clientMock.Setup(c => c.Execute(It.IsAny<IRestRequest>())).Returns(expectedResult.Object);
 
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var actual = await apiClient.GetAsync(fakeUri, fakeResource);
+            var actual = apiClient.Post(fakeUri, fakeResource);
 
             Assert.AreSame(expectedResult.Object, actual);
         }
 
         [TestMethod]
-        public async Task Throw_ArgumentException_When_Called_With_Null_BaseUri_String()
+        public void Throw_ArgumentException_When_Called_With_Null_BaseUri_String()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -43,12 +42,11 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var fakeResource = "/resource";
 
-            await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await apiClient.GetAsync(null, fakeResource));
+            Assert.ThrowsException<ArgumentException>(() => apiClient.Post(null, fakeResource));
         }
 
         [TestMethod]
-        public async Task Throw_ArgumentException_When_Called_With_Empty_BaseUri_String()
+        public void Throw_ArgumentException_When_Called_With_Empty_BaseUri_String()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -58,12 +56,11 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var fakeResource = "/resource";
 
-            await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await apiClient.GetAsync(string.Empty, fakeResource));
+            Assert.ThrowsException<ArgumentException>(() => apiClient.Post(string.Empty, fakeResource));
         }
 
         [TestMethod]
-        public async Task Throw_ArgumentException_When_Called_With_White_Space_BaseUri_String()
+        public void Throw_ArgumentException_When_Called_With_White_Space_BaseUri_String()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -73,12 +70,11 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var fakeResource = "/resource";
 
-            await Assert.ThrowsExceptionAsync<ArgumentException>
-                (async () => await apiClient.GetAsync("   ", fakeResource));
+            Assert.ThrowsException<ArgumentException>(() => apiClient.Post("   ", fakeResource));
         }
 
         [TestMethod]
-        public async Task Throw_ArgumentException_When_Called_With_Null_Resource_String()
+        public void Throw_ArgumentException_When_Called_With_Null_Resource_String()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -88,12 +84,11 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var fakeUri = "https://api.something.com";
 
-            await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await apiClient.GetAsync(fakeUri, null));
+            Assert.ThrowsException<ArgumentException>(() => apiClient.Post(fakeUri, null));
         }
 
         [TestMethod]
-        public async Task Throw_ArgumentException_When_Called_With_Empty_Resource_String()
+        public void Throw_ArgumentException_When_Called_With_Empty_Resource_String()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -103,12 +98,11 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var fakeUri = "https://api.something.com";
 
-            await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await apiClient.GetAsync(fakeUri, string.Empty));
+            Assert.ThrowsException<ArgumentException>(() => apiClient.Post(fakeUri, string.Empty));
         }
 
         [TestMethod]
-        public async Task Throw_ArgumentException_When_Called_With_White_Space_Resource_String()
+        public void Throw_ArgumentException_When_Called_With_White_Space_Resource_String()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -118,12 +112,11 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var fakeUri = "https://api.something.com";
 
-            await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await apiClient.GetAsync(fakeUri, "      "));
+            Assert.ThrowsException<ArgumentException>(() => apiClient.Post(fakeUri, "      "));
         }
 
         [TestMethod]
-        public async Task Set_Client_BaseUri_Correct_With_Passed_Parramter()
+        public void Set_Client_BaseUri_Correct_With_Passed_Parramter()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -138,13 +131,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
 
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
             clientMock.VerifySet(x => x.BaseUrl = expectedUrl, Times.Once());
         }
 
         [TestMethod]
-        public async Task Set_Client_BaseUri_Is_Called_Once()
+        public void Set_Client_BaseUri_Is_Called_Once()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -155,13 +148,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
             clientMock.VerifySet(x => x.BaseUrl = It.IsAny<Uri>(), Times.Once());
         }
 
         [TestMethod]
-        public async Task Call_Factory_With_Given_BaseUrl_Parameter()
+        public void Call_Factory_With_Given_BaseUrl_Parameter()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -172,13 +165,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
             uriFactoryMock.Verify(x => x.CreateUri(fakeUri), Times.Once());
         }
 
         [TestMethod]
-        public async Task Set_Request_Resource_Correct_With_Passed_Parramter()
+        public void Set_Request_Resource_Correct_With_Passed_Parramter()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -189,13 +182,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
             requestMock.VerifySet(x => x.Resource = fakeResource, Times.Once());
         }
 
         [TestMethod]
-        public async Task Set_Request_Resource_Is_Called_Once()
+        public void Set_Request_Method_To_Post_Method()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -206,13 +199,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
-            requestMock.VerifySet(x => x.Resource = It.IsAny<string>(), Times.Once());
+            requestMock.VerifySet(x => x.Method = Method.POST, Times.Once());
         }
 
         [TestMethod]
-        public async Task Set_Request_Method_To_Get_Method()
+        public void Set_Request_Method_Once()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -223,30 +216,30 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
-
-            requestMock.VerifySet(x => x.Method = Method.GET, Times.Once());
-        }
-
-        [TestMethod]
-        public async Task Set_Request_Method_Once()
-        {
-            var clientMock = new Mock<IRestClient>();
-            var requestMock = new Mock<IRestRequest>();
-            var uriFactoryMock = new Mock<IUriFactory>();
-
-            var apiClient = new ApiClient(clientMock.Object, requestMock.Object, uriFactoryMock.Object);
-
-            var fakeUri = "https://api.something.com";
-            var fakeResource = "/resource";
-
-            var _ = await apiClient.PostAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
             requestMock.VerifySet(x => x.Method = It.IsAny<Method>(), Times.Once());
         }
 
         [TestMethod]
-        public async Task Authenticator_Authenticate_Is_Called_When_It_Is_Passed_As_Parameter()
+        public void Set_Request_Resource_Is_Called_Once()
+        {
+            var clientMock = new Mock<IRestClient>();
+            var requestMock = new Mock<IRestRequest>();
+            var uriFactoryMock = new Mock<IUriFactory>();
+
+            var apiClient = new ApiClient(clientMock.Object, requestMock.Object, uriFactoryMock.Object);
+
+            var fakeUri = "https://api.something.com";
+            var fakeResource = "/resource";
+
+            var _ = apiClient.Post(fakeUri, fakeResource);
+
+            requestMock.VerifySet(x => x.Resource = It.IsAny<string>(), Times.Once());
+        }
+
+        [TestMethod]
+        public void Authenticator_Authenticate_Is_Called_When_It_Is_Passed_As_Parameter()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -258,13 +251,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource, authenticator.Object);
+            var _ = apiClient.Post(fakeUri, fakeResource, authenticator.Object);
 
             authenticator.Verify(x => x.Authenticate(It.IsAny<IRestClient>(), It.IsAny<IRestRequest>()), Times.Once());
         }
 
         [TestMethod]
-        public async Task Authenticator_Authenticate_Is_Called_With_Give_Parameters_When_It_Is_Passed_As_Parameter()
+        public void Authenticator_Authenticate_Is_Called_With_Give_Parameters_When_It_Is_Passed_As_Parameter()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -276,13 +269,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource, authenticator.Object);
+            var _ = apiClient.Post(fakeUri, fakeResource, authenticator.Object);
 
             authenticator.Verify(x => x.Authenticate(clientMock.Object, requestMock.Object), Times.Once());
         }
 
         [TestMethod]
-        public async Task Call_Client_Call_ExecuteTaskAsync_With_Passed_IRestRequest_Parameter()
+        public void Call_Client_Call_Execute_With_Passed_IRestRequest_Parameter()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -293,13 +286,13 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
-            clientMock.Verify(x => x.ExecuteTaskAsync(requestMock.Object), Times.Once());
+            clientMock.Verify(x => x.Execute(requestMock.Object), Times.Once());
         }
 
         [TestMethod]
-        public async Task Call_Client_Call_ExecuteTaskAsync_Once()
+        public void Call_Client_Call_Execute_Once()
         {
             var clientMock = new Mock<IRestClient>();
             var requestMock = new Mock<IRestRequest>();
@@ -310,9 +303,9 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
             var fakeUri = "https://api.something.com";
             var fakeResource = "/resource";
 
-            var _ = await apiClient.GetAsync(fakeUri, fakeResource);
+            var _ = apiClient.Post(fakeUri, fakeResource);
 
-            clientMock.Verify(x => x.ExecuteTaskAsync(It.IsAny<IRestRequest>()), Times.Once());
+            clientMock.Verify(x => x.Execute(It.IsAny<IRestRequest>()), Times.Once());
         }
     }
 }

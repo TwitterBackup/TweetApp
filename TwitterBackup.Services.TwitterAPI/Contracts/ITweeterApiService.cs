@@ -6,8 +6,8 @@ namespace TwitterBackup.Services.TwitterAPI.Contracts
 {
     public interface ITweeterApiService
     {
-        Task<GetTweeterDto> GetTweeterByScreenNameAsync(string tweeterName);
+        Task<TweeterDto> GetTweeterByScreenNameAsync(string tweeterName);
 
-        Task<IEnumerable<GetTweeterDto>> SearchTweetersAsync(string searchCriteria);
+        Task<IEnumerable<TweeterDto>> SearchTweetersAsync(string searchCriteria);
     }
 }

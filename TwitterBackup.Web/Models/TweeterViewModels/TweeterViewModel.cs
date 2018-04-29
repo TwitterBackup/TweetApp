@@ -51,3 +51,7 @@ namespace TwitterBackup.Web.Models.TweeterViewModels
 
     }
 }
+
+        public bool IsLikedFromUser { get; set; }
+        public string ProfileImageUrl { get; set; }
+        public string ProfileBannerUrl { get; set; }
