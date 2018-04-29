@@ -72,7 +72,12 @@ namespace TwitterBackup.Services.TwitterAPI
 
             var response = await this.restApiClient.PostAsync(BaseUrl, resource, this.authenticator);
 
-            return this.jsonProvider.DeserializeObject<RetweetResultDto>(response.Content);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return this.jsonProvider.DeserializeObject<RetweetResultDto>(response.Content);
+            }
+
+            return null;
         }
 
         private async Task<T> CallApiClientGetAsync<T>(string resource) where T : class
