@@ -83,7 +83,7 @@ namespace TwitterBackup.Services.ApiClient
 
             var parametersStartIndex = resource?.IndexOf("?");
 
-            if (parametersStartIndex != null)
+            if (parametersStartIndex != -1 && resource != null)
             {
                 var parameters = resource.Split("?")[1].Split("&");
 

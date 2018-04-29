@@ -76,7 +76,7 @@ namespace TwitterBackup.Services.TwitterAPI
         {
             this.ValidateStringForNullOrWhiteSpace(tweetId, "Tweet id cannot be null or white space.");
 
-            var resource = $"/1.1/statuses/retweet/{tweetId}.json";
+            var resource = $"1.1/statuses/retweet/{tweetId}.json";
 
             var response = await this.restApiClient.PostAsync(BaseUrl, resource, this.authenticator);
 
