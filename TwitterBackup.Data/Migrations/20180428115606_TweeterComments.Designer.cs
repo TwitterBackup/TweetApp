@@ -11,9 +11,10 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180428115606_TweeterComments")]
+    partial class TweeterComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,14 +223,22 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("CreatedAt")
                         .IsRequired();
 
+                    b.Property<DateTime?>("DeletedOn");
+
                     b.Property<int>("FavoriteCount");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Language")
                         .HasMaxLength(10);
 
+                    b.Property<DateTime?>("ModifiedOn");
+
                     b.Property<int>("QuoteCount");
 
                     b.Property<int>("RetweetCount");
+
+                    b.Property<DateTime?>("SavedOn");
 
                     b.Property<string>("Text")
                         .IsRequired();
@@ -252,6 +261,8 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("CreatedAt")
                         .HasMaxLength(50);
 
+                    b.Property<DateTime?>("DeletedOn");
+
                     b.Property<string>("Description")
                         .HasMaxLength(200);
 
@@ -259,13 +270,19 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<int>("FriendsCount");
 
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("Language")
                         .HasMaxLength(10);
 
                     b.Property<string>("Location")
                         .HasMaxLength(50);
 
+                    b.Property<DateTime?>("ModifiedOn");
+
                     b.Property<string>("Name");
+
+                    b.Property<DateTime?>("SavedOn");
 
                     b.Property<string>("ScreenName")
                         .IsRequired()
@@ -285,6 +302,10 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<string>("TweetId");
 
                     b.Property<string>("HashtagId");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.HasKey("TweetId", "HashtagId");
 
@@ -400,7 +421,7 @@ namespace TwitterBackup.Data.Migrations
             modelBuilder.Entity("TwitterBackup.Models.TweetHashtag", b =>
                 {
                     b.HasOne("TwitterBackup.Models.Hashtag", "Hashtag")
-                        .WithMany("TweetHashtags")
+                        .WithMany("HashtagTweets")
                         .HasForeignKey("HashtagId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -413,12 +434,12 @@ namespace TwitterBackup.Data.Migrations
             modelBuilder.Entity("TwitterBackup.Models.UserTweet", b =>
                 {
                     b.HasOne("TwitterBackup.Models.Tweet", "Tweet")
-                        .WithMany("UserTweets")
+                        .WithMany("TweetUsers")
                         .HasForeignKey("TweetId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("TwitterBackup.Models.ApplicationUser", "User")
-                        .WithMany("UserTweets")
+                        .WithMany("SavedTweets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -426,12 +447,12 @@ namespace TwitterBackup.Data.Migrations
             modelBuilder.Entity("TwitterBackup.Models.UserTweeter", b =>
                 {
                     b.HasOne("TwitterBackup.Models.Tweeter", "Tweeter")
-                        .WithMany("UserTweeters")
+                        .WithMany("TweeterUsers")
                         .HasForeignKey("TweeterId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("TwitterBackup.Models.ApplicationUser", "User")
-                        .WithMany("UserTweeters")
+                        .WithMany("FavouriteTweeters")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

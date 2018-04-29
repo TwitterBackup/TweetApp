@@ -4,7 +4,7 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
 {
-    public class TweetHashtag : IDeletable
+    public class TweetHashtag
     {
         [Required]
         public string TweetId { get; set; }
@@ -17,8 +17,5 @@ namespace TwitterBackup.Models
 
         [Required]
         public Hashtag Hashtag { get; set; }
-
-        public bool IsDeleted { get; set; }
-        public DateTime? DeletedOn { get; set; }
     }
 }

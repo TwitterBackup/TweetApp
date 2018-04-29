@@ -15,11 +15,11 @@ namespace TwitterBackup.Web.Controllers
 {
     public class TweetController : Controller
     {
-        private readonly ITweetDbService tweetDbService;
+        private readonly ITweetService tweetDbService;
         private readonly UserManager<ApplicationUser> user;
         private readonly IMappingProvider mapper;
 
-        public TweetController(ITweetDbService tweetDbService, UserManager<ApplicationUser> user, IMappingProvider mapper)
+        public TweetController(ITweetService tweetDbService, UserManager<ApplicationUser> user, IMappingProvider mapper)
         {
             this.tweetDbService = tweetDbService;
             this.user = user;

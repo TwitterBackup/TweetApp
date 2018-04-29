@@ -53,14 +53,14 @@ namespace TwitterBackup.Web
             });
             services.AddAutoMapper();
 
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+            services.AddScoped(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
+            services.AddScoped<IUnitOfWork, EntityFrameworkUnitOfWork>();
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IMappingProvider, MappingProvider>();
-            services.AddTransient<ITweeterDbService, TweeterDbService>();
-            services.AddTransient<ITweetDbService, TweetDbService>();
-            services.AddTransient<IUserDbService, UserDbService>();
+            services.AddTransient<ITweeterService, TweeterService>();
+            services.AddTransient<ITweetService, TweetService>();
+            services.AddTransient<IUserService, UserService>();
 
         }
 

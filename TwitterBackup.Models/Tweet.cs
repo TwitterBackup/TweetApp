@@ -5,11 +5,11 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
 {
-    public class Tweet : IDeletable, IAuditable
+    public class Tweet
     {
         public Tweet()
         {
-            this.TweetUsers = new HashSet<UserTweet>();
+            this.UserTweets = new HashSet<UserTweet>();
             this.TweetHashtags = new HashSet<TweetHashtag>();
         }
 
@@ -37,18 +37,7 @@ namespace TwitterBackup.Models
         [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public int RetweetCount { get; set; } //Retweet_count
 
-        public bool IsDeleted { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? DeletedOn { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? SavedOn { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? ModifiedOn { get; set; }
-
-        public ICollection<UserTweet> TweetUsers { get; set; }
+        public ICollection<UserTweet> UserTweets { get; set; }
 
         public ICollection<TweetHashtag> TweetHashtags { get; set; }
     }

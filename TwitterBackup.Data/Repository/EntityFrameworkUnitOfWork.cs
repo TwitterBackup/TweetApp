@@ -2,12 +2,12 @@
 
 namespace TwitterBackup.Data.Repository
 {
-    public class EfUnitOfWork : IUnitOfWork
+    public class EntityFrameworkUnitOfWork : IUnitOfWork
     {
         private readonly TwitterDbContext context;
         //private readonly IRepository<TEntity> repository;
 
-        public EfUnitOfWork(TwitterDbContext context)
+        public EntityFrameworkUnitOfWork(TwitterDbContext context)
         {
             this.context = context;
         }

@@ -44,12 +44,12 @@ namespace TwitterBackup.Data
 
             builder.Entity<UserTweet>()
                 .HasOne(ut => ut.User)
-                .WithMany(t => t.SavedTweets)
+                .WithMany(t => t.UserTweets)
                 .HasForeignKey(ut => ut.UserId);
 
             builder.Entity<UserTweet>()
                 .HasOne(ut => ut.Tweet)
-                .WithMany(u => u.TweetUsers)
+                .WithMany(u => u.UserTweets)
                 .HasForeignKey(ut => ut.TweetId);
 
 
@@ -59,12 +59,12 @@ namespace TwitterBackup.Data
 
             builder.Entity<UserTweeter>()
                 .HasOne(ut => ut.User)
-                .WithMany(t => t.FavouriteTweeters)
+                .WithMany(t => t.UserTweeters)
                 .HasForeignKey(ut => ut.UserId);
 
             builder.Entity<UserTweeter>()
                 .HasOne(ut => ut.Tweeter)
-                .WithMany(u => u.TweeterUsers)
+                .WithMany(u => u.UserTweeters)
                 .HasForeignKey(ut => ut.TweeterId);
 
             //define many 2 many - Tweet - Hashtag
@@ -78,7 +78,7 @@ namespace TwitterBackup.Data
 
             builder.Entity<TweetHashtag>()
                 .HasOne(th => th.Hashtag)
-                .WithMany(t => t.HashtagTweets)
+                .WithMany(t => t.TweetHashtags)
                 .HasForeignKey(th => th.HashtagId);
 
             builder.Entity<ApplicationUser>(entity =>

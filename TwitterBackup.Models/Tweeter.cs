@@ -5,12 +5,12 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
 {
-    public class Tweeter : IDeletable, IAuditable
+    public class Tweeter
     {
         public Tweeter()
         {
             this.Tweets = new HashSet<Tweet>();
-            this.TweeterUsers = new HashSet<UserTweeter>();
+            this.UserTweeters = new HashSet<UserTweeter>();
         }
 
         [Required]
@@ -45,20 +45,9 @@ namespace TwitterBackup.Models
 
         public bool Verified { get; set; }
 
-        public bool IsDeleted { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? DeletedOn { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? SavedOn { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime? ModifiedOn { get; set; }
-
         public ICollection<Tweet> Tweets { get; set; }
 
-        public ICollection<UserTweeter> TweeterUsers { get; set; }
+        public ICollection<UserTweeter> UserTweeters { get; set; }
 
     }
 

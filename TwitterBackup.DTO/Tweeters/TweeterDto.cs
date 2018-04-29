@@ -1,9 +1,14 @@
 ﻿using Newtonsoft.Json;
+using TwitterBackup.Models;
 
 namespace TwitterBackup.DTO.Tweeters
 {
     public class TweeterDto
     {
+        public string UserName { get; set; }
+
+        public ApplicationUser User { get; set; }
+
         [JsonProperty("id_str")]
         public string TweeterId { get; set; }
 

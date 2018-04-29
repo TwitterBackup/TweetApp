@@ -1,10 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TwitterBackup.Models;
 
 namespace TwitterBackup.Web.Models.TweeterDbViewModel
 {
-    public class DetailsViewModel
+    public class TweeterViewModel
     {
+        public string UserName { get; set; }
+
+        public ApplicationUser User { get; set; }
+
         [Required]
         public string TweeterId { get; set; } //Id_str
 

@@ -1,10 +1,30 @@
-﻿@model IEnumerable<TwitterBackup.Web.Models.TweeterDbViewModel.DetailsViewModel>
+﻿@model IEnumerable<TwitterBackup.Web.Models.TweeterDbViewModel.TweeterViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>@ViewData["Result"]</h2>
+<b style="color: red">@TempData["Result"]</b>
+
+@*Modal PopUp of PartialView goes here*@
+<div id="delete-tweeter-modal-container" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%">
+
+
+        </div>
+    </div>
+</div>
+
+<div id="edit-tweeter-modal-container" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%">
+
+
+        </div>
+    </div>
+</div>
+
 
 @if (Model != null)
 {
@@ -12,6 +32,12 @@
     <table class="table">
         <thead>
         <tr>
+            @if ((bool)ViewData["IsAdmin"])
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+            }
             <th>
                 @Html.DisplayNameFor(model => model.TweeterId)
             </th>
@@ -45,75 +71,58 @@
             <th>
                 @Html.DisplayNameFor(model => model.Verified)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SavedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
-            </th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TweeterId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ScreenName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FollowersCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FriendsCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lang)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TweetsCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Verified)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsDeleted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeletedOn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SavedOn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedOn)
-                </td>
-                <td>
-                     <a asp-action="Details" asp-route-id="@item.TweeterId">Details</a>
-                </td>
-            </tr>
-        }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if ((bool)ViewData["IsAdmin"])
+                        {
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TweeterId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ScreenName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FollowersCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FriendsCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Lang)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TweetsCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Verified)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.TweeterId" asp-route-name="@item.UserName" data-target="#edit-tweeter-modal-container" data-toggle="modal">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.TweeterId" asp-route-name="@item.UserName" data-target="#delete-tweeter-modal-container" data-toggle="modal">Delete</a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 }

@@ -24,6 +24,10 @@ namespace TwitterBackup.Models
         public DateTime? DeletedOn { get; set; }
 
         [StringLength(500, MinimumLength = 10, ErrorMessage = "Please, 10 to 500 characters!")]
+        public string TweeterComments { get; set; }
+
+
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "Please, 10 to 500 characters!")]
         public string TweeterComment { get; set; }
 
         [DataType(DataType.DateTime)]

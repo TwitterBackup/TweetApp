@@ -2,7 +2,7 @@
 
 namespace TwitterBackup.Services.Data.Contracts
 {
-    public interface IUserDbService
+    public interface IUserService
     {
         void Update(UserDto user);
 

@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitterBackup.DTO.Tweets
+namespace TwitterBackup.DTO.Tweeters
 {
     public class EditTweeterDto
     {
         public string UserName { get; set; }
 
-        public string TweetId { get; set; } //Id_str
+        public string TweeterId { get; set; } //Id_str
 
         public string Text { get; set; }
 
-        public string TweetComments { get; set; }
+        public string TweeterComments { get; set; }
 
     }
 }

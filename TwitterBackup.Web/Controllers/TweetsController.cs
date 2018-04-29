@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweets;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
+using TwitterBackup.Services.ApiClient.Contracts;
 using TwitterBackup.Services.Data.Contracts;
 using TwitterBackup.Web.Models.TweetViewModels;
 
@@ -16,47 +17,71 @@ namespace TwitterBackup.Web.Controllers
     [Authorize]
     public class TweetsController : Controller
     {
-        private readonly IUserDbService userDbService;
+        private readonly ITweetApiService tweetApiService;
+        private readonly IUserService userDbService;
         private readonly IMappingProvider mappingProvider;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ITweetDbService tweetService;
+        private readonly ITweetService tweetService;
 
-        public TweetsController(ITweetDbService tweetService, IMappingProvider mappingProvider, UserManager<ApplicationUser> userManager, IUserDbService userDbService)
+        public TweetsController(ITweetService tweetService, IMappingProvider mappingProvider, UserManager<ApplicationUser> userManager, IUserService userDbService, ITweetApiService tweetApiService)
         {
+            this.tweetApiService = tweetApiService ?? throw new ArgumentNullException(nameof(tweetApiService));
             this.userDbService = userDbService ?? throw new ArgumentNullException(nameof(userDbService));
             this.tweetService = tweetService ?? throw new ArgumentNullException(nameof(tweetService));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
+        private bool CurrentUserIsAdmin()
+        {
+            return HttpContext.User.IsInRole("Admin");
+        }
+
+
+        //Add: Tweets
+        public async Task<IActionResult> Add(string tweetId)
+        {
+            if (ModelState.IsValid)
+            {
+                var apiTweetDto = tweetApiService.GetTweet(tweetId);
+                var userId = userManager.GetUserId(HttpContext.User);
+
+                await tweetService.AddTweetForUserAsync(userId, apiTweetDto);
+
+                TempData["Result"] = "Tweet saved successfully";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["Result"] = "Something went wrong. Please try again!";
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Tweets
         public async Task<IActionResult> Index()
         {
-            var currentUser = await userManager.GetUserAsync(HttpContext.User);
-
-            IList<TweetViewModel> tweetViewModelList = null;
-            IEnumerable<TweetDto> tweetsDto = null;
-            bool currentUserIsAdmin = false;
+            IEnumerable<TweetDto> tweetsDto;
 
             if (CurrentUserIsAdmin())
             {
-                tweetsDto = await tweetService.GetAllTweetsAsync();
-                currentUserIsAdmin = true;
+                tweetsDto = tweetService.GetAllTweetsForAdmin();
+                ViewData["IsAdmin"] = true;
             }
             else
             {
-                tweetsDto = await tweetService.GetTweetsByUserIdAsync(currentUser.Id);
+                var currentUser = await userManager.GetUserAsync(HttpContext.User);
+                tweetsDto = await tweetService.GetAllTweetsForUserAsync(currentUser.Id);
+                ViewData["IsAdmin"] = false;
             }
 
-            tweetViewModelList = mappingProvider.ProjectTo<TweetDto, TweetViewModel>(tweetsDto).ToList();
+            var tweetViewModels = mappingProvider.ProjectTo<TweetDto, TweetViewModel>(tweetsDto);
 
-            if (tweetViewModelList.Count == 0)
+            if (!tweetViewModels.Any())
             {
                 TempData["Result"] = "No saved Tweets at this moment!";
             }
 
-            ViewData["IsAdmin"] = currentUserIsAdmin;
-            return View(tweetViewModelList);
+            return View(tweetViewModels);
         }
 
         // GET: Tweets/Edit/5
@@ -81,11 +106,11 @@ namespace TwitterBackup.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var userId = string.Empty;
+                string userId;
 
                 try
                 {
-                    userId = CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(name) : currentUser.Id;
+                    userId = this.CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(name) : currentUser.Id;
                 }
 
                 catch (ArgumentException)
@@ -94,14 +119,14 @@ namespace TwitterBackup.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                var tweetDto = tweetService.TweetById(id, userId);
+                var tweetDto = tweetService.GetTweetForUser(userId, id);
                 if (tweetDto == null)
                 {
                     TempData["Result"] = "Such tweet is not found. Please check and try again!";
                     return RedirectToAction(nameof(Index));
                 }
 
-                var tweet = mappingProvider.MapTo<EditTweetViewModel>(tweetDto);
+                var tweet = mappingProvider.MapTo<EditTweeterViewModel>(tweetDto);
                 if (tweet.TweetComments == null)
                     tweet.TweetComments = "";
                 tweet.UserName = name;
@@ -117,7 +142,7 @@ namespace TwitterBackup.Web.Controllers
 
         // POST: Tweets/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(EditTweetViewModel tweetForEdit)
+        public async Task<IActionResult> Edit(EditTweeterViewModel tweetForEdit)
         {
             if (tweetForEdit.TweetId == null)
             {
@@ -139,8 +164,8 @@ namespace TwitterBackup.Web.Controllers
                 {
                     var userId = CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(tweetForEdit.UserName) : currentUser.Id;
 
-                    var tweetDto = mappingProvider.MapTo<EditTweetDto>(tweetForEdit);
-                    tweetService.UpdateTweet(tweetDto, userId);
+                    var tweetDto = mappingProvider.MapTo<EditTweeterDto>(tweetForEdit);
+                    await tweetService.AddNoteToSavedTweetForUserAsync(userId, tweetForEdit.TweetId, tweetForEdit.TweetComments);
                     TempData["Result"] = "Tweet was successfully edited";
                     return RedirectToAction(nameof(Index));
                 }
@@ -191,7 +216,7 @@ namespace TwitterBackup.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                var tweetDto = tweetService.TweetById(id, userId);
+                var tweetDto = tweetService.GetTweetForUser(userId, id);
                 if (tweetDto == null)
                 {
                     TempData["Result"] = "Such tweet is not found. Please check and try again!";
@@ -239,7 +264,7 @@ namespace TwitterBackup.Web.Controllers
                 try
                 {
                     var userId = CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(UserName) : currentUser.Id;
-                    tweetService.SoftDeleteTweetByIdPerUserId(id, userId);
+                    await tweetService.RemoveSavedTweetForUserAsync(userId, id);
                     TempData["Result"] = "Tweet was successfully deleted";
                     return RedirectToAction(nameof(Index));
                 }
@@ -258,18 +283,19 @@ namespace TwitterBackup.Web.Controllers
         private bool CurrentUserIsAuthorizedAsync(string resourceId)
         {
             var currentUser = HttpContext.User;
-            if (currentUser.IsInRole("Admin"))
+            if (this.CurrentUserIsAdmin())
                 return true;
             else
             {
                 var currentUserId = userManager.GetUserId(HttpContext.User);
-                var resource = tweetService.TweetById(resourceId, currentUserId);
+                var resource = tweetService.GetTweetForUser(currentUserId, resourceId);
 
                 return resource != null;
             }
+
         }
 
-        private bool CurrentUserIsAdmin()
+        private bool IsAdministrator()
         {
             return HttpContext.User.IsInRole("Admin");
         }
