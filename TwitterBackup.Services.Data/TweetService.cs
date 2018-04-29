@@ -34,16 +34,19 @@ namespace TwitterBackup.Services.Data
 
         public TweetDto GetTweetForUser(string userId, string tweetId)
         {
-            var userTweet = this.userTweetRepository.IncludeDbSet(x => x.User, x => x.Tweet, x => x.Tweet.Tweeter,
-                x => x.Tweet.TweetHashtags);
+            var userTweet = this.userTweetRepository
+                .IncludeDbSet(x => x.User, x => x.Tweet, x => x.Tweet.Tweeter)
+                .SingleOrDefault(relation => relation.UserId == userId && relation.TweetId == tweetId && relation.IsDeleted == false);
 
-            var tweetHastags = tweetHashtagRepository.Find(x => x.TweetId == tweetId);
+            if (userTweet == null)
+                throw new ArgumentNullException();
 
-            var tweetDto = mappingProvider.MapTo<TweetDto>(userTweet);
+            if (userTweet.TweetComments != null)
+                return mappingProvider.MapTo<TweetDto>(userTweet);
 
-            tweetDto.Hashtags = string.Join(" ", tweetHastags.Select(x => x.Hashtag));
-
-            return tweetDto;
+            userTweet.TweetComments = string.Empty;
+            unitOfWork.CompleteWork();
+            return mappingProvider.MapTo<TweetDto>(userTweet);
         }
 
         //public IEnumerable<TweetDto> GetAllTweets()
@@ -59,10 +62,10 @@ namespace TwitterBackup.Services.Data
         //    return tweetsDtosWithHashtags;
         //}
 
-        private IEnumerable<TweetDto> GetHashtagsToTweetDtos(List<TweetDto> tweetDtosList, List<UserTweet> userTweetsList)
-        {
-            throw new NotImplementedException();
-        }
+        //private IEnumerable<TweetDto> GetHashtagsToTweetDtos(List<TweetDto> tweetDtosList, List<UserTweet> userTweetsList)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public async Task<IEnumerable<TweetDto>> GetTweetsByUserIdAsync(string userId)
         //{
@@ -161,19 +164,19 @@ namespace TwitterBackup.Services.Data
             await unitOfWork.CompleteWorkAsync();
         }
 
-        //private IEnumerable<TweetDto> GetHashTagsToTweet(IReadOnlyList<TweetDto> tweetDtosList, IEnumerable<UserTweet> userTweetsList)
-        //{
-        //    var counter = 0;
+        private IEnumerable<TweetDto> GetHashtagsToTweetDtos(IReadOnlyList<TweetDto> tweetDtosList, IEnumerable<UserTweet> userTweetsList)
+        {
+            var counter = 0;
 
-        //    foreach (var userTweet in userTweetsList)
-        //    {
-        //        var tweetHastags = tweetHashtagRepository.GetTweetHashtagsByTweetId(userTweet.TweetId);
-        //        tweetDtosList[counter].Hashtags = tweetHastags;
-        //        counter++;
-        //    }
+            foreach (var userTweet in userTweetsList)
+            {
+                var tweetHastags = tweetHashtagRepository.GetTweetHashtagsByTweetId(userTweet.TweetId);
+                tweetDtosList[counter].Hashtags = tweetHastags;
+                counter++;
+            }
 
-        //    return tweetDtosList;
-        //}
+            return tweetDtosList;
+        }
 
         public IEnumerable<TweetDto> GetAllTweetsForAdmin()
         {
@@ -188,10 +191,13 @@ namespace TwitterBackup.Services.Data
             return tweetsDtosWithHashtags;
         }
 
-        public async Task<IEnumerable<TweetDto>> GetAllTweetsForUserAsync(string userId)
+        public IEnumerable<TweetDto> GetAllTweetsForUser(string userId)
         {
-            var userTweets = await this.userTweetRepository
-                .FindAsync(userTweet => (userTweet.User.Id == userId) && userTweet.IsDeleted == false);
+            var userTweets = this.userTweetRepository
+                .IncludeDbSet(x => x.User, x => x.Tweet, x => x.Tweet.Tweeter, x => x.Tweet.TweetHashtags)
+                .Where(userTweet => (userTweet.User.Id == userId) && userTweet.IsDeleted == false);
+
+            //.FindAsync(userTweet => (userTweet.User.Id == userId) && userTweet.IsDeleted == false);
             var savedTweetsList = userTweets.ToList();
 
             var tweetDtosList = this.mappingProvider.ProjectTo<UserTweet, TweetDto>(savedTweetsList).ToList();
@@ -208,7 +214,6 @@ namespace TwitterBackup.Services.Data
 
         public async Task AddNoteToSavedTweetForUserAsync(string userId, string tweetId, string note)
         {
-
             var userTweetForEdit = userTweetRepository
                 .SingleOrDefault(userTweet => userTweet.UserId == userId && userTweet.TweetId == tweetId);
 

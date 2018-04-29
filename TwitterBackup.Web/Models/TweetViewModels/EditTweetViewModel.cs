@@ -2,7 +2,7 @@
 
 namespace TwitterBackup.Web.Models.TweetViewModels
 {
-    public class EditTweeterViewModel
+    public class EditTweetViewModel
     {
         public string UserName { get; set; }
 

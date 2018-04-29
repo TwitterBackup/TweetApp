@@ -73,12 +73,13 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @if ((bool)ViewData["IsAdmin"])
-                    {
+                @if ((bool)ViewData["IsAdmin"])
+                {
+
+                    <td>
                         @Html.DisplayFor(modelItem => item.UserName)
-                    }
-                </td>
+                    </td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.TweeterName)
                 </td>

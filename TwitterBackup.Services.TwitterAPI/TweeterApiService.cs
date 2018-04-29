@@ -9,7 +9,7 @@ using TwitterBackup.Services.TwitterAPI.Contracts;
 
 namespace TwitterBackup.Services.TwitterAPI
 {
-    public class TweeterService : ITweeterService
+    public class TweeterApiService : ITweeterApiService
     {
         private const string BaseUrl = "https://api.twitter.com";
         private const string ResourceFormat = "1.1/users/{0}.json?{1}={2}";
@@ -18,7 +18,7 @@ namespace TwitterBackup.Services.TwitterAPI
         private readonly ITwitterAuthenticator authenticator;
         private readonly IJsonProvider jsonProvider;
 
-        public TweeterService(IApiClient restApiClient, ITwitterAuthenticator authenticator, IJsonProvider jsonProvider)
+        public TweeterApiService(IApiClient restApiClient, ITwitterAuthenticator authenticator, IJsonProvider jsonProvider)
         {
             this.restApiClient = restApiClient ?? throw new ArgumentNullException();
             this.authenticator = authenticator ?? throw new ArgumentNullException(nameof(authenticator));

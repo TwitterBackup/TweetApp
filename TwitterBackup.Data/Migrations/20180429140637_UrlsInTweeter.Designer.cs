@@ -11,9 +11,10 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180429140637_UrlsInTweeter")]
+    partial class UrlsInTweeter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,6 +353,9 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<DateTime?>("SavedOn");
+
+                    b.Property<string>("TweeterComment")
+                        .HasMaxLength(500);
 
                     b.Property<string>("TweeterComments")
                         .HasMaxLength(500);

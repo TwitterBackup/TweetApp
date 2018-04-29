@@ -2,13 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using TwitterBackup.Models;
 
-namespace TwitterBackup.Web.Models.TweeterDbViewModel
+namespace TwitterBackup.Web.Models.TweeterViewModels
 {
     public class TweeterViewModel
     {
         public string UserName { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        [StringLength(300, MinimumLength = 3, ErrorMessage = "Please, 3 to 300 characters!")]
+        public string TweeterComments { get; set; }
 
         [Required]
         public string TweeterId { get; set; } //Id_str
@@ -27,7 +30,7 @@ namespace TwitterBackup.Web.Models.TweeterDbViewModel
 
         public int FriendsCount { get; set; } //Friends_count
 
-        public string Lang { get; set; }
+        public string Language { get; set; }
 
         public string Location { get; set; }
 

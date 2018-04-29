@@ -5,7 +5,7 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
 {
-    public class Tweeter
+    public class Tweeter: IDeletable
     {
         public Tweeter()
         {
@@ -45,10 +45,19 @@ namespace TwitterBackup.Models
 
         public bool Verified { get; set; }
 
+        [StringLength(500, MinimumLength = 2, ErrorMessage = "Parameter should be between 2 and 500 characters")]
+        public string ProfileImageUrl { get; set; }
+
+        [StringLength(500, MinimumLength = 2, ErrorMessage = "Parameter should be between 2 and 500 characters")]
+        public string ProfileBannerUrl { get; set; }
+
+
         public ICollection<Tweet> Tweets { get; set; }
 
         public ICollection<UserTweeter> UserTweeters { get; set; }
 
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOn { get; set; }
     }
 
 

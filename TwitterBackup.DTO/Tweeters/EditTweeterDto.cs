@@ -10,7 +10,7 @@ namespace TwitterBackup.DTO.Tweeters
 
         public string TweeterId { get; set; } //Id_str
 
-        public string Text { get; set; }
+        public string Description { get; set; }
 
         public string TweeterComments { get; set; }
 

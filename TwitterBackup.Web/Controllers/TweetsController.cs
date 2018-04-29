@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweets;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
-using TwitterBackup.Services.ApiClient.Contracts;
 using TwitterBackup.Services.Data.Contracts;
+using TwitterBackup.Services.TwitterAPI.Contracts;
 using TwitterBackup.Web.Models.TweetViewModels;
 
 namespace TwitterBackup.Web.Controllers
@@ -18,15 +18,16 @@ namespace TwitterBackup.Web.Controllers
     public class TweetsController : Controller
     {
         private readonly ITweetApiService tweetApiService;
-        private readonly IUserService userDbService;
+        private readonly IUserService userService;
         private readonly IMappingProvider mappingProvider;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ITweetService tweetService;
 
-        public TweetsController(ITweetService tweetService, IMappingProvider mappingProvider, UserManager<ApplicationUser> userManager, IUserService userDbService, ITweetApiService tweetApiService)
+        public TweetsController(ITweetService tweetService, IMappingProvider mappingProvider, UserManager<ApplicationUser> userManager,
+            IUserService userService, ITweetApiService tweetApiService)
         {
             this.tweetApiService = tweetApiService ?? throw new ArgumentNullException(nameof(tweetApiService));
-            this.userDbService = userDbService ?? throw new ArgumentNullException(nameof(userDbService));
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.tweetService = tweetService ?? throw new ArgumentNullException(nameof(tweetService));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -70,7 +71,7 @@ namespace TwitterBackup.Web.Controllers
             else
             {
                 var currentUser = await userManager.GetUserAsync(HttpContext.User);
-                tweetsDto = await tweetService.GetAllTweetsForUserAsync(currentUser.Id);
+                tweetsDto = tweetService.GetAllTweetsForUser(currentUser.Id);
                 ViewData["IsAdmin"] = false;
             }
 
@@ -110,7 +111,7 @@ namespace TwitterBackup.Web.Controllers
 
                 try
                 {
-                    userId = this.CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(name) : currentUser.Id;
+                    userId = this.CurrentUserIsAdmin() ? userService.FindUserIdByUserName(name) : currentUser.Id;
                 }
 
                 catch (ArgumentException)
@@ -126,10 +127,7 @@ namespace TwitterBackup.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                var tweet = mappingProvider.MapTo<EditTweeterViewModel>(tweetDto);
-                if (tweet.TweetComments == null)
-                    tweet.TweetComments = "";
-                tweet.UserName = name;
+                var tweet = mappingProvider.MapTo<EditTweetViewModel>(tweetDto);
 
                 return PartialView(tweet);
             }
@@ -142,7 +140,7 @@ namespace TwitterBackup.Web.Controllers
 
         // POST: Tweets/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(EditTweeterViewModel tweetForEdit)
+        public async Task<IActionResult> Edit(EditTweetViewModel tweetForEdit)
         {
             if (tweetForEdit.TweetId == null)
             {
@@ -162,7 +160,7 @@ namespace TwitterBackup.Web.Controllers
             {
                 try
                 {
-                    var userId = CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(tweetForEdit.UserName) : currentUser.Id;
+                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(tweetForEdit.UserName) : currentUser.Id;
 
                     var tweetDto = mappingProvider.MapTo<EditTweeterDto>(tweetForEdit);
                     await tweetService.AddNoteToSavedTweetForUserAsync(userId, tweetForEdit.TweetId, tweetForEdit.TweetComments);
@@ -207,7 +205,7 @@ namespace TwitterBackup.Web.Controllers
 
                 try
                 {
-                    userId = CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(name) : currentUser.Id;
+                    userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(name) : currentUser.Id;
                 }
 
                 catch (ArgumentException)
@@ -263,7 +261,7 @@ namespace TwitterBackup.Web.Controllers
             {
                 try
                 {
-                    var userId = CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(UserName) : currentUser.Id;
+                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(UserName) : currentUser.Id;
                     await tweetService.RemoveSavedTweetForUserAsync(userId, id);
                     TempData["Result"] = "Tweet was successfully deleted";
                     return RedirectToAction(nameof(Index));
@@ -282,7 +280,6 @@ namespace TwitterBackup.Web.Controllers
 
         private bool CurrentUserIsAuthorizedAsync(string resourceId)
         {
-            var currentUser = HttpContext.User;
             if (this.CurrentUserIsAdmin())
                 return true;
             else
@@ -292,12 +289,6 @@ namespace TwitterBackup.Web.Controllers
 
                 return resource != null;
             }
-
         }
-
-        private bool IsAdministrator()
-        {
-            return HttpContext.User.IsInRole("Admin");
-        }
-    }
+   }
 }

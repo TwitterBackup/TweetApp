@@ -11,9 +11,12 @@ using TwitterBackup.Data.Repository;
 using TwitterBackup.Infrastructure.Providers;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
+using TwitterBackup.Services.ApiClient.Contracts;
 using TwitterBackup.Services.Data;
 using TwitterBackup.Services.Data.Contracts;
 using TwitterBackup.Services.Email;
+using TwitterBackup.Services.TwitterAPI;
+using TwitterBackup.Services.TwitterAPI.Contracts;
 
 namespace TwitterBackup.Web
 {
@@ -61,7 +64,7 @@ namespace TwitterBackup.Web
             services.AddTransient<ITweeterService, TweeterService>();
             services.AddTransient<ITweetService, TweetService>();
             services.AddTransient<IUserService, UserService>();
-
+            services.AddTransient<ITweetApiService, TweetApiService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,7 +13,7 @@ namespace TwitterBackup.Services.Data.Contracts
 
         IEnumerable<TweetDto> GetAllTweetsForAdmin();
 
-        Task<IEnumerable<TweetDto>> GetAllTweetsForUserAsync(string userId);
+        IEnumerable<TweetDto> GetAllTweetsForUser(string userId);
 
         IEnumerable<TweetDto> GetAllTweetsByAuthorAsync(string tweeterId);
 

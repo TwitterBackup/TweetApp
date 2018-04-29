@@ -5,7 +5,7 @@ using TwitterBackup.Services.TwitterAPI.Contracts;
 
 namespace TwitterBackup.Services.TwitterAPI
 {
-    public class TweetMessageService : ITweetMessageService
+    public class TweetApiService : ITweetApiService
     {
         public Task<IEnumerable<TweetDto>> GetUserTimelineAsync(GetUserTimelineDto getUserTimelineDto)
         {
@@ -18,6 +18,11 @@ namespace TwitterBackup.Services.TwitterAPI
         }
 
         public Task<RetweetResultDto> RetweetAsync(RetweetDto retweet)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ApiTweetDto GetTweet(string tweetId)
         {
             throw new System.NotImplementedException();
         }

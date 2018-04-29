@@ -16,7 +16,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweeterApiService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             Assert.IsNotNull(tweeterService);
         }
@@ -28,7 +28,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var jsonProviderMock = new Mock<IJsonProvider>();
 
             Assert.ThrowsException<ArgumentNullException>(() =>
-                new TweeterService(null, authMock.Object, jsonProviderMock.Object));
+                new TweeterApiService(null, authMock.Object, jsonProviderMock.Object));
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var jsonProviderMock = new Mock<IJsonProvider>();
 
             Assert.ThrowsException<ArgumentNullException>(() =>
-                new TweeterService(apiClientMock.Object, null, jsonProviderMock.Object));
+                new TweeterApiService(apiClientMock.Object, null, jsonProviderMock.Object));
         }
 
         [TestMethod]
@@ -48,14 +48,14 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
 
             Assert.ThrowsException<ArgumentNullException>(() =>
-                new TweeterService(apiClientMock.Object, authMock.Object, null));
+                new TweeterApiService(apiClientMock.Object, authMock.Object, null));
         }
 
         [TestMethod]
         public void Throws_ArgumentNullException_When_Called_With_All_Null_Parameters()
         {
             Assert.ThrowsException<ArgumentNullException>(() =>
-                  new TweeterService(null, null, null));
+                  new TweeterApiService(null, null, null));
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var apiClientMock = new Mock<IApiClient>();
 
             Assert.ThrowsException<ArgumentNullException>(() =>
-                new TweeterService(apiClientMock.Object, null, null));
+                new TweeterApiService(apiClientMock.Object, null, null));
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
 
             Assert.ThrowsException<ArgumentNullException>(() =>
-                new TweeterService(null, authMock.Object, null));
+                new TweeterApiService(null, authMock.Object, null));
         }
 
         [TestMethod]
@@ -82,7 +82,7 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var jsonProviderMock = new Mock<IJsonProvider>();
 
             Assert.ThrowsException<ArgumentNullException>(() =>
-                new TweeterService(null, null, jsonProviderMock.Object));
+                new TweeterApiService(null, null, jsonProviderMock.Object));
         }
     }
 }

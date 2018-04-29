@@ -5,7 +5,7 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
 {
-    public class Tweet
+    public class Tweet: IDeletable
     {
         public Tweet()
         {
@@ -40,5 +40,7 @@ namespace TwitterBackup.Models
         public ICollection<UserTweet> UserTweets { get; set; }
 
         public ICollection<TweetHashtag> TweetHashtags { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOn { get; set; }
     }
 }

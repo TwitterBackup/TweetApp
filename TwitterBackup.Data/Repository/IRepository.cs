@@ -7,7 +7,7 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Data.Repository
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : class, IDeletable
     {
         bool Any(Expression<Func<TEntity, bool>> predicate);
 
@@ -46,6 +46,10 @@ namespace TwitterBackup.Data.Repository
 
         Task RemoveAsync(TEntity entity);
 
-        IQueryable<TEntity> IncludeDbSet(params Expression<Func<TEntity, object>>[] includes);
+        //IQueryable<TEntity> IncludeDbSet(params Expression<Func<TEntity, object>>[] includes);
+        IEnumerable<TEntity> IncludeDbSet(params Expression<Func<TEntity, object>>[] includes);
+
+        string GetTweetHashtagsByTweetId(string tweetId);
+
     }
 }

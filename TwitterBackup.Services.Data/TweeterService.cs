@@ -41,29 +41,39 @@ namespace TwitterBackup.Services.Data
             }
         }
 
-        public TweeterDto GetFavoriteTweeterForUser(string userId, string tweeterId)
+        public TweeterDto GetTweeterForUser(string userId, string tweeterId)
         {
+            var userTweeter = this.userTweeterRepository
+                .IncludeDbSet(x => x.User, x => x.Tweeter)
+                .SingleOrDefault(relation => relation.UserId == userId && relation.TweeterId == tweeterId && relation.IsDeleted == false);
 
-            var tweeter = tweeterRepository.GetById(tweeterId);
-            var tweeterDto = mappingProvider.MapTo<TweeterDto>(tweeter);
-            return tweeterDto;
+            if (userTweeter == null)
+                throw new ArgumentNullException();
+
+            if (userTweeter.TweeterComments != null)
+                return mappingProvider.MapTo<TweeterDto>(userTweeter);
+
+            userTweeter.TweeterComments = string.Empty;
+            unitOfWork.CompleteWork();
+            return mappingProvider.MapTo<TweeterDto>(userTweeter);
         }
 
         public IEnumerable<TweeterDto> GetUserFavouriteTweeters(string userId)
         {
-            var favoriteTweeters = this.tweeterRepository.Find
-                (tweeter => tweeter.UserTweeters.Any(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false));
+            var favoriteTweeters = this.userTweeterRepository
+                .IncludeDbSet(x => x.User, x => x.Tweeter)
+                .Where(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false);
 
-            return this.mappingProvider.ProjectTo<Tweeter, TweeterDto>(favoriteTweeters);
+            return this.mappingProvider.ProjectTo<UserTweeter, TweeterDto>(favoriteTweeters);
         }
 
-        public async Task<IEnumerable<TweeterDto>> GetUserFavouriteTweetersAsync(string userId)
-        {
-            var favoriteTweeters = await this.tweeterRepository.FindAsync
-                (tweeter => tweeter.UserTweeters.Any(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false));
+        //public async Task<IEnumerable<TweeterDto>> GetUserFavouriteTweetersAsync(string userId)
+        //{
+        //    var favoriteTweeters = await this.tweeterRepository.FindAsync
+        //        (tweeter => tweeter.UserTweeters.Any(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false));
 
-            return this.mappingProvider.ProjectTo<Tweeter, TweeterDto>(favoriteTweeters);
-        }
+        //    return this.mappingProvider.ProjectTo<Tweeter, TweeterDto>(favoriteTweeters);
+        //}
 
         public IEnumerable<TweeterDto> GetAllSavedTweetersForAdmin()
         {
@@ -81,14 +91,28 @@ namespace TwitterBackup.Services.Data
             //return this.mappingProvider.ProjectTo<Tweeter, TweeterDto>(favoriteTweeters);
         }
 
-        public void AddNoteToSavedTweeterForUser(string userId, string tweeterId, string note)
+        public async Task AddNoteToSavedTweeterForUserAsync(string userId, string tweeterId, string note)
         {
-            throw new NotImplementedException();
+            var userTweeterForEdit = userTweeterRepository
+                .SingleOrDefault(userTweeter => userTweeter.UserId == userId && userTweeter.TweeterId == tweeterId);
+
+            userTweeterForEdit.TweeterComments = note;
+            userTweeterForEdit.ModifiedOn = DateTime.Now;
+
+            await unitOfWork.CompleteWorkAsync();
         }
 
-        public void RemoveSavedTweeterForUser(string userId, string tweeterId)
+        public async Task RemoveSavedTweeterForUserAsync(string userId, string tweeterId)
         {
-            //GETVAME GO I MU SMENQME FLAGA
+            var userTweeter = userTweeterRepository.GetByCompositeId(userId, tweeterId);
+
+            if (userTweeter == null)
+            {
+                throw new ArgumentException();
+            }
+            userTweeter.IsDeleted = true;
+            userTweeter.DeletedOn = DateTime.Now;
+            await unitOfWork.CompleteWorkAsync();
         }
 
         public void RemoveSavedTweeterForAllUsers(string tweeterId)

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 using TwitterBackup.Models;
 using TwitterBackup.Models.Contracts;
@@ -36,28 +37,26 @@ namespace TwitterBackup.Data.Repository
         {
             return entities.Find(id1, id2);
         }
-        
+
         //da se premesti
-        //public string GetTweetHashtagsByTweetId(string tweetId)
-        //{
-        //var tweetHashtags = this.context.TweetHashtags
-        //.Include(ctx => ctx.Tweet)
-        //.Include(ctx => ctx.Hashtag)
-        //.Where(tweetHashtag => tweetHashtag.TweetId == tweetId)
-        //.ToList();
+        public string GetTweetHashtagsByTweetId(string tweetId)
+        {
+            var tweetHashtags = this.context.TweetHashtags
+            .Include(ctx => ctx.Tweet)
+            .Include(ctx => ctx.Hashtag)
+            .Where(tweetHashtag => tweetHashtag.TweetId == tweetId)
+            .ToList();
 
-        //var hashtags = string.Join("; ", tweetHashtags);
+            var hashtags = new StringBuilder();
+            foreach (var tweetHashtag in tweetHashtags)
+            {
+                if (tweetHashtag != null)
+                    hashtags.Append(tweetHashtag.Hashtag.Text + "; ");
+            }
 
-        //var hashtags = new StringBuilder();
-        //foreach (var tweetHashtag in tweetHashtags)
-        //{
-        //if (tweetHashtag != null)
-        //hashtags.Append(tweetHashtag.Hashtag.Text + "; ");
-        //}
+            return hashtags.ToString();
 
-        //return hashtags.ToString();
-
-        //}
+        }
 
         public async Task<TEntity> GetByIdAsync(string id)
         {
@@ -108,8 +107,8 @@ namespace TwitterBackup.Data.Repository
         }
 
 
-        //public IEnumerable<TEntity> IncludeDbSet(params Expression<Func<TEntity, object>>[] includes)
-        public IQueryable<TEntity> IncludeDbSet(params Expression<Func<TEntity, object>>[] includes)
+        public IEnumerable<TEntity> IncludeDbSet(params Expression<Func<TEntity, object>>[] includes)
+        //public IQueryable<TEntity> IncludeDbSet(params Expression<Func<TEntity, object>>[] includes)
         {
             IIncludableQueryable<TEntity, object> query = null;
 
@@ -122,7 +121,7 @@ namespace TwitterBackup.Data.Repository
                 query = (query ?? throw new ArgumentNullException()).Include(includes[queryIndex]);
             }
 
-            return query == null ? entities : (IQueryable<TEntity>)query;
+            return query == null ? entities : (IEnumerable<TEntity>)query;
         }
 
 

@@ -2,7 +2,7 @@
 using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.DTO.Tweets;
 using TwitterBackup.Models;
-using TwitterBackup.Web.Models.TweeterDbViewModel;
+using TwitterBackup.Web.Models.TweeterViewModels;
 using TwitterBackup.Web.Models.TweetViewModels;
 
 namespace TwitterBackup.Web.Properties
@@ -27,7 +27,7 @@ namespace TwitterBackup.Web.Properties
                 .ForMember(destination => destination.Description, options => options.MapFrom(source => source.Tweeter.CreatedAt))
                 .ForMember(destination => destination.FollowersCount, options => options.MapFrom(source => source.Tweeter.FollowersCount))
                 .ForMember(destination => destination.FriendsCount, options => options.MapFrom(source => source.Tweeter.FriendsCount))
-                .ForMember(destination => destination.Lang, options => options.MapFrom(source => source.Tweeter.Language))
+                .ForMember(destination => destination.Language, options => options.MapFrom(source => source.Tweeter.Language))
                 .ForMember(destination => destination.Location, options => options.MapFrom(source => source.Tweeter.Location))
                 .ForMember(destination => destination.TweetsCount, options => options.MapFrom(source => source.Tweeter.TweetsCount))
                 .ForMember(destination => destination.Verified, options => options.MapFrom(source => source.Tweeter.Verified));
@@ -35,10 +35,13 @@ namespace TwitterBackup.Web.Properties
             this.CreateMap<TweetDto, TweetViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
-            this.CreateMap<TweetDto, EditTweeterViewModel>()
+            this.CreateMap<TweeterDto, TweeterViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
-            this.CreateMap<TweeterDto, TweeterViewModel>()
+            this.CreateMap<TweetDto, EditTweetViewModel>()
+                .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
+
+            this.CreateMap<TweeterDto, EditTweeterViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
         }

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
 {
-    public class Hashtag
+    public class Hashtag: IDeletable
     {
         public Hashtag()
         {
@@ -17,5 +19,8 @@ namespace TwitterBackup.Models
         public string Text { get; set; }
 
         public ICollection<TweetHashtag> TweetHashtags { get; set; }
+
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOn { get; set; }
     }
 }

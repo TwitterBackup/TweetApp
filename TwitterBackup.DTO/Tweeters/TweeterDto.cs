@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 using TwitterBackup.Models;
 
 namespace TwitterBackup.DTO.Tweeters
@@ -8,6 +9,9 @@ namespace TwitterBackup.DTO.Tweeters
         public string UserName { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        [StringLength(300, MinimumLength = 3, ErrorMessage = "Please, 3 to 300 characters!")]
+        public string TweeterComments { get; set; }
 
         [JsonProperty("id_str")]
         public string TweeterId { get; set; }
@@ -37,7 +41,7 @@ namespace TwitterBackup.DTO.Tweeters
         public int FriendsCount { get; set; }
 
         [JsonProperty("lang")]
-        public string Lang { get; set; }
+        public string Language { get; set; }
 
         [JsonProperty("location")]
         public string Location { get; set; }
