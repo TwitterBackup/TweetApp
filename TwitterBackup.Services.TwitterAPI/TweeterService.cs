@@ -28,6 +28,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<TweeterDto> GetTweeterByScreenNameAsync(string tweeterName)
         {
+            this.ValidateStringForNullOrWhiteSpace(tweeterName, "Tweeter name cannot be null or white space.");
+
             tweeterName = Uri.EscapeDataString(tweeterName);
 
             var resource = string.Format(ResourceFormat, "show", "screen_name", tweeterName);
@@ -39,6 +41,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<IEnumerable<TweeterDto>> SearchTweetersAsync(string searchCriteria)
         {
+            this.ValidateStringForNullOrWhiteSpace(searchCriteria, "Search string cannot be null or white space.");
+
             searchCriteria = Uri.EscapeDataString(searchCriteria);
 
             var resource = string.Format(ResourceFormat, "search", "q", searchCriteria);
@@ -63,6 +67,14 @@ namespace TwitterBackup.Services.TwitterAPI
             }
 
             return null;
+        }
+
+        private void ValidateStringForNullOrWhiteSpace(string str, string errorMessage = "Parameter cannot be null or white space.")
+        {
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                throw new ArgumentException(errorMessage);
+            }
         }
     }
 }

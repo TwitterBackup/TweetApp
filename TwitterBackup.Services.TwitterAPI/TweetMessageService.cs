@@ -27,6 +27,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<TweetFromTwitterDto> GetTweetById(string tweetId)
         {
+            this.ValidateStringForNullOrWhiteSpace(tweetId, "Tweet id cannot be null or white space.");
+
             var resource = $"1.1/statuses/show.json?id={tweetId}";
 
             var result = await this.CallApiClientGetAsync<TweetFromTwitterDto>(resource);
@@ -36,6 +38,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<IEnumerable<TweetFromTwitterDto>> GetUserTimelineAsync(string tweeterName)
         {
+            this.ValidateStringForNullOrWhiteSpace(tweeterName, "Tweeter name cannot be null or white space.");
+
             tweeterName = Uri.EscapeDataString(tweeterName);
 
             var resource = $"1.1/statuses/user_timeline.json?screen_name={tweeterName}";
@@ -52,6 +56,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<IEnumerable<TweetFromTwitterDto>> SearchTweetsAsync(string searchCriteria)
         {
+            this.ValidateStringForNullOrWhiteSpace(searchCriteria, "Search string cannot be null or white space.");
+
             searchCriteria = Uri.EscapeDataString(searchCriteria);
 
             var resource = $"1.1/search/tweets.json?q={searchCriteria}";
@@ -68,6 +74,8 @@ namespace TwitterBackup.Services.TwitterAPI
 
         public async Task<RetweetResultDto> RetweetAsync(string tweetId)
         {
+            this.ValidateStringForNullOrWhiteSpace(tweetId, "Tweet id cannot be null or white space.");
+
             var resource = $"/1.1/statuses/retweet/{tweetId}.json";
 
             var response = await this.restApiClient.PostAsync(BaseUrl, resource, this.authenticator);
@@ -90,6 +98,14 @@ namespace TwitterBackup.Services.TwitterAPI
             }
 
             return null;
+        }
+
+        private void ValidateStringForNullOrWhiteSpace(string str, string errorMessage = "Parameter cannot be null or white space.")
+        {
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                throw new ArgumentException(errorMessage);
+            }
         }
     }
 }
