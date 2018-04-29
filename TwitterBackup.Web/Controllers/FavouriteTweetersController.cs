@@ -79,7 +79,6 @@ namespace TwitterBackup.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTweeterToFavourite(TweeterViewModel tweeterViewModel)
         {
             if (this.ModelState.IsValid)
@@ -88,7 +87,7 @@ namespace TwitterBackup.Web.Controllers
 
                 if (tweeterDto == null)
                 {
-                    return this.Json("Invalid tweeter");
+                    return this.Json("Invalid tweeter.");
                 }
 
                 var usernName = this.httpContextAccessor.HttpContext.User.Identity.Name;
@@ -99,13 +98,13 @@ namespace TwitterBackup.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return this.Json("unable to add tweeter to favourite");
+                    return this.Json("Unable to add tweeter to favourite.");
                 }
 
                 return this.Json("success");
             }
 
-            return this.Json("error");
+            return this.Json("Tweeter shoud have screen name.");
         }
 
         [HttpPost]
@@ -118,7 +117,7 @@ namespace TwitterBackup.Web.Controllers
 
                 if (tweeterDto == null)
                 {
-                    return this.Json("Invalid tweeter");
+                    return this.Json("Invalid tweeter.");
                 }
 
                 var usernName = this.httpContextAccessor.HttpContext.User.Identity.Name;
@@ -129,13 +128,13 @@ namespace TwitterBackup.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return this.Json("unable to remove tweeter to favourite.");
+                    return this.Json("Unable to remove tweeter to favourite.");
                 }
 
                 return this.Json("success");
             }
 
-            return this.Json("error");
+            return this.Json("Tweeter shoud have screen name.");
         }
     }
 }

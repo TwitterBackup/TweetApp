@@ -6,17 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using TwitterBackup.DTO.Tweeters;
+using TwitterBackup.DTO.Tweets;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Services.ApiClient.Contracts;
 
-namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
+namespace TwitterBackup.Services.TwitterAPI.Tests.TweetMessageServiceTests
 {
     [TestClass]
-    public class SearchTweetersAsyncShould
+    public class GetUserTimelineAsyncShould
     {
         [TestMethod]
-        public async Task Return_Corect_Result_When_Called_With_Valid_Parameter()
+        public async Task Return_Correct_Result_When_Called_With_Valid_Parameter()
         {
             var apiClientMock = new Mock<IApiClient>();
             var authMock = new Mock<ITwitterAuthenticator>();
@@ -28,14 +28,14 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var expected = new List<TweeterDto>() { new TweeterDto() };
-            jsonProviderMock.Setup(x => x.DeserializeObject<IEnumerable<TweeterDto>>(It.IsAny<string>())).Returns(expected);
+            var expected = new List<TweetFromTwitterDto>() { new TweetFromTwitterDto() };
+            jsonProviderMock.Setup(x => x.DeserializeObject<IEnumerable<TweetFromTwitterDto>>(It.IsAny<string>())).Returns(expected);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var tweeterName = "tweeter_name";
 
-            var actual = await tweeterService.SearchTweetersAsync(screenName);
+            var actual = await tweetMessageService.GetUserTimelineAsync(tweeterName);
 
             Assert.AreSame(expected, actual);
         }
@@ -47,10 +47,10 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await tweeterService.SearchTweetersAsync(null));
+                async () => await tweeterService.GetUserTimelineAsync(null));
         }
 
         [TestMethod]
@@ -60,10 +60,10 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await tweeterService.SearchTweetersAsync(string.Empty));
+                async () => await tweeterService.GetUserTimelineAsync(string.Empty));
         }
 
         [TestMethod]
@@ -73,10 +73,10 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             var authMock = new Mock<ITwitterAuthenticator>();
             var jsonProviderMock = new Mock<IJsonProvider>();
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweeterService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await tweeterService.SearchTweetersAsync("       "));
+                async () => await tweeterService.GetUserTimelineAsync("       "));
         }
 
         [TestMethod]
@@ -92,14 +92,14 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var content = new List<TweeterDto>();
-            jsonProviderMock.Setup(x => x.DeserializeObject<IEnumerable<TweeterDto>>(It.IsAny<string>())).Returns(content);
+            var responceList = new List<TweetFromTwitterDto>();
+            jsonProviderMock.Setup(x => x.DeserializeObject<IEnumerable<TweetFromTwitterDto>>(It.IsAny<string>())).Returns(responceList);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var tweeterName = "tweeter_name";
 
-            var actual = await tweeterService.SearchTweetersAsync(screenName);
+            var actual = await tweetMessageService.GetUserTimelineAsync(tweeterName);
 
             Assert.AreSame(null, actual);
         }
@@ -117,11 +117,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var tweeterName = "tweeter_name";
 
-            var _ = await tweeterService.SearchTweetersAsync(screenName);
+            var _ = await tweetMessageService.GetUserTimelineAsync(tweeterName);
 
             apiClientMock.Verify(x => x.GetAsync(
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()), Times.Once());
@@ -140,11 +140,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var tweeterName = "tweeter_name";
 
-            var _ = await tweeterService.SearchTweetersAsync(screenName);
+            var _ = await tweetMessageService.GetUserTimelineAsync(tweeterName);
 
             apiClientMock.Verify(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), authMock.Object), Times.Once());
         }
@@ -162,13 +162,13 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var tweeterName = "tweeter_name";
 
-            var _ = await tweeterService.SearchTweetersAsync(screenName);
+            var _ = await tweetMessageService.GetUserTimelineAsync(tweeterName);
 
-            jsonProviderMock.Verify(x => x.DeserializeObject<IEnumerable<TweeterDto>>(It.IsAny<string>()), Times.Once());
+            jsonProviderMock.Verify(x => x.DeserializeObject<IEnumerable<TweetFromTwitterDto>>(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
@@ -187,13 +187,13 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var tweeterName = "tweet_name";
 
-            var _ = await tweeterService.SearchTweetersAsync(screenName);
+            var _ = await tweetMessageService.GetUserTimelineAsync(tweeterName);
 
-            jsonProviderMock.Verify(x => x.DeserializeObject<IEnumerable<TweeterDto>>(responceContent), Times.Once());
+            jsonProviderMock.Verify(x => x.DeserializeObject<IEnumerable<TweetFromTwitterDto>>(responceContent), Times.Once());
         }
 
         [TestMethod]
@@ -210,11 +210,11 @@ namespace TwitterBackup.Services.TwitterAPI.Tests.TweeterServiceTests
             apiClientMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IAuthenticator>()))
                 .ReturnsAsync(responceMock.Object);
 
-            var tweeterService = new TweeterService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
+            var tweetMessageService = new TweetMessageService(apiClientMock.Object, authMock.Object, jsonProviderMock.Object);
 
-            var screenName = "screen_name";
+            var tweeterName = "tweeter_name";
 
-            var result = await tweeterService.SearchTweetersAsync(screenName);
+            var result = await tweetMessageService.GetUserTimelineAsync(tweeterName);
 
             Assert.IsNull(result);
         }

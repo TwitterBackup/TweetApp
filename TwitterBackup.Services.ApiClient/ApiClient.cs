@@ -58,14 +58,32 @@ namespace TwitterBackup.Services.ApiClient
         {
             this.ValidateFullUrl(baseUri, resource);
 
-            throw new NotImplementedException();
+            this.client.BaseUrl = this.uriFactory.CreateUri(baseUri);
+
+            this.request.Resource = resource;
+            this.request.Method = Method.POST;
+
+            authenticator?.Authenticate(this.client, this.request);
+
+            var responce = this.client.Execute(this.request);
+
+            return responce;
         }
 
         public async Task<IRestResponse> PostAsync(string baseUri, string resource, IAuthenticator authenticator = null)
         {
             this.ValidateFullUrl(baseUri, resource);
 
-            throw new NotImplementedException();
+            this.client.BaseUrl = this.uriFactory.CreateUri(baseUri);
+
+            this.request.Resource = resource;
+            this.request.Method = Method.POST;
+
+            authenticator?.Authenticate(this.client, this.request);
+
+            var responce = await this.client.ExecuteTaskAsync(this.request);
+
+            return responce;
         }
 
         private void ValidateFullUrl(string baseUri, string resource)

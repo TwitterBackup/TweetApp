@@ -205,6 +205,40 @@ namespace TwitterBackup.Services.ApiClient.Tests.ApiClientTests
         }
 
         [TestMethod]
+        public void Set_Request_Method_To_Get_Method()
+        {
+            var clientMock = new Mock<IRestClient>();
+            var requestMock = new Mock<IRestRequest>();
+            var uriFactoryMock = new Mock<IUriFactory>();
+
+            var apiClient = new ApiClient(clientMock.Object, requestMock.Object, uriFactoryMock.Object);
+
+            var fakeUri = "https://api.something.com";
+            var fakeResource = "/resource";
+
+            var _ = apiClient.Get(fakeUri, fakeResource);
+
+            requestMock.VerifySet(x => x.Method = Method.GET, Times.Once());
+        }
+
+        [TestMethod]
+        public void Set_Request_Method_Once()
+        {
+            var clientMock = new Mock<IRestClient>();
+            var requestMock = new Mock<IRestRequest>();
+            var uriFactoryMock = new Mock<IUriFactory>();
+
+            var apiClient = new ApiClient(clientMock.Object, requestMock.Object, uriFactoryMock.Object);
+
+            var fakeUri = "https://api.something.com";
+            var fakeResource = "/resource";
+
+            var _ = apiClient.Get(fakeUri, fakeResource);
+
+            requestMock.VerifySet(x => x.Method = It.IsAny<Method>(), Times.Once());
+        }
+
+        [TestMethod]
         public void Authenticator_Authenticate_Is_Called_When_It_Is_Passed_As_Parameter()
         {
             var clientMock = new Mock<IRestClient>();
