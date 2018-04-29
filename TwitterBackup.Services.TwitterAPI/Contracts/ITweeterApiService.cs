@@ -4,7 +4,7 @@ using TwitterBackup.DTO.Tweeters;
 
 namespace TwitterBackup.Services.TwitterAPI.Contracts
 {
-    public interface ITweeterService
+    public interface ITweeterApiService
     {
         Task<GetTweeterDto> GetTweeterByScreenNameAsync(string tweeterName);
 

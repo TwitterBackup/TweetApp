@@ -2,10 +2,13 @@
 
 namespace TwitterBackup.Services.Data.Contracts
 {
-    public interface IUserDbService
+    public interface IUserService
     {
         void Update(UserDto user);
 
         void Delete(UserDto user);
+
+        string FindUserIdByUserName(string userName);
+
     }
 }

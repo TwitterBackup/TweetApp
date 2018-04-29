@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using System.Threading.Tasks;
 
 namespace TwitterBackup.Data.Repository
 {
-    public class EfUnitOfWork: IUnitOfWork
+    public class EntityFrameworkUnitOfWork : IUnitOfWork
     {
         private readonly TwitterDbContext context;
+        //private readonly IRepository<TEntity> repository;
 
-        public EfUnitOfWork(TwitterDbContext context)
+        public EntityFrameworkUnitOfWork(TwitterDbContext context)
         {
             this.context = context;
         }

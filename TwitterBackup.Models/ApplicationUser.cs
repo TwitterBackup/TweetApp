@@ -11,8 +11,8 @@ namespace TwitterBackup.Models
     {
         public ApplicationUser()
         {
-            this.SavedTweets = new HashSet<UserTweet>();
-            this.FavouriteTweeters = new HashSet<UserTweeter>();
+            this.UserTweets = new HashSet<UserTweet>();
+            this.UserTweeters = new HashSet<UserTweeter>();
         }
 
         [StringLength(20, MinimumLength = 2)]
@@ -32,8 +32,8 @@ namespace TwitterBackup.Models
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
 
-        public ICollection<UserTweet> SavedTweets { get; set; }
+        public ICollection<UserTweet> UserTweets { get; set; }
 
-        public ICollection<UserTweeter> FavouriteTweeters { get; set; }
+        public ICollection<UserTweeter> UserTweeters { get; set; }
     }
 }

@@ -16,8 +16,5 @@ namespace TwitterBackup.DTO.Tweeters
 
         [JsonProperty("profile_image_url_https")]
         public string ProfileImageUrlHttps { get; set; }
-
-
-
     }
 }
