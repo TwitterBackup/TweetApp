@@ -44,12 +44,17 @@
         </div>
         <div class="col-md-12 border-top">
             <div class="status-upload">
-                <form>
+                <form class="tweet-form" asp-controller="Tweets" asp-action="Edit" method="post">
                     <div class="comment-field hidden">
                         <label>Comment</label>
-                        <textarea class="comment-box form-control" placeholder="Comment here">da</textarea>
+                        <textarea asp-for="TweetComments" class="comment-box form-control" placeholder="Comment here"></textarea>
                     </div>
                     <br>
+                    <div style="display: none">
+                        <input asp-for="UserName" class="form-control" />
+                        <input asp-for="TweetId" class="form-control" />
+                        <input asp-for="Text" class="form-control" />
+                    </div>
                     <button type="submit" class="btn-comment btn btn-success pull-right"> Comment</button>
                 </form>
             </div>

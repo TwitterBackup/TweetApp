@@ -165,7 +165,7 @@ namespace TwitterBackup.Web.Controllers
                     var tweetDto = mappingProvider.MapTo<EditTweeterDto>(tweetForEdit);
                     await tweetService.AddNoteToSavedTweetForUserAsync(userId, tweetForEdit.TweetId, tweetForEdit.TweetComments);
                     TempData["Result"] = "Tweet was successfully edited";
-                    return RedirectToAction(nameof(Index));
+                    return Json("success");
                 }
                 catch (ArgumentException)
                 {
@@ -290,5 +290,5 @@ namespace TwitterBackup.Web.Controllers
                 return resource != null;
             }
         }
-   }
+    }
 }

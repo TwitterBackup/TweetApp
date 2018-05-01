@@ -105,19 +105,28 @@
 
 @section Scripts {
     <script>
-        $(document).on('submit', '.tweet', function (event) {
+        $(document).on('submit',
+            '.tweet-form',
+            function (event) {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            var textArea = $(this.getElementsByClassName('comment-field'));
+                var url = this.action;
+                var data = $(this).serialize();
+                console.log(url);
 
-            if (!textArea.hasClass('hidden')) {
-                var comment = $('.comment-box').val();
+                var textArea = $(this.getElementsByClassName('comment-field'));
 
-                console.log(comment);
-            }
+                if (!textArea.hasClass('hidden')) {
+                    var comment = $('.comment-box').val();
 
-            $(textArea).toggleClass('hidden');
-        })
+                    $.post(url, data, function (responce) {
+
+                        console.log(responce);
+                    });
+                }
+
+                $(textArea).toggleClass('hidden');
+            })
     </script>
 }
