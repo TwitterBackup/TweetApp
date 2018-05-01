@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweets;
-using TwitterBackup.Models;
 
 namespace TwitterBackup.Services.Data.Contracts
 {
@@ -22,5 +21,7 @@ namespace TwitterBackup.Services.Data.Contracts
         Task RemoveSavedTweetForUserAsync(string userId, string tweetId);
 
         Task RemoveSavedTweetForAllUsersAsync(string tweetId);
+
+        IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId);
     }
 }

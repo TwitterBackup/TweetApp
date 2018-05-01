@@ -252,6 +252,17 @@ namespace TwitterBackup.Services.Data
             await unitOfWork.CompleteWorkAsync();
         }
 
+        public IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId)
+        {
+            var userTweets = userTweetRepository
+                .IncludeDbSet(x => x.Tweet, x => x.User, x => x.Tweet.Tweeter)
+                .Where(x => x.IsDeleted == false && x.User.Id == userId && x.Tweet.Tweeter.TweeterId == tweeterId);
+
+            var tweetDtos = mappingProvider.ProjectTo<UserTweet, TweetDto>(userTweets);
+
+            return tweetDtos;
+        }
+
         private async Task AddRelationUserTweetAsync(string userId, ApiTweetDto apiTweetDto)
         {
             var newRelationUserTweet = new UserTweet()

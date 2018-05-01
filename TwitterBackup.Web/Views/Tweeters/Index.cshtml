@@ -138,6 +138,7 @@
     }*@
 
 
+
 @{
     if (Model != null)
     {
@@ -152,7 +153,8 @@
                 FriendsCount = tweeterViewModel.FriendsCount,
                 FollowersCount = tweeterViewModel.FollowersCount,
                 ProfileBannerUrl = tweeterViewModel.ProfileBannerUrl,
-                ProfileImageUrl = tweeterViewModel.ProfileImageUrl
+                ProfileImageUrl = tweeterViewModel.ProfileImageUrl,
+                TweeterId = tweeterViewModel.TweeterId
             };
             await Html.RenderPartialAsync("_FavouriteTweeter", model);
         }

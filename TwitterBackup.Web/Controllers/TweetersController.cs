@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,11 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweeters;
+using TwitterBackup.DTO.Tweets;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Data.Contracts;
 using TwitterBackup.Services.TwitterAPI.Contracts;
 using TwitterBackup.Web.Models.TweeterViewModels;
+using TwitterBackup.Web.Models.TweetViewModels;
+using EditTweeterDto = TwitterBackup.DTO.Tweeters.EditTweeterDto;
 
 namespace TwitterBackup.Web.Controllers
 {
@@ -22,24 +24,26 @@ namespace TwitterBackup.Web.Controllers
         private readonly IUserService userService;
         private readonly IUserService userDbService;
         private readonly ITweeterService tweeterService;
+        private readonly ITweetService tweetService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMappingProvider mappingProvider;
 
         public TweetersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider,
-            ITweeterService tweeterService, IUserService userDbService, IUserService userService,
+            ITweeterService tweeterService, ITweetService tweetService, IUserService userDbService, IUserService userService,
             ITweeterApiService tweeterApiService)
         {
             this.tweeterApiService = tweeterApiService ?? throw new ArgumentNullException(nameof(tweeterApiService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.userDbService = userDbService ?? throw new ArgumentNullException(nameof(userDbService));
             this.tweeterService = tweeterService ?? throw new ArgumentNullException(nameof(tweeterService));
+            this.tweetService = tweetService ?? throw new ArgumentNullException(nameof(tweetService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
         }
 
         private bool CurrentUserIsAdmin()
         {
-            return HttpContext.User.IsInRole("Admin");
+            return this.HttpContext.User.IsInRole("Admin");
         }
 
         // GET: Tweeter
@@ -47,26 +51,26 @@ namespace TwitterBackup.Web.Controllers
         {
             IEnumerable<TweeterDto> tweetersDto;
 
-            if (CurrentUserIsAdmin())
+            if (this.CurrentUserIsAdmin())
             {
-                tweetersDto = tweeterService.GetAllSavedTweetersForAdmin();
-                ViewData["IsAdmin"] = true;
+                tweetersDto = this.tweeterService.GetAllSavedTweetersForAdmin();
+                this.ViewData["IsAdmin"] = true;
             }
             else
             {
-                var currentUser = await userManager.GetUserAsync(HttpContext.User);
-                tweetersDto = tweeterService.GetUserFavouriteTweeters(currentUser.Id);
-                ViewData["IsAdmin"] = false;
+                var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
+                tweetersDto = this.tweeterService.GetUserFavouriteTweeters(currentUser.Id);
+                this.ViewData["IsAdmin"] = false;
             }
 
-            var tweeterViewModels = mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(tweetersDto);
+            var tweeterViewModels = this.mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(tweetersDto);
 
             if (!tweeterViewModels.Any())
             {
-                TempData["Result"] = "No saved Tweeters at this moment!";
+                this.TempData["Result"] = "No saved Tweeters at this moment!";
             }
 
-            return View(tweeterViewModels);
+            return this.View(tweeterViewModels);
 
         }
 
@@ -75,54 +79,54 @@ namespace TwitterBackup.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                TempData["Result"] = "UserName cannot be null or whitespace.";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "UserName cannot be null or whitespace.";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (string.IsNullOrWhiteSpace(id))
             {
-                TempData["Result"] = "No tweeter selected!";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "No tweeter selected!";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
-            ViewData["IsAdmin"] = CurrentUserIsAdmin();
+            this.ViewData["IsAdmin"] = this.CurrentUserIsAdmin();
 
-            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
 
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 string userId;
 
                 try
                 {
-                    userId = this.CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(name) : currentUser.Id;
+                    userId = this.CurrentUserIsAdmin() ? this.userDbService.FindUserIdByUserName(name) : currentUser.Id;
                 }
 
                 catch (ArgumentException)
                 {
-                    TempData["Result"] = "You haven't saved such Tweeter. Nothing is deleted.";
-                    return RedirectToAction(nameof(Index));
+                    this.TempData["Result"] = "You haven't saved such Tweeter. Nothing is deleted.";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
 
-                var tweeterDto = tweeterService.GetTweeterForUser(userId, id);
+                var tweeterDto = this.tweeterService.GetTweeterForUser(userId, id);
                 if (tweeterDto == null)
                 {
-                    TempData["Result"] = "Such tweet is not found. Please check and try again!";
-                    return RedirectToAction(nameof(Index));
+                    this.TempData["Result"] = "Such tweet is not found. Please check and try again!";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
 
-                var editTweeterViewModel = mappingProvider.MapTo<EditTweeterViewModel>(tweeterDto);
+                var editTweeterViewModel = this.mappingProvider.MapTo<EditTweeterViewModel>(tweeterDto);
                 if (editTweeterViewModel.TweeterComments == null)
                     editTweeterViewModel.TweeterComments = "";
                 editTweeterViewModel.UserName = name;
 
-                return PartialView(editTweeterViewModel);
+                return this.PartialView(editTweeterViewModel);
             }
             else
             {
-                TempData["Result"] = "Something went wrong. No tweet was deleted";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "Something went wrong. No tweet was deleted";
+                return this.RedirectToAction(nameof(this.Index));
             }
         }
 
@@ -132,41 +136,41 @@ namespace TwitterBackup.Web.Controllers
         {
             if (tweeterForEdit.TweeterId == null)
             {
-                ViewData["Result"] = "Such tweeter is not found. Please check and try again!";
-                return RedirectToAction(nameof(Index));
+                this.ViewData["Result"] = "Such tweeter is not found. Please check and try again!";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
-            if (CurrentUserIsAuthorizedAsync(tweeterForEdit.TweeterId) == false)
+            if (this.CurrentUserIsAuthorizedAsync(tweeterForEdit.TweeterId) == false)
             {
-                ViewData["Result"] = "You do not have right to edit this tweeter!";
-                return RedirectToAction(nameof(Index));
+                this.ViewData["Result"] = "You do not have right to edit this tweeter!";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
-            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 try
                 {
-                    var userId = CurrentUserIsAdmin()
-                        ? userService.FindUserIdByUserName(tweeterForEdit.UserName)
+                    var userId = this.CurrentUserIsAdmin()
+                        ? this.userService.FindUserIdByUserName(tweeterForEdit.UserName)
                         : currentUser.Id;
 
-                    var tweetDto = mappingProvider.MapTo<EditTweeterDto>(tweeterForEdit);
-                    await tweeterService.AddNoteToSavedTweeterForUserAsync(userId, tweeterForEdit.TweeterId,
+                    var tweetDto = this.mappingProvider.MapTo<EditTweeterDto>(tweeterForEdit);
+                    await this.tweeterService.AddNoteToSavedTweeterForUserAsync(userId, tweeterForEdit.TweeterId,
                         tweeterForEdit.TweeterComments);
-                    TempData["Result"] = "Tweet was successfully edited";
-                    return RedirectToAction(nameof(Index));
+                    this.TempData["Result"] = "Tweet was successfully edited";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
                 catch (ArgumentException)
                 {
-                    TempData["Result"] = "You haven't saved such Tweet. No tweet edited.";
-                    return RedirectToAction(nameof(Index));
+                    this.TempData["Result"] = "You haven't saved such Tweet. No tweet edited.";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
             }
 
-            TempData["Result"] = "Something went wrong. No tweet was edited";
-            return RedirectToAction(nameof(Index));
+            this.TempData["Result"] = "Something went wrong. No tweet was edited";
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         // GET: Tweeter/Delete/5
@@ -174,52 +178,52 @@ namespace TwitterBackup.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                TempData["Result"] = "UserName cannot be null or whitespace.";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "UserName cannot be null or whitespace.";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (string.IsNullOrWhiteSpace(id))
             {
-                TempData["Result"] = "No tweet selected!";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "No tweet selected!";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
-            ViewData["IsAdmin"] = CurrentUserIsAdmin();
+            this.ViewData["IsAdmin"] = this.CurrentUserIsAdmin();
 
-            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
 
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var userId = string.Empty;
 
                 try
                 {
-                    userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(name) : currentUser.Id;
+                    userId = this.CurrentUserIsAdmin() ? this.userService.FindUserIdByUserName(name) : currentUser.Id;
                 }
 
                 catch (ArgumentException)
                 {
-                    TempData["Result"] = "You haven't saved such Tweeter. No tweeter deleted.";
-                    return RedirectToAction(nameof(Index));
+                    this.TempData["Result"] = "You haven't saved such Tweeter. No tweeter deleted.";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
 
-                var tweeterDto = tweeterService.GetTweeterForUser(userId, id);
+                var tweeterDto = this.tweeterService.GetTweeterForUser(userId, id);
                 if (tweeterDto == null)
                 {
-                    TempData["Result"] = "Such tweeter is not found. Please check and try again!";
-                    return RedirectToAction(nameof(Index));
+                    this.TempData["Result"] = "Such tweeter is not found. Please check and try again!";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
 
-                var tweeter = mappingProvider.MapTo<TweeterViewModel>(tweeterDto);
+                var tweeter = this.mappingProvider.MapTo<TweeterViewModel>(tweeterDto);
                 tweeter.UserName = name;
 
-                return PartialView(tweeter);
+                return this.PartialView(tweeter);
             }
             else
             {
-                TempData["Result"] = "Something went wrong. No tweeter was deleted";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "Something went wrong. No tweeter was deleted";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
         }
@@ -230,42 +234,42 @@ namespace TwitterBackup.Web.Controllers
         {
             if (UserName == null)
             {
-                TempData["Result"] = "User cannot be null!";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "User cannot be null!";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (id == null)
             {
-                TempData["Result"] = "Such tweeter does not exist. ";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "Such tweeter does not exist. ";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
-            if (CurrentUserIsAuthorizedAsync(id) == false)
+            if (this.CurrentUserIsAuthorizedAsync(id) == false)
             {
-                TempData["Result"] = "You do not have right to edit this tweeter!";
-                return RedirectToAction(nameof(Index));
+                this.TempData["Result"] = "You do not have right to edit this tweeter!";
+                return this.RedirectToAction(nameof(this.Index));
             }
 
-            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 try
                 {
-                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(UserName) : currentUser.Id;
-                    await tweeterService.RemoveSavedTweeterForUserAsync(userId, id);
-                    TempData["Result"] = "Tweet was successfully deleted";
-                    return RedirectToAction(nameof(Index));
+                    var userId = this.CurrentUserIsAdmin() ? this.userService.FindUserIdByUserName(UserName) : currentUser.Id;
+                    await this.tweeterService.RemoveSavedTweeterForUserAsync(userId, id);
+                    this.TempData["Result"] = "Tweet was successfully deleted";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
                 catch (ArgumentException)
                 {
-                    TempData["Result"] = "You haven't saved such Tweet. No tweet deleted.";
-                    return RedirectToAction(nameof(Index));
+                    this.TempData["Result"] = "You haven't saved such Tweet. No tweet deleted.";
+                    return this.RedirectToAction(nameof(this.Index));
                 }
             }
 
-            TempData["Result"] = "Something went wrong. No tweet was deleted";
-            return RedirectToAction(nameof(Index));
+            this.TempData["Result"] = "Something went wrong. No tweet was deleted";
+            return this.RedirectToAction(nameof(this.Index));
 
         }
 
@@ -276,8 +280,8 @@ namespace TwitterBackup.Web.Controllers
                 return true;
             else
             {
-                var currentUserId = userManager.GetUserId(HttpContext.User);
-                var resource = tweeterService.GetTweeterForUser(currentUserId, resourceId);
+                var currentUserId = this.userManager.GetUserId(this.HttpContext.User);
+                var resource = this.tweeterService.GetTweeterForUser(currentUserId, resourceId);
 
                 return resource != null;
             }
@@ -298,7 +302,7 @@ namespace TwitterBackup.Web.Controllers
         {
             var searchResult = await this.tweeterApiService.SearchTweetersAsync(searchString);
 
-            var userId = this.userManager.GetUserId(HttpContext.User);
+            var userId = this.userManager.GetUserId(this.HttpContext.User);
 
             var tweeterDtos = this.tweeterService.SearchFavoriteTweetersForUser(userId, searchString);
 
@@ -354,7 +358,7 @@ namespace TwitterBackup.Web.Controllers
 
             foreach (var tweeterViewModel in userFavouriteSet)
             {
-                if(searchResultSet.Any(x => x.TweeterId == tweeterViewModel.TweeterId))
+                if (searchResultSet.Any(x => x.TweeterId == tweeterViewModel.TweeterId))
                     searchResultSet
                         .SingleOrDefault(x => x.TweeterId == tweeterViewModel.TweeterId)
                         .IsLikedFromUser = true;
@@ -364,7 +368,8 @@ namespace TwitterBackup.Web.Controllers
                     searchResultSet.Add(tweeterViewModel);
                 }
             }
-            return this.View(searchResultSet);
+
+            return this.View(searchResultSet.OrderByDescending(tweeter => tweeter.IsLikedFromUser));
 
         }
 
@@ -380,7 +385,7 @@ namespace TwitterBackup.Web.Controllers
                     return this.Json("Invalid tweeter.");
                 }
 
-                var userId = this.userManager.GetUserId(HttpContext.User);
+                var userId = this.userManager.GetUserId(this.HttpContext.User);
 
                 try
                 {
@@ -412,7 +417,7 @@ namespace TwitterBackup.Web.Controllers
                     return this.Json("Invalid tweeter.");
                 }
 
-                var userId = this.userManager.GetUserId(HttpContext.User);
+                var userId = this.userManager.GetUserId(this.HttpContext.User);
 
                 try
                 {
@@ -429,6 +434,27 @@ namespace TwitterBackup.Web.Controllers
             return this.Json("Tweeter shoud have screen name.");
 
 
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Profile(string tweeterId)
+        {
+            var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
+
+            var tweeter = this.tweeterService.GetTweeterForUser(currentUser.Id, tweeterId);
+            var tweets = this.tweetService.GetAllTweetsByTweeterForUser(currentUser.Id, tweeterId);
+
+            var tweeterViewModel = this.mappingProvider.MapTo<TweeterViewModel>(tweeter);
+            tweeterViewModel.IsLikedFromUser = true;
+            var tweetsViewModels = this.mappingProvider.ProjectTo<TweetDto, TweetViewModel>(tweets);
+
+            var profileViewModel = new TweeterProfileViewModel()
+            {
+                Tweeter = tweeterViewModel,
+                Tweets = tweetsViewModels
+            };
+
+            return this.View(profileViewModel);
         }
     }
 }

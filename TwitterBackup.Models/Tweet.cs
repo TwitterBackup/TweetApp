@@ -5,7 +5,7 @@ using TwitterBackup.Models.Contracts;
 
 namespace TwitterBackup.Models
 {
-    public class Tweet: IDeletable
+    public class Tweet : IDeletable
     {
         public Tweet()
         {

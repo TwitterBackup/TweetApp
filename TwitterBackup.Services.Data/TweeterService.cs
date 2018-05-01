@@ -154,10 +154,14 @@ namespace TwitterBackup.Services.Data
 
         public IEnumerable<TweeterDto> SearchFavoriteTweetersForUser(string userId, string searchString)
         {
+            searchString = searchString.ToLower();
+
             var favoriteTweeters = this.userTweeterRepository
                 .IncludeDbSet(x => x.User, x => x.Tweeter)
-                .Where(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false 
-                && userTweeter.Tweeter.ScreenName.ToLower().Contains(searchString.ToLower()));
+                .Where(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false
+                && (userTweeter.Tweeter.ScreenName.ToLower().Contains(searchString) ||
+                    userTweeter.Tweeter.Name.ToLower().Contains(searchString) ||
+                    userTweeter.Tweeter.Description.ToLower().Contains(searchString)));
 
             return this.mappingProvider.ProjectTo<UserTweeter, TweeterDto>(favoriteTweeters);
         }

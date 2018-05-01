@@ -1,0 +1,58 @@
+﻿@model TwitterBackup.Web.Models.TweetViewModels.TweetViewModel
+
+
+<div class="tweet">
+    <div class="panel panel-default">
+        <div class="btn-group pull-right postbtn">
+            <button type="button" class="dotbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="dots"></span> </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a href="javascript:void(0)">Delete</a></li>
+                <li><a href="javascript:void(0)">Delete for all</a></li>
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <div class="media">
+                <div class="media-left"> <a href="javascript:void(0)"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="media-object"> </a> </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        @Model.Tweeter?.Name<br>
+                        <small><i class="fa fa-clock-o"></i> @Model.CreatedAt</small>
+                    </h4>
+                    <p>@Model.Text</p>
+                    <ul class="nav nav-pills pull-left ">
+                        <li><a href="" title=""><i class="fa fa-thumbs-o-up"></i> @Model.FavoriteCount</a></li>
+                        <li><a href="" title=""><i class="fa fa-retweet"></i> @Model.RetweetCount</a></li>
+                        <li><a href="" title=""><i class="fa fa-quote-left"></i> @Model.QuoteCount</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="media">
+                <div class="media-body">
+                    @{
+                        if (!string.IsNullOrEmpty(Model.TweetComments))
+                        {
+                            <h4 class="media-heading">
+                                Your Comment
+                            </h4>
+                            <p> @Model.TweetComments</p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 border-top">
+            <div class="status-upload">
+                <form>
+                    <div class="comment-field hidden">
+                        <label>Comment</label>
+                        <textarea class="comment-box form-control" placeholder="Comment here">da</textarea>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn-comment btn btn-success pull-right"> Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

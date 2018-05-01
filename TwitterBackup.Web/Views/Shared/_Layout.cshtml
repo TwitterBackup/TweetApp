@@ -10,6 +10,8 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/tweeter.css" />
+        <link rel="stylesheet" href="~/css/tweeterProfilePage.css">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -36,7 +38,8 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Tweeters" asp-action="Index">Favorite Tweeters</a></li>
-                    <li><a asp-area="" asp-controller="Tweets" asp-action="Index">Saved Tweets</a></li>
+                    @* <li><a asp-area="" asp-controller="Tweets" asp-action="Index">Saved Tweets</a></li>*@
+                    <li><a asp-area="" asp-controller="Tweeters" asp-action="Profile">Profile</a></li>
                     @*  <li>@await Html.PartialAsync("_SearchBar")</li>*@
                 </ul>
                 @await Html.PartialAsync("_SearchBar")
