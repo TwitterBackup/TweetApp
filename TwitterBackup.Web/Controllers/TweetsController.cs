@@ -179,8 +179,8 @@ namespace TwitterBackup.Web.Controllers
 
         }
 
-        // GET: Tweets/Delete/5
-        public async Task<IActionResult> Delete(string id, string name)
+        // GET: Tweets/Remove/5
+        public async Task<IActionResult> Remove(string id, string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -210,7 +210,7 @@ namespace TwitterBackup.Web.Controllers
 
                 catch (ArgumentException)
                 {
-                    TempData["Result"] = "You haven't saved such Tweet. No tweet deleted.";
+                    TempData["Result"] = "You haven't saved such Tweet. No tweet removed.";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -228,30 +228,30 @@ namespace TwitterBackup.Web.Controllers
             }
             else
             {
-                TempData["Result"] = "Something went wrong. No tweet was deleted";
+                TempData["Result"] = "Something went wrong. No tweet was removed";
                 return RedirectToAction(nameof(Index));
             }
         }
 
-        // POST: Tweets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(string id, string UserName)
+        // POST: Tweets/Remove/5
+        [HttpPost, ActionName("Remove")]
+        public async Task<IActionResult> RemoveConfirmed(string tweetId, string userName)
         {
-            if (UserName == null)
+            if (userName == null)
             {
                 TempData["Result"] = "User cannot be null!";
                 return RedirectToAction(nameof(Index));
             }
 
-            if (id == null)
+            if (tweetId == null)
             {
                 TempData["Result"] = "Such tweet does not exist. ";
                 return RedirectToAction(nameof(Index));
             }
 
-            if (CurrentUserIsAuthorizedAsync(id) == false)
+            if (CurrentUserIsAuthorizedAsync(tweetId) == false)
             {
-                TempData["Result"] = "You do not have right to edit this tweet!";
+                TempData["Result"] = "You do not have right to remove this tweet!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -261,14 +261,14 @@ namespace TwitterBackup.Web.Controllers
             {
                 try
                 {
-                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(UserName) : currentUser.Id;
-                    await tweetService.RemoveSavedTweetForUserAsync(userId, id);
-                    TempData["Result"] = "Tweet was successfully deleted";
+                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(userName) : currentUser.Id;
+                    await tweetService.RemoveSavedTweetForUserAsync(userId, tweetId);
+                    TempData["Result"] = "Tweet was successfully removed";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (ArgumentException)
                 {
-                    TempData["Result"] = "You haven't saved such Tweet. No tweet deleted.";
+                    TempData["Result"] = "You haven't saved such Tweet. No tweet removed.";
                     return RedirectToAction(nameof(Index));
                 }
             }

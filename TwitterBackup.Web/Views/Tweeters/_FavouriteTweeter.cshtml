@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="~/css/tweeter.css" />
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
+
 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tweeter-card">
 
     <div class="card hovercard">
@@ -11,10 +12,11 @@
 
         </div>
         <div class="avatar">
-            <img alt="@Model.Name" src="@Model.ProfileImageUrl">
+            <img src="@Url.Content(Model.ProfileImageUrl)" alt="@Model.Name">
         </div>
         <div class="info">
             <div class="twPc-divUser">
+
                 <div class="twPc-divName">
                     <a class="twName" href="https://twitter.com/@Model.ScreenName">@Model.Name</a>
                 </div>
@@ -22,6 +24,13 @@
                     <a class="twScreenName" href="https://twitter.com/@Model.ScreenName"><span>@@@Model.ScreenName</span></a>
                 </span>
             </div>
+            @{if (Model.IsLikedFromUser && Model.IsAdmin)
+                {
+                    <div style="color: red; font-style: italic; font-weight: bold">
+                        Saved by @Model.UserName
+                    </div>
+                }
+            }
             <div class="twPc-divStats">
                 <ul class="twPc-Arrange">
                     <li class="twPc-ArrangeSizeFit">
@@ -41,24 +50,33 @@
         </div>
         <div class="bottom">
             @{
-                var action = Model.IsLikedFromUser ? "RemoveTweeterFromFavourite" : "AddTweeterToFavourite";
+                var action = Model.IsLikedFromUser ? "Remove" : "AddTweeterToFavourite";
                 var btnClass = Model.IsLikedFromUser ? "btn-following" : "btn-follow";
-                var btnText = Model.IsLikedFromUser ? "Following" : "Follow";
+                //var btnText = Model.IsLikedFromUser ? "Favorite" : "Add To Favorite";
 
-                <form class="tweeter-form" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="@Model.TweeterId">
-
-                    <div class="tweeter-model-hiden-input" style="display: none;">
+                <form class="tweeter-form" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="@Model.TweeterId"
+                      asp-route-tweeterId="@Model.TweeterId" asp-route-userName="@Model.UserName" data-target="#delete-tweeter-modal-container" data-toggle="modal">
+                    <div style="display: none;">
                         <input asp-for="TweeterId" class="form-control" />
+                        <input asp-for="UserName" class="form-control" />
                         <input asp-for="ScreenName" class="form-control" />
+                    </div>
+                    <div class="follow-div">
+                        <button type="submit" class="@btnClass btn-tweeter btn-follow-pic" id="@Model.TweeterId">
+                            <i class="fa fa-twitter"></i>@*@btnText*@Add To Favorite</button>
                     </div>
 
                     <div class="follow-div">
-                        <button type="submit" class="@btnClass btn-tweeter btn-follow-pic" id="@Model.TweeterId">
-                            <i class="fa fa-twitter"></i>
-                            @btnText
+                        <button asp-controller="Tweeters" style="display:none" method="get" asp-action=@action class="btn-remove btn-follow-pic"
+                                asp-route-tweeterId="@Model.TweeterId" asp-route-userName="@Model.UserName"
+                                tweeter-id="@Model.TweeterId" id="remove@(Model.TweeterId)" data-target="#delete-tweeter-modal-container"
+                                data-toggle="modal">
+                            Remove
                         </button>
                     </div>
+
                 </form>
+
             }
         </div>
     </div>

@@ -30,7 +30,10 @@ namespace TwitterBackup.Infrastructure.Providers
                 .ForMember(destination => destination.Language, options => options.MapFrom(source => source.Tweeter.Language))
                 .ForMember(destination => destination.Location, options => options.MapFrom(source => source.Tweeter.Location))
                 .ForMember(destination => destination.TweetsCount, options => options.MapFrom(source => source.Tweeter.TweetsCount))
-                .ForMember(destination => destination.Verified, options => options.MapFrom(source => source.Tweeter.Verified));
+                .ForMember(destination => destination.Verified, options => options.MapFrom(source => source.Tweeter.Verified))
+                .ForMember(destination => destination.ProfileImageUrl, options => options.MapFrom(source => source.Tweeter.ProfileImageUrl))
+                .ForMember(destination => destination.ProfileBannerUrl, options => options.MapFrom(source => source.Tweeter.ProfileBannerUrl))
+                .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
             this.CreateMap<TweetDto, TweetViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));

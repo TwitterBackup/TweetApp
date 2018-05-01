@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TwitterBackup.Models;
+using TwitterBackup.Services.Data.Contracts;
 using TwitterBackup.Services.Email;
 using TwitterBackup.Web.Models.AccountViewModels;
 
@@ -17,6 +18,7 @@ namespace TwitterBackup.Web.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private readonly IUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IEmailSender emailSender;
@@ -26,12 +28,14 @@ namespace TwitterBackup.Web.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IUserService userService)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.emailSender = emailSender;
-            this.logger = logger;
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            this.signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            this.emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [TempData]
@@ -108,6 +112,14 @@ namespace TwitterBackup.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    //check whether user is not Deleted
+                    if (userService.UserIsDeleted(userName))
+                    {
+                        this.logger.LogInformation("User is no longer active /has been deleted/.");
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt...");
+                        return View(model);
+                    }
+
                     this.logger.LogInformation("User logged in.");
                     return this.RedirectToLocal(returnUrl);
                 }

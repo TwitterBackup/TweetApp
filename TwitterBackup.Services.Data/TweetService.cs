@@ -212,6 +212,17 @@ namespace TwitterBackup.Services.Data
             throw new NotImplementedException();
         }
 
+        public IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId)
+        {
+            var userTweets = userTweetRepository
+                    .IncludeDbSet(x => x.Tweet, x => x.User, x => x.Tweet.Tweeter)
+                    .Where(x => x.IsDeleted == false && x.User.Id == userId && x.Tweet.Tweeter.TweeterId == tweeterId);
+
+            var tweetDtos = mappingProvider.ProjectTo<UserTweet, TweetDto>(userTweets);
+
+            return tweetDtos;
+        }
+
         public async Task AddNoteToSavedTweetForUserAsync(string userId, string tweetId, string note)
         {
             var userTweetForEdit = userTweetRepository

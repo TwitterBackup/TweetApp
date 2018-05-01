@@ -79,9 +79,9 @@ namespace TwitterBackup.Web
                 new TwitterAuthenticator(
                     this.Configuration["Authentication:Twitter:ConsumerKey"],
                     this.Configuration["Authentication:Twitter:ConsumerSecret"],
-                         this.Configuration["Authentication:Twitter:AccessToken"],
-                            this.Configuration["Authentication:Twitter:AccessTokenSecret"]
-                    ));
+                    this.Configuration["Authentication:Twitter:AccessToken"],
+                    this.Configuration["Authentication:Twitter:AccessTokenSecret"]
+                ));
             services.AddScoped<IJsonProvider, JsonProvider>();
             services.AddScoped<IRestClient, RestClient>();
             services.AddScoped<IRestRequest, RestRequest>();
@@ -108,6 +108,7 @@ namespace TwitterBackup.Web
             //app.UseRewriter(options);
 
             app.UseStaticFiles();
+
 
             app.UseAuthentication();
 

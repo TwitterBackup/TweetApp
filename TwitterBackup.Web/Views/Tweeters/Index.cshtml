@@ -5,6 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
+
 <b style="color: red">@TempData["Result"]</b>
 
 @*Modal PopUp of PartialView goes here*@
@@ -26,135 +27,144 @@
     </div>
 </div>
 
-
 @*@if (Model != null)
     {
 
-        <table class="table">
-            <thead>
-                <tr>
-                    @if ((bool)ViewData["IsAdmin"])
-        {
+    <table class="table">
+        <thead>
+            <tr>
+                @if ((bool)ViewData["IsAdmin"])
+                {
                 <th>
                     @Html.DisplayNameFor(model => model.UserName)
                 </th>
-    }
-                    <th>
-                        @Html.DisplayNameFor(model => model.TweeterId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ScreenName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CreatedAt)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FollowersCount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FriendsCount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Language)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Location)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TweeterComments)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TweetsCount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Verified)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+                }
+                <th>
+                    @Html.DisplayNameFor(model => model.TweeterId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ScreenName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FollowersCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FriendsCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Language)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TweeterComments)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TweetsCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Verified)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                @if ((bool)ViewData["IsAdmin"])
                 {
-                <tr>
-                    @if ((bool)ViewData["IsAdmin"])
-        {
 
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
-    }
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TweeterId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ScreenName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedAt)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FollowersCount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FriendsCount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Language)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Location)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TweeterComments)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TweetsCount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Verified)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.TweeterId" asp-route-name="@item.UserName" data-target="#edit-tweeter-modal-container" data-toggle="modal">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.TweeterId" asp-route-name="@item.UserName" data-target="#delete-tweeter-modal-container" data-toggle="modal">Delete</a>
-                    </td>
-                </tr>
                 }
-            </tbody>
-        </table>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TweeterId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScreenName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FollowersCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FriendsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Language)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TweeterComments)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TweetsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Verified)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TweeterId" asp-route-name="@item.UserName" data-target="#edit-tweeter-modal-container" data-toggle="modal">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TweeterId" asp-route-name="@item.UserName" data-target="#delete-tweeter-modal-container" data-toggle="modal">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
     }*@
 
 
 @{
     if (Model != null)
     {
-        foreach (var tweeterViewModel in Model)
-        {
-            var model = new TweeterViewModel()
-            {
-                ScreenName = tweeterViewModel.ScreenName,
-                Name = tweeterViewModel.Name,
-                IsLikedFromUser = true,
-                TweetsCount = tweeterViewModel.TweetsCount,
-                FriendsCount = tweeterViewModel.FriendsCount,
-                FollowersCount = tweeterViewModel.FollowersCount,
-                ProfileBannerUrl = tweeterViewModel.ProfileBannerUrl,
-                ProfileImageUrl = tweeterViewModel.ProfileImageUrl
-            };
-            await Html.RenderPartialAsync("_FavouriteTweeter", model);
-        }
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>
+                        @foreach (var tweeterViewModel in Model)
+                        {
+                            await Html.RenderPartialAsync("_FavouriteTweeter", tweeterViewModel);
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>No results found.</h1>
     }
 }
+
+
+
+@section Scripts
+    {
+    <script src="/js/btn-follow-following.js"></script>
+    <script src="/js/btn-follow-hover.js"></script>
+}
+

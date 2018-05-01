@@ -305,7 +305,7 @@ ul.twPc-Arrange {
 .follow-div{text-align:center;}
 .btn-follow-pic {
     display:inline-block;
-    width:100px;
+    width:150px;
     height:40px;
     margin:0 10px;
     line-height:40px;
@@ -325,8 +325,13 @@ ul.twPc-Arrange {
     background-color: #427fed
 }
 
-.btn-unfollow {
+.btn-remove {
     background-color: red;
-    color: red;
-    background: red;
+    color: white;
+    size:
+}
+
+.btn-remove:hover {
+    color: white;
+    text-decoration: none;
 }

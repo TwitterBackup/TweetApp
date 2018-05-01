@@ -8,6 +8,8 @@ namespace TwitterBackup.Web.Models.TweeterViewModels
     {
         public string UserName { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public ApplicationUser User { get; set; }
 
         [StringLength(300, MinimumLength = 3, ErrorMessage = "Please, 3 to 300 characters!")]

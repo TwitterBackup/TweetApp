@@ -10,5 +10,7 @@ namespace TwitterBackup.Services.Data.Contracts
 
         string FindUserIdByUserName(string userName);
 
+        bool UserIsDeleted(string userName);
+
     }
 }

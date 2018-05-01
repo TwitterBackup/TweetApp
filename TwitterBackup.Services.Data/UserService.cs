@@ -36,5 +36,11 @@ namespace TwitterBackup.Services.Data
             }
             return user.Id;
         }
+
+        public bool UserIsDeleted(string userName)
+        {
+            var applicationUser = userRepository.SingleOrDefault(user => user.UserName == userName);
+            return applicationUser.IsDeleted;
+        }
     }
 }

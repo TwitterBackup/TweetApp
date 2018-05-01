@@ -113,7 +113,7 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TweetId" asp-route-name="@item.UserName" data-target="#edit-tweet-modal-container" data-toggle="modal">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TweetId" asp-route-name="@item.UserName" data-target="#delete-tweet-modal-container" data-toggle="modal">Delete</a>
+                    <a asp-action="Remove" asp-route-id="@item.TweetId" asp-route-name="@item.UserName" data-target="#delete-tweet-modal-container" data-toggle="modal">Delete</a>
                 </td>
             </tr>
         }

@@ -8,13 +8,25 @@
 <head>
     <title>$title$</title>
 </head>
+
 <body>
+    <b style="color: red">@TempData["Result"]</b>
+
+    <div id="delete-tweet-modal-container" class="modal fade hidden-print" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding: 10%">
+
+
+            </div>
+        </div>
+    </div>
+
     <div>
         <h1>Search Results</h1>
         @{
             if (Model.Any())
             {
-                <div class="">
+                @*<div class="">
                     <div class="row">
                         @{
                             foreach (var tweeterViewModel in Model)
@@ -23,11 +35,23 @@
                             }
                         }
                     </div>
-                </div>
+                </div>*@
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            @foreach (var tweeterViewModel in Model)
+                            {
+                                await Html.RenderPartialAsync("_FavouriteTweeter", tweeterViewModel);
+                            }
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             }
             else
             {
-                <h1>Not results found.</h1>
+                <h1>No results found.</h1>
             }
         }
     </div>
@@ -35,12 +59,14 @@
     <div class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content" id="error-modal">
-                <div class="modal-header" style="background-color: red; color:white">
+                <div class="modal-header" style="background-color: red; color: white">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h2 class="modal-title">Error</h2>
                 </div>
                 <div class="modal-body">
+
                     <h4 class="modal-error-message"></h4>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -51,84 +77,8 @@
 </body>
 </html>
 
-
-@section Scripts {
-
-
-    <script>
-        $(function () {
-            $(document).on('submit', '.tweeter-form',
-                function (event) {
-                    event.preventDefault();
-
-                    var url = this.action;
-                    var data = $(this).serialize();
-                    var tweeterId = this.getAttribute('tweeter-id');
-                    var form = $(this);
-
-                    $.post(url, data, function (response) {
-
-                        if (response !== 'success') {
-
-                            console.log(response);
-                            //add error modal
-                            var modalContent = $('#error-modal');
-                            var modalErrorMessage = $('.modal-error-message');
-                            modalErrorMessage.text(response);
-
-                            modalContent.load(url,
-                                function () {
-                                    var modal = $('.modal');
-                                    modal.modal('show');
-                                });
-                            return;
-                        }
-
-                        var tweeterBtn = $('#' + tweeterId);
-
-                        tweeterBtn.toggleClass('btn-following');
-                        tweeterBtn.toggleClass('btn-follow');
-
-                        if (tweeterBtn.hasClass('btn-follow')) {
-                            form.attr('action', '/FavouriteTweeters/AddTweeterToFavourite');
-                            tweeterBtn.html('<i class="fa fa-twitter"></i> Follow');
-                        } else {
-                            form.attr('action', '/FavouriteTweeters/RemoveTweeterFromFavourite');
-                            tweeterBtn.html('<i class="fa fa-twitter"></i> Following');
-                        }
-
-                        //var tweeterCard = $('#' + tweeterId).closest('.tweeter-card');
-                        //tweeterCard.replaceWith(response);
-                    });
-                });
-        });
-
-    </script>
-
-    <script>
-        $(document).on("mouseenter", ".btn-following", function () {
-            var btn = $(this);
-
-            btn.css("background-color", "red");
-            btn.html('Unfollow');
-        });
-
-        $(document).on("mouseleave", ".btn-following", function () {
-            var btn = $(this);
-
-            btn.html('<i class="fa fa-twitter"></i> Following');
-            btn.css("background-color", "#427fed");
-        });
-
-        $(document).on("mouseenter", ".btn-follow", function () {
-            var btn = $(this);
-            btn.css("background-color", "#E8F5FD");
-
-        });
-
-        $(document).on("mouseleave", ".btn-follow", function () {
-            var btn = $(this);
-            btn.css("background-color", "white");
-        });
-    </script>
+@section Scripts
+    {
+    <script src="/js/btn-follow-following.js"></script>
+    <script src="/js/btn-follow-hover.js"></script>
 }

@@ -17,6 +17,8 @@ namespace TwitterBackup.Services.Data.Contracts
 
         IEnumerable<TweetDto> GetAllTweetsByAuthorAsync(string tweeterId);
 
+        IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId);
+
         Task AddNoteToSavedTweetForUserAsync(string userId, string tweetId, string note);
 
         Task RemoveSavedTweetForUserAsync(string userId, string tweetId);

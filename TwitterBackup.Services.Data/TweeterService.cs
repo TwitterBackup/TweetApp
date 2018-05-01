@@ -90,6 +90,23 @@ namespace TwitterBackup.Services.Data
             return mappingProvider.MapTo<TweeterDto>(userTweeter);
         }
 
+        public TweeterDto GetTweeterWithTweetsForUser(string userId, string tweeterId)
+        {
+            var userTweeter = this.userTweeterRepository
+                .IncludeDbSet(x => x.User, x => x.Tweeter)
+                .SingleOrDefault(relation => relation.UserId == userId && relation.TweeterId == tweeterId && relation.IsDeleted == false);
+
+            if (userTweeter == null)
+                throw new ArgumentNullException();
+
+            if (userTweeter.TweeterComments != null)
+                return mappingProvider.MapTo<TweeterDto>(userTweeter);
+
+            userTweeter.TweeterComments = string.Empty;
+            unitOfWork.CompleteWork();
+            return mappingProvider.MapTo<TweeterDto>(userTweeter);
+        }
+
         public IEnumerable<TweeterDto> GetUserFavouriteTweeters(string userId)
         {
             var favoriteTweeters = this.userTweeterRepository
@@ -156,8 +173,11 @@ namespace TwitterBackup.Services.Data
         {
             var favoriteTweeters = this.userTweeterRepository
                 .IncludeDbSet(x => x.User, x => x.Tweeter)
-                .Where(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false 
-                && userTweeter.Tweeter.ScreenName.ToLower().Contains(searchString.ToLower()));
+                .Where(userTweeter => userTweeter.User.Id == userId && userTweeter.IsDeleted == false
+                                    && (userTweeter.Tweeter.ScreenName.ToLower().Contains(searchString.ToLower()) ||
+                                        userTweeter.Tweeter.Name.ToLower().Contains(searchString.ToLower()) ||
+                                        userTweeter.Tweeter.Description.ToLower().Contains(searchString.ToLower()))
+                                    );
 
             return this.mappingProvider.ProjectTo<UserTweeter, TweeterDto>(favoriteTweeters);
         }
