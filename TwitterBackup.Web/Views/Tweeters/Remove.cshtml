@@ -4,39 +4,39 @@
     ViewData["Title"] = "Remove";
 }
 
-<h3 position="center">Are you sure you want to remove this tweeter?</h3>
+<h3 position="center">Please, confirm removal of this tweeter!</h3>
 <div>
 
-    @*<dl class="dl-horizontal">
-        @if (Model.IsAdmin)
-        {
+    <dl class="dl-horizontal">
+            @if (Model.IsAdmin)
+            {
 
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+            }
             <dt>
-                @Html.DisplayNameFor(model => model.UserName)
+                @Html.DisplayNameFor(model => model.Name)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.UserName)
+                @Html.DisplayFor(model => model.Name)
             </dd>
-        }
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ScreenName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ScreenName)
-        </dd>
-    </dl>*@
+            <dt>
+                @Html.DisplayNameFor(model => model.ScreenName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ScreenName)
+            </dd>
+        </dl>
 
     <form asp-action="Remove">
         <input type="hidden" asp-for="UserName" />
         <input type="hidden" asp-for="@ViewData["returnUrl"]" name="returnUrl" />
         <input type="hidden" asp-for="TweeterId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Confirm" class="btn btn-default" autofocus />
+        <input type="button" class="btn btn-default" value="Close" data-dismiss="modal">
     </form>
 </div>

@@ -182,6 +182,9 @@ namespace TwitterBackup.Web.Controllers
         // GET: Tweeter/Remove/5
         public async Task<IActionResult> Remove(string tweeterId, string userName, [FromHeader] string referer)
         {
+            if (userName == null) //this happens only when Add tweeter to favorites and immediately try to remove it (without refresh)
+                userName = userManager.GetUserName(HttpContext.User);
+
             ViewData["returnUrl"] = referer;
 
             if (string.IsNullOrWhiteSpace(userName))
@@ -238,9 +241,9 @@ namespace TwitterBackup.Web.Controllers
 
         // POST: Tweeter/Remove/5
         [HttpPost, ActionName("Remove")]
-        public async Task<IActionResult> RemoveConfirmed(string tweeterId, string UserName, string ScreenName, [FromHeader] string referer, string returnUrl)
+        public async Task<IActionResult> RemoveConfirmed(string tweeterId, string userName, string screenName, [FromHeader] string referer, string returnUrl)
         {
-            if (UserName == null)
+            if (userName == null)
             {
                 TempData["Result"] = "User cannot be null!";
                 return RedirectToAction(nameof(Index));
@@ -264,11 +267,11 @@ namespace TwitterBackup.Web.Controllers
             {
                 try
                 {
-                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(UserName) : currentUser.Id;
+                    var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(userName) : currentUser.Id;
                     await tweeterService.RemoveSavedTweeterForUserAsync(userId, tweeterId);
-                    TempData["Result"] = "Tweeter was successfully removed";
+                    //TempData["Result"] = "Tweeter was successfully removed";
                     //return RedirectToAction(nameof(Index));
-                    return RedirectToLocal(returnUrl, "Tweeter was successfully removed from favorites");
+                    return RedirectToLocal(returnUrl, "" /* "Tweeter was successfully removed from favorites"*/);
                 }
                 catch (ArgumentException)
                 {
@@ -296,14 +299,6 @@ namespace TwitterBackup.Web.Controllers
                 return resource != null;
             }
         }
-
-
-
-
-
-        //---------------------
-
-
 
 
 
@@ -383,13 +378,11 @@ namespace TwitterBackup.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTweeterToFavourite(TweeterViewModel tweeterViewModel, [FromHeader] string referer)
+        public async Task<IActionResult> AddTweeterToFavourite(string screenName, string tweeterId, [FromHeader] string referer)
         {
-            var returnUrl = referer;
-
             if (this.ModelState.IsValid)
             {
-                var tweeterDto = await this.tweeterApiService.GetTweeterByScreenNameAsync(tweeterViewModel.ScreenName);
+                var tweeterDto = await this.tweeterApiService.GetTweeterByScreenNameAsync(screenName);
 
                 if (tweeterDto == null)
                 {
@@ -458,15 +451,8 @@ namespace TwitterBackup.Web.Controllers
 
         private IActionResult RedirectToLocal(string returnUrl, string resultMessage)
         {
-            //if (Url.IsLocalUrl(returnUrl))
-            //{
             TempData["Result"] = resultMessage;
             return Redirect(returnUrl);
-            //}
-            //else
-            //{
-            //    return RedirectToAction(nameof(HomeController.Index), "Home");
-            //}
         }
 
         #endregion

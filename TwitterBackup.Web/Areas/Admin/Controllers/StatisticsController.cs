@@ -7,12 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace TwitterBackup.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class HomeController : Controller
+    public class StatisticsController : Controller
     {
         public IActionResult Index()
         {
-            ViewData["Hello"] = "Hello from the Admin area";
-
             return View();
         }
     }

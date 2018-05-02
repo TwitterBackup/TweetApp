@@ -43,6 +43,7 @@ namespace TwitterBackup.Web
                 .AddEntityFrameworkStores<TwitterDbContext>()
                 .AddDefaultTokenProviders();
 
+
             services.AddAuthentication().AddTwitter(twitterOptions =>
             {
                 twitterOptions.ConsumerKey = this.Configuration["Authentication:Twitter:ConsumerKey"];
@@ -116,7 +117,7 @@ namespace TwitterBackup.Web
             {
                 routes.MapRoute(
                     name: "areaRoute",
-                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                    template: "{area:exists}/{controller=Statistics}/{action=Index}/{id?}"
                 );
 
                 routes.MapRoute(

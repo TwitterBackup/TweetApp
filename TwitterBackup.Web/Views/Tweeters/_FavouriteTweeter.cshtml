@@ -52,32 +52,35 @@
             @{
                 var action = Model.IsLikedFromUser ? "Remove" : "AddTweeterToFavourite";
                 var btnClass = Model.IsLikedFromUser ? "btn-following" : "btn-follow";
-                //var btnText = Model.IsLikedFromUser ? "Favorite" : "Add To Favorite";
+                var followBtn = Model.IsLikedFromUser ? "none" : "inline-block";
+                var followingBtn = Model.IsLikedFromUser ? "inline-block" : "none";
 
-                <form class="tweeter-form" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="@Model.TweeterId"
-                      asp-route-tweeterId="@Model.TweeterId" asp-route-userName="@Model.UserName" data-target="#delete-tweeter-modal-container" data-toggle="modal">
+                <form class="form-follow" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="@Model.TweeterId">
                     <div style="display: none;">
                         <input asp-for="TweeterId" class="form-control" />
-                        <input asp-for="UserName" class="form-control" />
                         <input asp-for="ScreenName" class="form-control" />
                     </div>
                     <div class="follow-div">
-                        <button type="submit" class="@btnClass btn-tweeter btn-follow-pic" id="@Model.TweeterId">
-                            <i class="fa fa-twitter"></i>@*@btnText*@Add To Favorite</button>
-                    </div>
-
-                    <div class="follow-div">
-                        <button asp-controller="Tweeters" style="display:none" method="get" asp-action=@action class="btn-remove btn-follow-pic"
-                                asp-route-tweeterId="@Model.TweeterId" asp-route-userName="@Model.UserName"
-                                tweeter-id="@Model.TweeterId" id="remove@(Model.TweeterId)" data-target="#delete-tweeter-modal-container"
-                                data-toggle="modal">
-                            Remove
+                        <button style="display: @followBtn" type="submit" class="btn-follow btn-tweeter btn-follow-pic"
+                                btn-follow-id="@Model.TweeterId" id="follow@(Model.TweeterId)">
+                            <i class="fa fa-twitter"></i>
+                            Add To Favorite
                         </button>
                     </div>
-
                 </form>
 
+                <div class="follow-div">
+                    <button style="display:@followingBtn" class="btn-following btn-tweeter btn-follow-pic"
+                            btn-following-id="@Model.TweeterId" id="following@(Model.TweeterId)">
+                        <i class="fa fa-twitter"></i>
+                        Favorite
+                    </button>
+                </div>
+                <div class="follow-div">
+                    <a style="display: none" class="btn-remove btn-follow-pic" btn-remove-id="@Model.TweeterId" id="remove@(Model.TweeterId)" asp-controller="Tweeters" asp-action="Remove" method="get" asp-route-tweeterId="@Model.TweeterId" asp-route-userName="@Model.UserName" asp-route-screeneName="@Model.ScreenName" class="btn-info btn-lg" data-toggle="modal" data-target="#remove-modal">Remove</a>
+                </div>
             }
+
         </div>
     </div>
 </div>

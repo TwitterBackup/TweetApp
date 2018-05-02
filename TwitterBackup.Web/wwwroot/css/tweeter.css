@@ -15,46 +15,52 @@
     box-sizing: border-box;
 }
 
-    .card .card-heading {
-        padding: 0 20px;
-        margin: 0;
+/*.col-lg-3.col-md-4.col-sm-6.col-xs-12.tweeter-card {
+    margin-bottom: 40px;
+}*/
+
+@media (min-width: 1300px) {
+    .col-md-4 { 
+        
+        min-height: 425px;
+        
+       }
+}
+.card .card-heading.simple {
+        font-size: 20px;
+        font-weight: 300;
+        color: #777;
+        border-bottom: 1px solid #e5e5e5;
     }
 
-        .card .card-heading.simple {
-            font-size: 20px;
-            font-weight: 300;
-            color: #777;
-            border-bottom: 1px solid #e5e5e5;
+    .card .card-heading.image img {
+        display: inline-block;
+        width: 46px;
+        height: 46px;
+        margin-right: 15px;
+        vertical-align: top;
+        border: 0;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+    }
+
+    .card .card-heading.image .card-heading-header {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+        .card .card-heading.image .card-heading-header h3 {
+            margin: 0;
+            font-size: 14px;
+            line-height: 16px;
+            color: #262626;
         }
 
-        .card .card-heading.image img {
-            display: inline-block;
-            width: 46px;
-            height: 46px;
-            margin-right: 15px;
-            vertical-align: top;
-            border: 0;
-            -webkit-border-radius: 50%;
-            -moz-border-radius: 50%;
-            border-radius: 50%;
+        .card .card-heading.image .card-heading-header span {
+            font-size: 12px;
+            color: #999999;
         }
-
-        .card .card-heading.image .card-heading-header {
-            display: inline-block;
-            vertical-align: top;
-        }
-
-            .card .card-heading.image .card-heading-header h3 {
-                margin: 0;
-                font-size: 14px;
-                line-height: 16px;
-                color: #262626;
-            }
-
-            .card .card-heading.image .card-heading-header span {
-                font-size: 12px;
-                color: #999999;
-            }
 
     .card .card-body {
         padding: 0 20px;
@@ -98,240 +104,243 @@
                 white-space: nowrap;
             }
 
-.card-comments .media-heading {
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.card.people {
-    position: relative;
-    display: inline-block;
-    width: 170px;
-    height: 300px;
-    padding-top: 0;
-    margin-left: 20px;
-    overflow: hidden;
-    vertical-align: top;
-}
-
-    .card.people:first-child {
-        margin-left: 0;
+    .card-comments .media-heading {
+        font-size: 13px;
+        font-weight: bold;
     }
 
-    .card.people .card-top {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .card.people {
+        position: relative;
         display: inline-block;
         width: 170px;
-        height: 150px;
-        background-color: #ffffff;
-    }
-
-        .card.people .card-top.green {
-            background-color: #53a93f;
-        }
-
-        .card.people .card-top.blue {
-            background-color: #427fed;
-        }
-
-    .card.people .card-info {
-        position: absolute;
-        top: 150px;
-        display: inline-block;
-        width: 100%;
-        height: 101px;
+        height: 300px;
+        padding-top: 0;
+        margin-left: 20px;
         overflow: hidden;
-        background: #ffffff;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
+        vertical-align: top;
     }
 
-        .card.people .card-info .title {
-            display: block;
-            margin: 8px 14px 0 14px;
-            overflow: hidden;
-            font-size: 16px;
-            font-weight: bold;
-            line-height: 18px;
-            color: #404040;
+        .card.people:first-child {
+            margin-left: 0;
         }
 
-        .card.people .card-info .desc {
-            display: block;
-            margin: 8px 14px 0 14px;
-            overflow: hidden;
-            font-size: 12px;
-            line-height: 16px;
-            color: #737373;
-            text-overflow: ellipsis;
+        .card.people .card-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: inline-block;
+            width: 170px;
+            height: 150px;
+            background-color: #ffffff;
         }
 
-    .card.people .card-bottom {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        display: inline-block;
-        width: 100%;
-        padding: 10px 20px;
-        line-height: 29px;
-        text-align: center;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
+            .card.people .card-top.green {
+                background-color: #53a93f;
+            }
 
-.card.hovercard {
-    position: relative;
-    padding-top: 0;
-    overflow: hidden;
-    text-align: center;
-    background-color: rgba(214, 224, 226, 0.2);
-}
+            .card.people .card-top.blue {
+                background-color: #427fed;
+            }
 
-    .card.hovercard .cardheader {
-        background-size: cover;
-        height: 135px;
-    }
+        .card.people .card-info {
+            position: absolute;
+            top: 150px;
+            display: inline-block;
+            width: 100%;
+            height: 101px;
+            overflow: hidden;
+            background: #ffffff;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
 
-    .card.hovercard .avatar {
+            .card.people .card-info .title {
+                display: block;
+                margin: 8px 14px 0 14px;
+                overflow: hidden;
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 18px;
+                color: #404040;
+            }
+
+            .card.people .card-info .desc {
+                display: block;
+                margin: 8px 14px 0 14px;
+                overflow: hidden;
+                font-size: 12px;
+                line-height: 16px;
+                color: #737373;
+                text-overflow: ellipsis;
+            }
+
+        .card.people .card-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: inline-block;
+            width: 100%;
+            padding: 10px 20px;
+            line-height: 29px;
+            text-align: center;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+    .card.hovercard {
         position: relative;
-        top: -50px;
-        margin-bottom: -50px;
-        height: 100px;
-        width: 100px;
-        left: 20px;
+        padding-top: 0;
+        overflow: hidden;
+        text-align: center;
+        background-color: rgba(214, 224, 226, 0.2);
     }
 
-        .card.hovercard .avatar img {
-            width: 100px;
+        .card.hovercard .cardheader {
+            background-size: cover;
+            height: 135px;
+        }
+
+        .card.hovercard .avatar {
+            position: relative;
+            top: -50px;
+            margin-bottom: -50px;
             height: 100px;
-            max-width: 100px;
-            max-height: 100px;
-            -webkit-border-radius: 100%;
-            -moz-border-radius: 50%;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.5);
+            width: 100px;
+            left: 20px;
         }
 
-    .card.hovercard .info {
-        padding: 4px 8px 10px;
-    }
+            .card.hovercard .avatar img {
+                width: 100px;
+                height: 100px;
+                max-width: 100px;
+                max-height: 100px;
+                -webkit-border-radius: 100%;
+                -moz-border-radius: 50%;
+                border-radius: 50%;
+                border: 2px solid rgba(255,255,255,0.5);
+            }
 
-        .card.hovercard .info .title {
-            margin-bottom: 4px;
-            font-size: 24px;
-            line-height: 1;
-            color: #262626;
-            vertical-align: middle;
+        .card.hovercard .info {
+            padding: 4px 8px 10px;
         }
 
-        .card.hovercard .info .desc {
-            overflow: hidden;
-            font-size: 12px;
-            line-height: 20px;
-            color: #737373;
-            text-overflow: ellipsis;
+            .card.hovercard .info .title {
+                margin-bottom: 4px;
+                font-size: 24px;
+                line-height: 1;
+                color: #262626;
+                vertical-align: middle;
+            }
+
+            .card.hovercard .info .desc {
+                overflow: hidden;
+                font-size: 12px;
+                line-height: 20px;
+                color: #737373;
+                text-overflow: ellipsis;
+            }
+
+        .card.hovercard .bottom {
+            padding: 0 20px;
+            margin-bottom: 17px;
         }
 
-    .card.hovercard .bottom {
-        padding: 0 20px;
-        margin-bottom: 17px;
+    .twPc-divStats {
+        margin-left: 11px;
+        padding: 10px 0;
     }
 
-.twPc-divStats {
-    margin-left: 11px;
-    padding: 10px 0;
-}
-
-.twPc-Arrange {
-    box-sizing: border-box;
-    display: table;
-    margin: 0;
-    min-width: 100%;
-    padding: 0;
-    table-layout: auto;
-}
-
-ul.twPc-Arrange {
-    list-style: outside none none;
-    margin: 0;
-    padding: 0;
-}
-
-.twPc-ArrangeSizeFit {
-    display: table-cell;
-    padding: 0;
-    vertical-align: top;
-}
-
-    .twPc-ArrangeSizeFit a:hover {
-        text-decoration: none;
+    .twPc-Arrange {
+        box-sizing: border-box;
+        display: table;
+        margin: 0;
+        min-width: 100%;
+        padding: 0;
+        table-layout: auto;
     }
 
-.twPc-StatValue {
-    display: block;
-    font-size: 18px;
-    font-weight: 500;
-    transition: color 0.15s ease-in-out 0s;
-    color: #427fed;
-}
+    ul.twPc-Arrange {
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+    }
 
-.twPc-StatLabel {
-    color: #8899a6;
-    font-size: 10px;
-    letter-spacing: 0.02em;
-    overflow: hidden;
-    text-transform: uppercase;
-    transition: color 0.15s ease-in-out 0s;
-}
+    .twPc-ArrangeSizeFit {
+        display: table-cell;
+        padding: 0;
+        vertical-align: top;
+    }
 
-.twPc-divUser {
-    margin: 5px 0 0;
-}
+        .twPc-ArrangeSizeFit a:hover {
+            text-decoration: none;
+        }
 
-.twPc-divName {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 21px;
-}
+    .twPc-StatValue {
+        display: block;
+        font-size: 18px;
+        font-weight: 500;
+        transition: color 0.15s ease-in-out 0s;
+        color: #427fed;
+    }
 
-.twName {
-    color: black;
-}
+    .twPc-StatLabel {
+        color: #8899a6;
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        overflow: hidden;
+        text-transform: uppercase;
+        transition: color 0.15s ease-in-out 0s;
+    }
 
-.follow-div{text-align:center;}
-.btn-follow-pic {
-    display:inline-block;
-    width:150px;
-    height:40px;
-    margin:0 10px;
-    line-height:40px;
-    font-size:15px;
-    text-align:center;
-    color:#427fed;
-    border:1px solid;
-    border-radius: 15px;
-    background:white;
-    overflow:hidden;
-    transition:color .3s;
-}
+    .twPc-divUser {
+        margin: 5px 0 0;
+    }
 
-.btn-following {
-    text-align: center;
-    color: white;
-    background-color: #427fed
-}
+    .twPc-divName {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 21px;
+    }
 
-.btn-remove {
-    background-color: red;
-    color: white;
-    size:
-}
+    .twName {
+        color: black;
+    }
 
-.btn-remove:hover {
-    color: white;
-    text-decoration: none;
-}
+    .follow-div {
+        text-align: center;
+    }
+
+    .btn-follow-pic {
+        display: inline-block;
+        width: 150px;
+        height: 40px;
+        margin: 0 10px;
+        line-height: 40px;
+        font-size: 15px;
+        text-align: center;
+        color: #427fed;
+        border: 1px solid;
+        border-radius: 15px;
+        background: white;
+        overflow: hidden;
+        transition: color .3s;
+    }
+
+    .btn-following {
+        text-align: center;
+        color: white;
+        background-color: #427fed
+    }
+
+    .btn-remove {
+        background-color: red;
+        color: white;
+        size:
+    }
+
+        .btn-remove:hover {
+            color: white;
+            text-decoration: none;
+        }

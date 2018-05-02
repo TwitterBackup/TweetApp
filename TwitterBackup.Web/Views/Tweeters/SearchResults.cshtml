@@ -9,15 +9,29 @@
     <title>$title$</title>
 </head>
 
+
 <body>
+
     <b style="color: red">@TempData["Result"]</b>
 
-    <div id="delete-tweet-modal-container" class="modal fade hidden-print" role="dialog">
+    <!-- Modal -->
+    <div id="remove-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-            <div class="modal-content" style="padding: 10%">
 
-
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color: blanchedalmond">
+                @*<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>*@
             </div>
+
         </div>
     </div>
 
@@ -26,26 +40,16 @@
         @{
             if (Model.Any())
             {
-                @*<div class="">
-                    <div class="row">
-                        @{
-                            foreach (var tweeterViewModel in Model)
-                            {
-                                await Html.RenderPartialAsync("_FavouriteTweeter", tweeterViewModel);
-                            }
-                        }
-                    </div>
-                </div>*@
                 <table class="table">
                     <tbody>
-                    <tr>
-                        <td>
-                            @foreach (var tweeterViewModel in Model)
-                            {
-                                await Html.RenderPartialAsync("_FavouriteTweeter", tweeterViewModel);
-                            }
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @foreach (var tweeterViewModel in Model)
+                                {
+                                    await Html.RenderPartialAsync("_FavouriteTweeter", tweeterViewModel);
+                                }
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             }
@@ -56,7 +60,7 @@
         }
     </div>
 
-    <div class="modal fade">
+    <div id="add-to-favorite-error" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content" id="error-modal">
                 <div class="modal-header" style="background-color: red; color: white">
