@@ -17,6 +17,11 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+
+    @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>*@
+
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -37,9 +42,16 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="Tweeters" asp-action="Index">Favorite Tweeters</a></li>
-                        <li><a asp-area="" asp-controller="Tweets" asp-action="Index">Saved Tweets</a></li>
+                        <li><a asp-area="" asp-controller="Tweeters" asp-action="Index">Tweeters</a></li>
+                        <li><a asp-area="" asp-controller="Tweets" asp-action="Index">Tweets</a></li>
                     }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="Admin" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
+                        <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a></li>
+                    }
+
                     @*  <li>@await Html.PartialAsync("_SearchBar")</li>*@
                 </ul>
                 @await Html.PartialAsync("_SearchBar")

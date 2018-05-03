@@ -20,18 +20,15 @@ namespace TwitterBackup.Web.Controllers
     {
         private readonly ITweeterApiService tweeterApiService;
         private readonly IUserService userService;
-        private readonly IUserService userDbService;
         private readonly ITweeterService tweeterService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMappingProvider mappingProvider;
 
         public TweetersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider,
-            ITweeterService tweeterService, IUserService userDbService, IUserService userService,
-            ITweeterApiService tweeterApiService)
+            ITweeterService tweeterService, IUserService userService, ITweeterApiService tweeterApiService)
         {
             this.tweeterApiService = tweeterApiService ?? throw new ArgumentNullException(nameof(tweeterApiService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.userDbService = userDbService ?? throw new ArgumentNullException(nameof(userDbService));
             this.tweeterService = tweeterService ?? throw new ArgumentNullException(nameof(tweeterService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
@@ -105,7 +102,7 @@ namespace TwitterBackup.Web.Controllers
 
                 try
                 {
-                    userId = this.CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(name) : currentUser.Id;
+                    userId = this.CurrentUserIsAdmin() ? userService.FindUserIdByUserName(name) : currentUser.Id;
                 }
 
                 catch (ArgumentException)
@@ -227,8 +224,7 @@ namespace TwitterBackup.Web.Controllers
                 }
 
                 var tweeter = mappingProvider.MapTo<TweeterViewModel>(tweeterDto);
-                tweeter.UserName = userName;
-
+                
                 return PartialView(tweeter);
             }
             else

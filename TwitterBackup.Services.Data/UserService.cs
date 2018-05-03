@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TwitterBackup.Data.Repository;
 using TwitterBackup.DTO.User;
+using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Data.Contracts;
 
@@ -10,10 +13,14 @@ namespace TwitterBackup.Services.Data
     public class UserService : IUserService
 
     {
+        private readonly IUnitOfWork uintOfWork;
+        private readonly IMappingProvider mappingProvider;
         private readonly IRepository<ApplicationUser> userRepository;
 
-        public UserService(IRepository<ApplicationUser> userRepository)
+        public UserService(IRepository<ApplicationUser> userRepository, IMappingProvider mappingProvider, IUnitOfWork uintOfWork)
         {
+            this.uintOfWork = uintOfWork ?? throw new ArgumentNullException(nameof(uintOfWork));
+            this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
             this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
@@ -35,6 +42,35 @@ namespace TwitterBackup.Services.Data
                 throw new ArgumentNullException();
             }
             return user.Id;
+        }
+
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+        {
+            var users = await userRepository.GetAllAsync();
+            var userDtos = mappingProvider.ProjectTo<ApplicationUser, UserDto>(users);
+            return userDtos;
+        }
+
+        public async Task<IEnumerable<UserDto>> GetAllActiveUsersAsync()
+        {
+            var users = await userRepository.FindAsync(user=>user.IsDeleted==false);
+            var activeUserDtos = mappingProvider.ProjectTo<ApplicationUser, UserDto>(users);
+            return activeUserDtos;
+        }
+        
+        public async Task<IEnumerable<UserDto>> SearchUserAsync(string searchString)
+        {
+            var users = await userRepository.FindAsync(user=>user.Id == searchString || user.FirstName.Contains(searchString) || user.LastName.Contains(searchString) || user.UserName.Contains(searchString) || user.Email.Contains(searchString));
+
+            var userDtos = mappingProvider.ProjectTo<ApplicationUser,UserDto>(users);
+            return userDtos;
+        }
+
+        public async Task<UserDto> FindUserByIdAsync(string userId)
+        {
+            var activeUsers = await userRepository.FindAsync(user => user.IsDeleted == false && user.Id == userId);
+            var userDto = mappingProvider.MapTo<UserDto>(activeUsers.SingleOrDefault());
+            return userDto;
         }
 
         public bool UserIsDeleted(string userName)

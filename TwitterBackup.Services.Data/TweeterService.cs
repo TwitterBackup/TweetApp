@@ -13,15 +13,13 @@ namespace TwitterBackup.Services.Data
     public class TweeterService : ITweeterService
     {
         private readonly IRepository<UserTweeter> userTweeterRepository;
-        private readonly IRepository<ApplicationUser> userRepository;
         private readonly IRepository<Tweeter> tweeterRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMappingProvider mappingProvider;
 
-        public TweeterService(IRepository<Tweeter> tweeterRepository, IUnitOfWork unitOfWork, IMappingProvider mappingProvider, IRepository<UserTweeter> userTweeterRepository, IRepository<ApplicationUser> userRepository)
+        public TweeterService(IRepository<Tweeter> tweeterRepository, IUnitOfWork unitOfWork, IMappingProvider mappingProvider, IRepository<UserTweeter> userTweeterRepository)
         {
             this.userTweeterRepository = userTweeterRepository;
-            this.userRepository = userRepository;
             this.tweeterRepository = tweeterRepository ?? throw new ArgumentNullException(nameof(tweeterRepository));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
