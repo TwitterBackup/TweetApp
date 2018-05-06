@@ -52,9 +52,10 @@ namespace TwitterBackup.Services.Data
                 //tweeterDto.TweeterComments = string.Empty;
                 var newTweeter = mappingProvider.MapTo<Tweeter>(tweeterDto);
                 await tweeterRepository.AddAsync(newTweeter);
-                await unitOfWork.CompleteWorkAsync();
+                //await unitOfWork.CompleteWorkAsync();
 
                 await AddRelationUserTweeterAsync(userId, tweeterDto);
+                await unitOfWork.CompleteWorkAsync();
             }
 
         }
@@ -68,7 +69,7 @@ namespace TwitterBackup.Services.Data
                 SavedOn = DateTime.Now
             };
             await userTweeterRepository.AddAsync(newRelationUserTweeter);
-            await unitOfWork.CompleteWorkAsync();
+            //await unitOfWork.CompleteWorkAsync();
         }
 
         public TweeterDto GetTweeterForUser(string userId, string tweeterId)
@@ -162,11 +163,6 @@ namespace TwitterBackup.Services.Data
             await unitOfWork.CompleteWorkAsync();
         }
 
-        public void RemoveSavedTweeterForAllUsers(string tweeterId)
-        {
-            //ZA VSI4ki USERI OBIKALQME I SMENQME FLAGA
-        }
-
         public IEnumerable<TweeterDto> SearchFavoriteTweetersForUser(string userId, string searchString)
         {
             var favoriteTweeters = this.userTweeterRepository
@@ -176,6 +172,19 @@ namespace TwitterBackup.Services.Data
                                         userTweeter.Tweeter.Name.ToLower().Contains(searchString.ToLower()) ||
                                         userTweeter.Tweeter.Description.ToLower().Contains(searchString.ToLower()))
                                     );
+
+            return this.mappingProvider.ProjectTo<UserTweeter, TweeterDto>(favoriteTweeters);
+        }
+
+        public IEnumerable<TweeterDto> SearchFavoriteTweetersForAdmin(string searchString)
+        {
+            var favoriteTweeters = this.userTweeterRepository
+                .IncludeDbSet(x => x.User, x => x.Tweeter)
+                .Where(userTweeter => userTweeter.IsDeleted == false
+                                      && (userTweeter.Tweeter.ScreenName.ToLower().Contains(searchString.ToLower()) ||
+                                          userTweeter.Tweeter.Name.ToLower().Contains(searchString.ToLower()) ||
+                                          userTweeter.Tweeter.Description.ToLower().Contains(searchString.ToLower()))
+                );
 
             return this.mappingProvider.ProjectTo<UserTweeter, TweeterDto>(favoriteTweeters);
         }

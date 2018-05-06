@@ -5,7 +5,7 @@
 @if (this.User.Identity.IsAuthenticated)
 {
     <div class="col-sm-3 col-md-3">
-        <form class="navbar-form" asp-controller="Tweeters" asp-action="SearchResults" method="get" role="search">
+        <form class="navbar-form" asp-area="" asp-controller="Tweeters" asp-action="SearchResults" method="get" role="search">
             <div class="input-group">
                 <input name="searchString" type="text" class="form-control" placeholder="Search tweeter">
                 <div class="input-group-btn">

@@ -8,10 +8,8 @@ namespace TwitterBackup.DTO.User
 {
     public class UserDto
     {
-        [StringLength(20, MinimumLength = 2)]
         public string FirstName { get; set; }
 
-        [StringLength(20, MinimumLength = 2)]
         public string LastName { get; set; }
 
         public bool IsDeleted { get; set; }

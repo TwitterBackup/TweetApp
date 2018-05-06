@@ -14,23 +14,18 @@ namespace TwitterBackup.Web.Areas.Admin.Controllers
 {
     public class UsersController : AdminController
     {
-        private readonly ITweeterApiService tweeterApiService;
         private readonly IUserService userService;
-        private readonly IUserService userDbService;
-        private readonly ITweeterService tweeterService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMappingProvider mappingProvider;
 
-        public UsersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider,
-            ITweeterService tweeterService, IUserService userService, ITweeterApiService tweeterApiService)
+        public UsersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider, IUserService userService)
         {
-            this.tweeterApiService = tweeterApiService ?? throw new ArgumentNullException(nameof(tweeterApiService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.tweeterService = tweeterService ?? throw new ArgumentNullException(nameof(tweeterService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
         }
 
+        [ResponseCache(Duration = 30)]
         public async Task<IActionResult> Index(string searchString)
         {
             IEnumerable<UserDto> userDtos;
@@ -38,7 +33,7 @@ namespace TwitterBackup.Web.Areas.Admin.Controllers
 
             if (searchString == null)
             {
-                userDtos = await userService.GetAllUsersAsync();
+                userDtos = await userService.GetAllActiveUsersAsync();
                 userViewModels = mappingProvider.ProjectTo<UserDto, UserViewModel>(userDtos);
             }
             else
@@ -47,8 +42,95 @@ namespace TwitterBackup.Web.Areas.Admin.Controllers
                 userViewModels = mappingProvider.ProjectTo<UserDto, UserViewModel>(userDtos);
             }
 
-            return View(userViewModels);
+           return View(userViewModels);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string userName)
+        {
+
+            if (userName == null)
+            {
+                TempData["Result"] = "Such tweeter does not exist. ";
+                return RedirectToAction(nameof(Index));
+            }
+
+            UserDto userDto;
+
+            try
+            {
+                userDto = await userService.FindUserByNameAsync(userName);
+                var currentUser = await userManager.GetUserAsync(HttpContext.User);
+                if (currentUser.UserName != userDto.UserName)
+                {
+                    await userService.RemoveAsync(userDto);
+                }
+                else
+                {
+                    return Json("Warning! You cannot delete yourself!");
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Something went wrong! Please, try again or call developer!");
+            }
+
+            return Json("success");
+        }
+
+
+
+
+        // GET: User/Edit/5
+        public async Task<IActionResult> Edit(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return Json("UserName cannot be null or whitespace.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var userDto = await userService.FindUserByNameAsync(userName);
+                if (userDto == null)
+                {
+                    return Json("Such tweet is not found. Please check and try again!");
+                }
+
+                var editUserViewModel = mappingProvider.MapTo<EditUserViewModel>(userDto);
+
+                return PartialView("_Edit", editUserViewModel);
+            }
+            else
+            {
+                return Json("Something went wrong. No tweet was deleted");
+            }
+        }
+
+        // POST: User/Edit/5
+        [HttpPost]
+        public IActionResult Edit(EditUserViewModel userForEditViewModel)
+        {
+            if (userForEditViewModel == null)
+            {
+                return Json("Such user is not found. Please check and try again!");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var editUserDto = mappingProvider.MapTo<EditUserDto>(userForEditViewModel);
+                    userService.Update(editUserDto);
+                    return Json("success");
+                }
+                catch (ArgumentException)
+                {
+                    return Json("There's no such User.");
+                }
+            }
+
+            return Json("Something went wrong. No user was edited");
         }
     }
 }

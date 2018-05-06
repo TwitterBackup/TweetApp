@@ -59,6 +59,11 @@ namespace TwitterBackup.Web
 
                 //options.Filters.Add(new RequireHttpsAttribute());
             });
+
+            services.AddMemoryCache();
+
+            services.AddResponseCaching();
+
             services.AddAutoMapper();
 
             services.AddScoped(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
@@ -112,6 +117,8 @@ namespace TwitterBackup.Web
 
 
             app.UseAuthentication();
+
+            app.UseResponseCaching();
 
             app.UseMvc(routes =>
             {

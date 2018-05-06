@@ -5,6 +5,7 @@ using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.DTO.Tweets;
 using TwitterBackup.DTO.User;
 using TwitterBackup.Models;
+using TwitterBackup.Web.Areas.Admin.Models;
 using TwitterBackup.Web.Models.TweeterViewModels;
 using TwitterBackup.Web.Models.TweetViewModels;
 
@@ -55,6 +56,7 @@ namespace TwitterBackup.Infrastructure.Providers
                 .ForMember(destination => destination.DeletedOn, options => options.Ignore())
                 .ForMember(destination => destination.Tweets, options => options.Ignore())
                 .ForMember(destination => destination.UserTweeters, options => options.Ignore());
+
         }
     }
 }

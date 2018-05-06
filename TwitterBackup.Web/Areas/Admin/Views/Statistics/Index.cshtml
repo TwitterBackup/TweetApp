@@ -1,7 +1,129 @@
-﻿
+﻿@model IEnumerable<TwitterBackup.Web.Areas.Admin.Models.StatisticsViewModel>
+
+<div style="margin-top: 60px;"></div>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Statistics";
 }
 
-<h2>Index</h2>
+<link href="~/css/statistics.css" rel="stylesheet" />
 
+<ul class="nav1">
+    <li style="background-color: red">
+        <div class="card card-media card-stats">
+            <div>
+                <div class="card-icon">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                </div>
+                <p class="card-category">Users</p>
+                <h3 class="card-title">@ViewData["TotalUsers"]</h3>
+            </div>
+        </div>
+    </li>
+    <li style="background-color:navy">
+        <div class="card card-media card-stats">
+            <div>
+                <div class="card-icon">
+                    <img src="/images/twitter.png" alt="tweet" style="max-width: 45px;" />
+                </div>
+                <p class="card-category">Tweets</p>
+                <h3 class="card-title">@ViewData["TotalTweets"]</h3>
+            </div>
+        </div>
+    </li>
+    <li style="background-color:brown">
+        <div class="card">
+            <div>
+
+                <div class="card-icon">
+                    <span class="glyphicon glyphicon glyphicon-heart"></span>
+                    <span class="glyphicon glyphicon glyphicon-user"></span>
+                </div>
+                <p class="card-category">Tweeters</p>
+                <h3 class="card-title">@ViewData["TotalTweeters"]</h3>
+            </div>
+        </div>
+    </li>
+    <li style="background-color:yellow">
+        <div class="card card-actions card-stats">
+            <div>
+                <div class="card-icon">
+                    <span class="glyphicon glyphicon-retweet"></span>
+                </div>
+                <p class="card-category">ReTweets</p>
+                <h3 class="card-title"><span class="glyphicon glyphicon-refresh"></span>@ViewData["TotalReweets"]</h3>
+            </div>
+        </div>
+    </li>
+
+</ul>
+
+<h6 style="color: darkblue; font-style: italic">Last updated: @DateTime.Now</h6>
+
+@if (Model != null)
+{
+
+
+
+    <div class="col-md-12">
+
+        <div class="table-responsive">
+            <table id="mytable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumberOfTweeters)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumberOfTweets)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumberOfRetweets)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td style="font-weight: bold; text-align: center">
+                                @Html.DisplayFor(modelItem => item.NumberOfTweeters)
+                            </td>
+                            <td style="font-weight: bold; text-align: center">
+                                @Html.DisplayFor(modelItem => item.NumberOfTweets)
+                            </td>
+                            <td style="font-weight: bold; text-align: center">
+                                @Html.DisplayFor(modelItem => item.NumberOfRetweets)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}
+else
+{
+    <h3>ViewData["NoData"] = "No active users at this stage"</h3>
+}

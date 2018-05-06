@@ -1,28 +1,25 @@
 ﻿@using System.Collections
+@using Remotion.Linq.Parsing.Structure.NodeTypeProviders
 @using TwitterBackup.Web.Areas.Admin.Models
 @model IEnumerable<TwitterBackup.Web.Areas.Admin.Models.UserViewModel>
+
 
 @{
     ViewData["Title"] = "Index";
 }
-
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-
 
 @if (Model != null)
 {
     <form asp-action="Index" method="get">
         <div class="form-actions no-color" style="margin-top: 60px; position:relative">
             <p>
-                <input type="text" class="form-control" style="width: 30%; min-width: 100px"placeholder="Enter any string to search for user" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="text" class="form-control" style="width: 30%; min-width: 100px" placeholder="Enter any string to search for user" name="SearchString" value="@ViewData["currentFilter"]" />
                 <input type="submit" value="Search" class="btn btn-info" /> |
                 <a asp-action="Index">Back to Full List</a>
             </p>
         </div>
     </form>
-    
+
     <div class="container">
         <div class="row">
 
@@ -30,54 +27,25 @@
             <div class="col-md-12">
                 <div class="table-responsive">
 
-                    <table id="mytable" class="table table-bordred table-striped">
+                    <table id="mytable" class="table table-striped">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="checkall" /></th>
                                 <th>UserName</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Date Created</th>
                                 <th>Email</th>
-                                <th>Is Deleted?</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
+                                <th>Tweeters</th>
+                                <th>Tweets</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @foreach (var user in Model)
                             {
-                                <tr>
-                                    <td><input type="checkbox" class="checkthis" /></td>
-                                    <td>@user.UserName</td>
-                                    <td>@user.FirstName</td>
-                                    <td>@user.LastName</td>
-                                    <td>@user.SavedOn</td>
-                                    <td>@user.Email</td>
-                                    @if (user.IsDeleted == true)
-                                    {
-                                        <td>Yes</td>
-                                    }
-                                    else
-                                    {
-                                        <td>No</td>
-                                    }
-
-                                    <td>
-                                        <p data - placement="top" data-toggle="tooltip" title="Edit">
-                                            <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
-                                                <span class="glyphicon glyphicon-pencil"></span>
-                                            </button>
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <p data-placement="top" data-toggle="tooltip" title="Delete">
-                                            <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button>
-                                        </p>
-                                    </td>
-
-                                </tr>
+                                @Html.Partial("_ActiveUsers", user)
                             }
                         </tbody>
 
@@ -94,33 +62,20 @@
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input class="form-control " type="text" placeholder="Mohsin">
-                </div>
-                <div class="form-group">
-
-                    <input class="form-control " type="text" placeholder="Irshad">
-                </div>
-                <div class="form-group">
-                    <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
 
 
-                </div>
-            </div>
-            <div class="modal-footer ">
-                <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-            </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="tweeters" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+        </div>
+    </div>
+</div>
 
 
 <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
@@ -136,7 +91,8 @@
 
             </div>
             <div class="modal-footer ">
-                <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
             </div>
         </div>
@@ -145,3 +101,41 @@
     <!-- /.modal-dialog -->
 </div>
 
+<div id="alert-modal-success" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="alert-modal-success-content" style="padding: 10%; background-color: blanchedalmond">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+            <h3 style="position: center" alert-modal-success-content>Operation executed successfully!</h3>
+        </div>
+    </div>
+</div>
+
+
+<div id="alert-modal-failure" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content" id="alert-modal-failure-content" style="padding: 10%; background-color: blanchedalmond">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+            <h3 id="alert-modal-failure-message" style="position: center"></h3>
+
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>*@
+
+
+    @Html.Partial("_ValidationScriptsPartial")
+
+
+    <script src="/js/delete-user.js"></script>
+    <script src="/js/edit-user.js"></script>
+    <script src="/js/clear-modal-popup-data-on-close.js"></script>
+
+}

@@ -13,25 +13,44 @@ namespace TwitterBackup.Services.Data
     public class UserService : IUserService
 
     {
-        private readonly IUnitOfWork uintOfWork;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMappingProvider mappingProvider;
         private readonly IRepository<ApplicationUser> userRepository;
 
-        public UserService(IRepository<ApplicationUser> userRepository, IMappingProvider mappingProvider, IUnitOfWork uintOfWork)
+        public UserService(IRepository<ApplicationUser> userRepository, IMappingProvider mappingProvider, IUnitOfWork unitOfWork)
         {
-            this.uintOfWork = uintOfWork ?? throw new ArgumentNullException(nameof(uintOfWork));
+            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
             this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
-        public void Update(UserDto user)
+        public void Update(EditUserDto editUserDto)
         {
-            throw new NotImplementedException();
+            var userForEdit = userRepository.SingleOrDefault(u => u.UserName == editUserDto.UserName);
+
+            try
+            {
+                userForEdit.FirstName = editUserDto.FirstName;
+                userForEdit.LastName = editUserDto.LastName;
+                userForEdit.Email = editUserDto.Email;
+                userForEdit.ModifiedOn = DateTime.Now;
+
+                userForEdit.UserName = userForEdit.UserName; //in case of overposting attack
+
+                unitOfWork.CompleteWorkAsync();
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException();
+            }
         }
 
-        public void Delete(UserDto user)
+        public async Task RemoveAsync(UserDto userDto)
         {
-            throw new NotImplementedException();
+            var user = this.userRepository.SingleOrDefault(u => u.UserName == userDto.UserName);
+            user.IsDeleted = true;
+            user.DeletedOn = DateTime.Now;
+            await this.unitOfWork.CompleteWorkAsync();
         }
 
         public string FindUserIdByUserName(string userName)
@@ -53,17 +72,24 @@ namespace TwitterBackup.Services.Data
 
         public async Task<IEnumerable<UserDto>> GetAllActiveUsersAsync()
         {
-            var users = await userRepository.FindAsync(user=>user.IsDeleted==false);
+            var users = await userRepository.FindAsync(user => user.IsDeleted == false);
             var activeUserDtos = mappingProvider.ProjectTo<ApplicationUser, UserDto>(users);
             return activeUserDtos;
         }
-        
+
         public async Task<IEnumerable<UserDto>> SearchUserAsync(string searchString)
         {
-            var users = await userRepository.FindAsync(user=>user.Id == searchString || user.FirstName.Contains(searchString) || user.LastName.Contains(searchString) || user.UserName.Contains(searchString) || user.Email.Contains(searchString));
+            var users = await userRepository.FindAsync(user => user.Id == searchString || user.FirstName.Contains(searchString) || user.LastName.Contains(searchString) || user.UserName.Contains(searchString) || user.Email.Contains(searchString));
 
-            var userDtos = mappingProvider.ProjectTo<ApplicationUser,UserDto>(users);
+            var userDtos = mappingProvider.ProjectTo<ApplicationUser, UserDto>(users);
             return userDtos;
+        }
+
+        public async Task<UserDto> FindUserByNameAsync(string userName)
+        {
+            var activeUsers = await userRepository.FindAsync(user => user.IsDeleted == false && user.UserName == userName);
+            var userDto = mappingProvider.MapTo<UserDto>(activeUsers.SingleOrDefault());
+            return userDto;
         }
 
         public async Task<UserDto> FindUserByIdAsync(string userId)
@@ -78,5 +104,6 @@ namespace TwitterBackup.Services.Data
             var applicationUser = userRepository.SingleOrDefault(user => user.UserName == userName);
             return applicationUser.IsDeleted;
         }
+
     }
 }

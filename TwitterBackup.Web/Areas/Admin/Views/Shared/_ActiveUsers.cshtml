@@ -1,0 +1,40 @@
+﻿@model TwitterBackup.Web.Areas.Admin.Models.UserViewModel
+<tr>
+    <td>@Model.UserName</td>
+    <td>@Model.FirstName</td>
+    <td>@Model.LastName</td>
+    <td>@Model.SavedOn</td>
+    <td>@Model.Email</td>
+
+    <td>
+        <p data - placement="top" data-toggle="tooltip" title="Edit">
+            <a asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-userName="@Model.UserName" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </p>
+    </td>
+    <td>
+        <form asp-controller="Users" asp-action="Delete" method="post" class="delete-user">
+            <p data-placement="top" data-toggle="tooltip" title="Delete">
+                <button type="submit" class="btn btn-danger btn-xs" userName="@Model.UserName" data-title="Delete"><span class="glyphicon glyphicon-trash"></span></button>
+            </p>
+            <input type="hidden" value=@Model.UserName name="userName" />
+        </form>
+    </td>
+    <td>
+        <p data - placement="top" data-toggle="tooltip" title="Show All Favorite Tweeters of This User">
+            <a asp-area="" asp-controller="Tweeters" asp-action="Index" asp-route-userName="@Model.UserName" class="btn btn-primary">
+                <span class="glyphicon glyphicon glyphicon-heart"></span>
+                <span class="glyphicon glyphicon glyphicon-user"></span>
+            </a>
+        </p>
+    </td>
+    <td>
+        <p data - placement="top" data-toggle="tooltip" title="Show All Saved Tweets of This User">
+            <a asp-area="" asp-controller="Tweets" asp-action="Index" asp-route-userName="@Model.UserName" class="image">
+                <img src="/images/twitter.png" alt="tweet" style="max-width: 34px;" />
+            </a>
+        </p>
+    </td>
+
+</tr>

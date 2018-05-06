@@ -10,12 +10,10 @@ namespace TwitterBackup.Web.Areas.Admin.Models
 {
     public class UserViewModel
     {
-        public IdentityUser IdentityUser { get; set; }
-
-        [StringLength(20, MinimumLength = 2)]
+        [StringLength(15, MinimumLength = 2, ErrorMessage = "2 to 15 symbols, please")]
         public string FirstName { get; set; }
 
-        [StringLength(20, MinimumLength = 2)]
+        [StringLength(15, MinimumLength = 2, ErrorMessage = "2 to 15 symbols, please")]
         public string LastName { get; set; }
 
         public bool IsDeleted { get; set; }

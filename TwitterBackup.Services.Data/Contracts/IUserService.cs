@@ -6,9 +6,9 @@ namespace TwitterBackup.Services.Data.Contracts
 {
     public interface IUserService
     {
-        void Update(UserDto user);
+        void Update(EditUserDto editUserDto);
 
-        void Delete(UserDto user);
+        Task RemoveAsync(UserDto userDto);
 
         string FindUserIdByUserName(string userName);
 
@@ -17,6 +17,8 @@ namespace TwitterBackup.Services.Data.Contracts
         Task<IEnumerable<UserDto>> GetAllActiveUsersAsync();
 
         Task<UserDto> FindUserByIdAsync(string userId);
+
+        Task<UserDto> FindUserByNameAsync(string userName);
 
         Task<IEnumerable<UserDto>> SearchUserAsync(string searchString);
 

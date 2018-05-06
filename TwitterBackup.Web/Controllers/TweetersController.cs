@@ -42,21 +42,30 @@ namespace TwitterBackup.Web.Controllers
         }
 
         // GET: Tweeter
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName, string searchString)
         {
             IEnumerable<TweeterDto> tweetersDto;
             bool isAdmin = false;
 
             if (CurrentUserIsAdmin())
             {
-                tweetersDto = tweeterService.GetAllSavedTweetersForAdmin();
+                if (userName != null) //get tweets for specific user
+                {
+                    var userId = userService.FindUserIdByUserName(userName);
+                    tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForUser(userId, searchString) : tweeterService.GetUserFavouriteTweeters(userId);
+                }
+                else
+                {
+                    tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForAdmin(searchString) : tweeterService.GetAllSavedTweetersForAdmin();
+                }
                 isAdmin = true;
+
             }
             else
             {
                 var currentUser = await userManager.GetUserAsync(HttpContext.User);
-                tweetersDto = tweeterService.GetUserFavouriteTweeters(currentUser.Id);
-                //ViewData["IsAdmin"] = false;
+
+                tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForUser(currentUser.Id, searchString) : tweeterService.GetUserFavouriteTweeters(currentUser.Id);
             }
 
             var tweeterViewModels = mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(tweetersDto).ToList();
@@ -224,7 +233,7 @@ namespace TwitterBackup.Web.Controllers
                 }
 
                 var tweeter = mappingProvider.MapTo<TweeterViewModel>(tweeterDto);
-                
+
                 return PartialView(tweeter);
             }
             else
