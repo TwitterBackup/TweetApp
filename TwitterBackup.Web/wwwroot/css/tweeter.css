@@ -170,7 +170,7 @@
     padding-top: 0;
     overflow: hidden;
     text-align: center;
-    background-color: rgba(214, 224, 226, 0.6);
+    background-color: rgba(214, 224, 226, 0.9);
 }
             .card.people .card-info .desc {
                 display: block;
@@ -201,7 +201,7 @@
         padding-top: 0;
         overflow: hidden;
         text-align: center;
-        background-color: rgba(214, 224, 226, 0.2);
+        background-color: rgba(214, 224, 226, 0.9);
     }
 
         .card.hovercard .cardheader {
@@ -344,7 +344,6 @@
     .btn-remove {
         background-color: red;
         color: white;
-        size:
     }
 
         .btn-remove:hover {

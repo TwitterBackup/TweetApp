@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitterBackup.Data.Repository;
 using TwitterBackup.DTO.Tweets;
-using TwitterBackup.DTO.User;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Data.Contracts;
@@ -165,13 +164,15 @@ namespace TwitterBackup.Services.Data
         public IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId)
         {
             var userTweets = userTweetRepository
-                    .IncludeDbSet(x => x.Tweet, x => x.User, x => x.Tweet.Tweeter)
-                    .Where(x => x.IsDeleted == false && x.User.Id == userId && x.Tweet.Tweeter.TweeterId == tweeterId);
+                .IncludeDbSet(x => x.Tweet, x => x.User, x => x.Tweet.Tweeter)
+                .Where(x => x.IsDeleted == false && x.User.Id == userId && x.Tweet.Tweeter.TweeterId == tweeterId);
 
             var tweetDtos = mappingProvider.ProjectTo<UserTweet, TweetDto>(userTweets);
 
             return tweetDtos;
         }
+
+
 
         public async Task AddNoteToSavedTweetForUserAsync(string userId, string tweetId, string note)
         {
@@ -211,17 +212,6 @@ namespace TwitterBackup.Services.Data
                 userTweet.IsDeleted = true;
             }
             await unitOfWork.CompleteWorkAsync();
-        }
-
-        public IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId)
-        {
-            var userTweets = userTweetRepository
-                .IncludeDbSet(x => x.Tweet, x => x.User, x => x.Tweet.Tweeter)
-                .Where(x => x.IsDeleted == false && x.User.Id == userId && x.Tweet.Tweeter.TweeterId == tweeterId);
-
-            var tweetDtos = mappingProvider.ProjectTo<UserTweet, TweetDto>(userTweets);
-
-            return tweetDtos;
         }
 
         private async Task AddRelationUserTweetAsync(string userId, ApiTweetDto apiTweetDto)

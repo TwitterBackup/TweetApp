@@ -17,10 +17,17 @@
                 <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                 <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                 <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                @if (Context.User.Identity.IsAuthenticated)
+
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <li><a asp-area="" asp-controller="Tweeters" asp-action="Index">Favorite Tweeters</a></li>
-                    <li><a asp-area="" asp-controller="Tweets" asp-action="TweeterNewTweets">Donald</a></li>
+                    <li><a asp-area="" asp-controller="Tweeters" asp-action="Index">Tweeters</a></li>
+                    <li><a asp-area="" asp-controller="Tweets" asp-action="Index">Tweets</a></li>
+                }
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a asp-area="Admin" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
+                    <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a></li>
                 }
             </ul>
 
