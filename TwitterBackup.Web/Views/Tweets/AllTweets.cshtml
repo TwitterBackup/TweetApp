@@ -1,0 +1,17 @@
+﻿@model System.Collections.Generic.IEnumerable<TwitterBackup.Web.Models.TweetViewModels.TweetViewModel>
+
+
+@{
+    if (Model == null || !Model.Any())
+    {
+        <h2>No Saved Tweets</h2>
+    }
+    else
+    {
+        foreach (var tweetViewModel in Model)
+        {
+            await Html.RenderPartialAsync("~/Views/Tweets/_Tweet.cshtml", tweetViewModel);
+        }
+    }
+}
+

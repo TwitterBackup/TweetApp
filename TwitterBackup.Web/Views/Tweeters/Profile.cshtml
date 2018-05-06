@@ -21,7 +21,7 @@
                         <li role="presentation">
                             <p class="username">
                                 <span style="font-size: 18px;">@Model.Tweeter.Name</span><br>
-                                <span style="font-size: 12px;">@Model.Tweeter.ScreenName</span>
+                                <span style="font-size: 12px;">@@@Model.Tweeter.ScreenName</span>
                             </p>
                         </li>
                         <li role="presentation">
@@ -49,7 +49,7 @@
                             var btnClass = Model.Tweeter.IsLikedFromUser ? "btn-following" : "btn-follow";
                             var btnText = Model.Tweeter.IsLikedFromUser ? "Following" : "Follow";
 
-                            <form class="tweeter-form" asp-controller="Tweeters" asp-action=RemoveTweeterFromFavourite method="post" tweeter-id="123">
+                            <form class="tweeter-form" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="123">
 
                                 <div class="tweeter-model-hiden-input" style="display: none;">
                                     <input asp-for="Tweeter.TweeterId" class="form-control" />
@@ -82,8 +82,11 @@
                             {
                                 <li class="list-group-item"><span class="fa fa-check-circle-o"></span> Verified</li>
                             }
+                            if (!string.IsNullOrWhiteSpace(Model.Tweeter.Location))
+                            {
+                                <li class="list-group-item"><span class="fa fa-map-marker"></span> @Model.Tweeter.Location</li>
+                            }
                         }
-                        <li class="list-group-item"><span class="fa fa-map-marker"></span> @Model.Tweeter.Location</li>
                         <li class="list-group-item"><span class="fa fa-calendar"></span> @Model.Tweeter.CreatedAt</li>
                     </ul>
                 </div>
@@ -92,12 +95,35 @@
         </div>
         <div class="col-md-8 col-sm-12 pull-right posttimeline">
             @{
-                foreach (var tweetViewModel in Model.Tweets)
-                {
-                    tweetViewModel.Tweeter = new Tweeter();
-                    tweetViewModel.Tweeter.Name = Model.Tweeter.Name;
-                    await Html.RenderPartialAsync("~/Views/Tweets/_Tweet.cshtml", tweetViewModel);
-                }
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a href="#saved">Saved Tweets</a></li>
+                    <li><a href="#new">New Tweets</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="saved">
+                        @{
+                            foreach (var tweetViewModel in Model.SavedTweets)
+                            {
+                                tweetViewModel.Tweeter = new Tweeter();
+                                tweetViewModel.Tweeter.Name = Model.Tweeter.Name;
+                            }
+
+                            await Html.RenderPartialAsync("~/Views/Tweets/AllTweets.cshtml", Model.SavedTweets);
+                        }
+                    </div>
+                    <div class="tab-pane" id="new">
+                        @{
+                            foreach (var tweetViewModel in Model.NewTweets)
+                            {
+                                tweetViewModel.Tweeter = new Tweeter();
+                                tweetViewModel.Tweeter.Name = Model.Tweeter.Name;
+                            }
+
+                            await Html.RenderPartialAsync("~/Views/Tweets/AllTweets.cshtml", Model.NewTweets);
+                        }
+                    </div>
+                </div>
             }
         </div>
     </div>
@@ -120,13 +146,20 @@
                 if (!textArea.hasClass('hidden')) {
                     var comment = $('.comment-box').val();
 
-                    $.post(url, data, function (responce) {
+                    $.post(url,
+                        data,
+                        function (responce) {
 
-                        console.log(responce);
-                    });
+                            console.log(responce);
+                        });
                 }
 
                 $(textArea).toggleClass('hidden');
-            })
+            });
+
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
     </script>
 }

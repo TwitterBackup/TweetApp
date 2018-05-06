@@ -249,7 +249,6 @@ body {
 
 .panel-default > .panel-heading {
     color: #607D8B;
-    background-color: #ffffff;
     font-weight: 400;
     font-size: 15px;
     border-radius: 0;
@@ -430,4 +429,16 @@ body {
 
 .list-group-item {
     border: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-pills > li > span {
+    border-radius: 4px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+.panel {
+    background-color: rgba(255, 255, 255, 0.9);
 }

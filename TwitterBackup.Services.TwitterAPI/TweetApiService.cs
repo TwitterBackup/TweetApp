@@ -36,13 +36,13 @@ namespace TwitterBackup.Services.TwitterAPI
             return result;
         }
 
-        public async Task<IEnumerable<ApiTweetDto>> GetUserTimelineAsync(string tweeterName)
+        public async Task<IEnumerable<ApiTweetDto>> GetUserTimelineAsync(string tweeterId)
         {
-            this.ValidateStringForNullOrWhiteSpace(tweeterName, "Tweeter name cannot be null or white space.");
+            this.ValidateStringForNullOrWhiteSpace(tweeterId, "Tweeter id cannot be null or white space.");
 
-            tweeterName = Uri.EscapeDataString(tweeterName);
+            tweeterId = Uri.EscapeDataString(tweeterId);
 
-            var resource = $"1.1/statuses/user_timeline.json?screen_name={tweeterName}";
+            var resource = $"1.1/statuses/user_timeline.json?user_id={tweeterId}";
 
             var tweets = await this.CallApiClientGetAsync<IEnumerable<ApiTweetDto>>(resource);
 

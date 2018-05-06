@@ -42,5 +42,7 @@ namespace TwitterBackup.Web.Models.TweetViewModels
 
         [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public int RetweetCount { get; set; } //Retweet_count
+
+        public bool IsLikedFromUser { get; set; }
     }
 }

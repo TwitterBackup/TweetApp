@@ -23,6 +23,8 @@ namespace TwitterBackup.Models
         public string Text { get; set; }
 
         [Required]
+        public string TweeterId { get; set; }   
+
         public Tweeter Tweeter { get; set; } //User
 
         [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]

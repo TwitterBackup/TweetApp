@@ -1,12 +1,89 @@
-﻿.stylish-input-group .input-group-addon{
-    background: white !important; 
+﻿.widget {
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
-.stylish-input-group .form-control{
-    border-right:0; 
-    box-shadow:0 0 0; 
-    border-color:#ccc;
+
+    .widget.style1 h2 {
+        font-size: 30px;
+    }
+
+    .widget h2,
+    .widget h3 {
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+.widget-text-box {
+    padding: 20px;
+    border: 1px solid #e7eaec;
+    background: #ffffff;
 }
-.stylish-input-group button{
-    border:0;
-    background:transparent;
+
+.widget-head-color-box {
+    border-radius: 5px 5px 0 0;
+    margin-top: 10px;
+}
+
+
+input {
+    outline: none;
+}
+
+    input[type=search] {
+        -webkit-appearance: textfield;
+        -webkit-box-sizing: content-box;
+        font-family: inherit;
+        font-size: 100%;
+    }
+
+    input::-webkit-search-decoration,
+    input::-webkit-search-cancel-button {
+        display: none;
+    }
+
+.navbar-widgets {
+    float: right;
+    display: inline;
+}
+
+.search-bar {
+    display: inline;
+    padding-right: .5em;
+}
+
+input[type=search] {
+    border: solid 1px #ccc;
+    margin-top: 2px;
+    padding: 8px 10px 8px 15px;
+    background: #ededed url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 9px center;
+    background-position-x: 96%;
+    -webkit-border-radius: 10em;
+    -moz-border-radius: 10em;
+    border-radius: 10em;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+    input[type=search]:focus {
+        width: 174px;
+        background-color: #fff;
+        border-color: #00aced;
+        -webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+        -moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+        box-shadow: 0 0 5px rgba(109,207,246,.5);
+    }
+
+input:-moz-placeholder {
+    color: #999;
+}
+
+input::-webkit-input-placeholder {
+    color: #999;
+}
+
+.m-t-xs {
+    margin-top: 5px;
 }

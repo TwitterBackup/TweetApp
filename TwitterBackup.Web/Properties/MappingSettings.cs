@@ -50,6 +50,26 @@ namespace TwitterBackup.Infrastructure.Providers
                 .ForMember(destination => destination.Tweets, opt => opt.Ignore())
                 .ForMember(destination => destination.UserTweeters, opt => opt.Ignore());
 
+            this.CreateMap<ApiTweetDto, Tweet>()
+                .ForMember(destination => destination.IsDeleted, opt => opt.Ignore())
+                .ForMember(destination => destination.DeletedOn, opt => opt.Ignore())
+                .ForMember(destination => destination.TweetHashtags, opt => opt.AllowNull())
+                .ForMember(destination => destination.UserTweets, opt => opt.Ignore());
+
+            this.CreateMap<ApiTweetDto, TweetViewModel>()
+                //.ForMember(x => x.Tweeter, config => config.MapFrom(x => x.Tweeter))
+                .ForMember(x => x.CreatedAt, config => config.MapFrom(x => x.CreatedAt))
+                .ForMember(x => x.FavoriteCount, config => config.MapFrom(x => x.FavoriteCount))
+                //     .ForMember(x => x.Hashtags, config => config.MapFrom(x => x.Hashtags))
+                // .ForMember(x => x.Tweeter, config => config.MapFrom(x => x.Tweeter))
+                .ForMember(x => x.QuoteCount, config => config.MapFrom(x => x.QuoteCount))
+                .ForMember(x => x.RetweetCount, config => config.MapFrom(x => x.RetweetCount))
+                .ForMember(x => x.Text, config => config.MapFrom(x => x.Text))
+                .ForMember(x => x.TweetComments, config => config.MapFrom(x => x.TweetComments))
+                .ForMember(x => x.TweetId, config => config.MapFrom(x => x.TweetId))
+                .ForMember(x => x.TweeterName, config => config.MapFrom(x => x.TweeterName))
+                .ReverseMap();
+
             //this.CreateMap<TweetDto, TweeterViewModel>().ReverseMap();
 
             //this.CreateMap<>()

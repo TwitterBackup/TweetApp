@@ -7,6 +7,8 @@ namespace TwitterBackup.Web.Models.TweeterViewModels
     {
         public TweeterViewModel Tweeter { get; set; }
 
-        public IEnumerable<TweetViewModel> Tweets { get; set; }
+        public IEnumerable<TweetViewModel> SavedTweets { get; set; }
+
+        public IEnumerable<TweetViewModel> NewTweets { get; set; }
     }
 }
