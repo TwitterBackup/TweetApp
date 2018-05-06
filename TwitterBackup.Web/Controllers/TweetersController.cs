@@ -505,14 +505,16 @@ namespace TwitterBackup.Web.Controllers
                             Tweeter = new Tweeter()
                             {
                                 Name = apiTweetDto.Tweeter.Name,
-                                ScreenName = apiTweetDto.Tweeter.ScreenName
+                                ScreenName = apiTweetDto.Tweeter.ScreenName,
+                                ProfileImageUrl = apiTweetDto.Tweeter.ProfileImageUrl,
+                                TweeterId = apiTweetDto.TweetId
                             },
                             TweeterName = apiTweetDto.TweeterName,
                             TweetId = apiTweetDto.TweetId
                         };
 
                         if (apiTweetDto.Hashtags != null)
-                          {
+                        {
                             tweetViewModel.Hashtags = string.Join(" ", apiTweetDto.Hashtags);
                         }
 

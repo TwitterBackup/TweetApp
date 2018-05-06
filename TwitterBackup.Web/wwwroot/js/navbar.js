@@ -4,7 +4,6 @@ $(document).ready(function () {
         // checks if window is scrolled more than 500px, adds/removes solid class
         var width = $(document).width();
 
-        console.log(width)
         if ($(this).scrollTop() > 50 || width < 979) {
             $('.navbar').css('background-color', 'black');
         } else {

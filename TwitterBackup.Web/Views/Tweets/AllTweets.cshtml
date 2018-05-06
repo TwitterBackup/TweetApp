@@ -4,7 +4,7 @@
 @{
     if (Model == null || !Model.Any())
     {
-        <h2>No Saved Tweets</h2>
+        <h2>@this.ViewData["NoSavedTweetsMessage"]</h2>
     }
     else
     {
@@ -15,3 +15,9 @@
     }
 }
 
+
+@section Scripts
+    {
+    <script src="~/js/save-twet.js"></script>
+    <script src="~/js/add-tweet-note.js"></script>
+}

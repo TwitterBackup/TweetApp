@@ -65,9 +65,9 @@ namespace TwitterBackup.Services.ApiClient
 
             authenticator?.Authenticate(this.client, this.request);
 
-            var responce = this.client.Execute(this.request);
+            var response = this.client.Execute(this.request);
 
-            return responce;
+            return response;
         }
 
         public async Task<IRestResponse> PostAsync(string baseUri, string resource, IAuthenticator authenticator = null)
@@ -81,9 +81,9 @@ namespace TwitterBackup.Services.ApiClient
 
             authenticator?.Authenticate(this.client, this.request);
 
-            var responce = await this.client.ExecuteTaskAsync(this.request);
+            var response = await this.client.ExecuteTaskAsync(this.request);
 
-            return responce;
+            return response;
         }
 
         private void ValidateFullUrl(string baseUri, string resource)
