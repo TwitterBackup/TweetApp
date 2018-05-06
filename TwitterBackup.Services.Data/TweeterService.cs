@@ -86,7 +86,11 @@ namespace TwitterBackup.Services.Data
 
             userTweeter.TweeterComments = string.Empty;
             unitOfWork.CompleteWork();
-            return mappingProvider.MapTo<TweeterDto>(userTweeter);
+            var tweeterDto = mappingProvider.MapTo<TweeterDto>(userTweeter);
+
+            return tweeterDto;
+
+
         }
 
         public TweeterDto GetTweeterWithTweetsForUser(string userId, string tweeterId)

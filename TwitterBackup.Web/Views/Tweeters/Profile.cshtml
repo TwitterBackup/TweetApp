@@ -6,6 +6,16 @@
     Layout = "_Layout";
 }
 
+<div id="remove-modal" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%; background-color: blanchedalmond">
+
+
+        </div>
+    </div>
+</div>
+
+
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
     <div class="row">
@@ -45,24 +55,34 @@
                     </ul>
                     <div class="pull-right" style="margin: 30px">
                         @{
-                            var action = Model.Tweeter.IsLikedFromUser ? "RemoveTweeterFromFavourite" : "AddTweeterToFavourite";
-                            var btnClass = Model.Tweeter.IsLikedFromUser ? "btn-following" : "btn-follow";
-                            var btnText = Model.Tweeter.IsLikedFromUser ? "Following" : "Follow";
+                            var action = Model.Tweeter.IsLikedFromUser ? "Remove" : "AddTweeterToFavourite";
+                            var followBtn = Model.Tweeter.IsLikedFromUser ? "none" : "inline-block";
+                            var followingBtn = Model.Tweeter.IsLikedFromUser ? "inline-block" : "none";
 
-                            <form class="tweeter-form" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="123">
-
-                                <div class="tweeter-model-hiden-input" style="display: none;">
+                            <form class="form-follow" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="@Model.Tweeter.TweeterId">
+                                <div style="display: none;">
                                     <input asp-for="Tweeter.TweeterId" class="form-control" />
                                     <input asp-for="Tweeter.ScreenName" class="form-control" />
                                 </div>
-
                                 <div class="follow-div">
-                                    <button type="submit" class="@btnClass btn-tweeter btn-follow-pic" id="@Model.Tweeter.TweeterId">
+                                    <button style="display: @followBtn" type="submit" class="btn-follow btn-tweeter btn-follow-pic"
+                                            btn-follow-id="@Model.Tweeter.TweeterId" id="follow@(Model.Tweeter.TweeterId)">
                                         <i class="fa fa-twitter"></i>
-                                        @btnText
+                                        Add To Favorite
                                     </button>
                                 </div>
                             </form>
+
+                            <div class="follow-div">
+                                <button style="display:@followingBtn" class="btn-following btn-tweeter btn-follow-pic"
+                                        btn-following-id="@Model.Tweeter.TweeterId" id="following@(Model.Tweeter.TweeterId)">
+                                    <i class="fa fa-twitter"></i>
+                                    Favorite
+                                </button>
+                            </div>
+                            <div class="follow-div">
+                                <a style="display: none" class="btn-remove btn-follow-pic" btn-remove-id="@Model.Tweeter.TweeterId" id="remove@(Model.Tweeter.TweeterId)" asp-controller="Tweeters" asp-action="Remove" method="get" asp-route-tweeterId="@Model.Tweeter.TweeterId" asp-route-userName="@Model.Tweeter.UserName" asp-route-screeneName="@Model.Tweeter.ScreenName" class="btn-info btn-lg" data-toggle="modal" data-target="#remove-modal">Remove</a>
+                            </div>
                         }
                     </div>
                 </div>
@@ -130,36 +150,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).on('submit',
-            '.tweet-form',
-            function (event) {
-
-                event.preventDefault();
-
-                var url = this.action;
-                var data = $(this).serialize();
-                console.log(url);
-
-                var textArea = $(this.getElementsByClassName('comment-field'));
-
-                if (!textArea.hasClass('hidden')) {
-                    var comment = $('.comment-box').val();
-
-                    $.post(url,
-                        data,
-                        function (responce) {
-
-                            console.log(responce);
-                        });
-                }
-
-                $(textArea).toggleClass('hidden');
-            });
-
-        $('#myTab a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-    </script>
+    <script src="~/js/add-tweet-note.js"></script>
+    <script src="~/js/btn-follow-following.js"></script>
+    <script src="~/js/btn-follow-hover.js"></script>
 }

@@ -454,68 +454,77 @@ namespace TwitterBackup.Web.Controllers
 
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> Profile(string tweeterId)
         {
-            var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
-
-            var tweeter = this.tweeterService.GetTweeterForUser(currentUser.Id, tweeterId);
-            var savedTweets = this.tweetService.GetAllTweetsByTweeterForUser(currentUser.Id, tweeterId);
-            var newTweets = await this.tweetApiService.GetUserTimelineAsync(tweeterId);
-
-            var tweeterViewModel = this.mappingProvider.MapTo<TweeterViewModel>(tweeter);
-            tweeterViewModel.IsLikedFromUser = true;
-            var savedTweetsViewModels = this.mappingProvider.ProjectTo<TweetDto, TweetViewModel>(savedTweets).ToList();
-
-            foreach (var savedTweetsViewModel in savedTweetsViewModels)
+            try
             {
-                savedTweetsViewModel.IsLikedFromUser = true;
-            }
 
-            var newTweesViewModel = new List<TweetViewModel>();
-            if (newTweets != null)
-            {
-                foreach (var apiTweetDto in newTweets)
+                var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
+
+                var tweeter = this.tweeterService.GetTweeterForUser(currentUser.Id, tweeterId);
+                var savedTweets = this.tweetService.GetAllTweetsByTweeterForUser(currentUser.Id, tweeterId);
+                var newTweets = await this.tweetApiService.GetUserTimelineAsync(tweeterId);
+
+                var tweeterViewModel = this.mappingProvider.MapTo<TweeterViewModel>(tweeter);
+                tweeterViewModel.IsLikedFromUser = true;
+                var savedTweetsViewModels = this.mappingProvider.ProjectTo<TweetDto, TweetViewModel>(savedTweets).ToList();
+
+                foreach (var savedTweetsViewModel in savedTweetsViewModels)
                 {
-                    if (savedTweets.Any(tweet => tweet.TweetId == apiTweetDto.TweetId))
-                    {
-                        continue;
-                    }
-                    var tweetViewModel = new TweetViewModel()
-                    {
-                        CreatedAt = apiTweetDto.CreatedAt,
-                        FavoriteCount = apiTweetDto.FavoriteCount,
-                        Language = apiTweetDto.Language,
-                        QuoteCount = apiTweetDto.QuoteCount,
-                        RetweetCount = apiTweetDto.RetweetCount,
-                        Text = apiTweetDto.Text,
-                        TweetComments = apiTweetDto.TweetComments,
-                        Tweeter = new Tweeter()
-                        {
-                            Name = apiTweetDto.Tweeter.Name,
-                            ScreenName = apiTweetDto.Tweeter.ScreenName
-                        },
-                        TweeterName = apiTweetDto.TweeterName,
-                        TweetId = apiTweetDto.TweetId
-                    };
-
-                    if (apiTweetDto.Hashtags != null)
-                    {
-                        tweetViewModel.Hashtags = string.Join(" ", apiTweetDto.Hashtags);
-                    }
-
-                    newTweesViewModel.Add(tweetViewModel);
+                    savedTweetsViewModel.IsLikedFromUser = true;
                 }
+
+                var newTweesViewModel = new List<TweetViewModel>();
+                if (newTweets != null)
+                {
+                    foreach (var apiTweetDto in newTweets)
+                    {
+                        if (savedTweets.Any(tweet => tweet.TweetId == apiTweetDto.TweetId))
+                        {
+                            continue;
+                        }
+                        var tweetViewModel = new TweetViewModel()
+                        {
+                            CreatedAt = apiTweetDto.CreatedAt,
+                            FavoriteCount = apiTweetDto.FavoriteCount,
+                            Language = apiTweetDto.Language,
+                            QuoteCount = apiTweetDto.QuoteCount,
+                            RetweetCount = apiTweetDto.RetweetCount,
+                            Text = apiTweetDto.Text,
+                            TweetComments = apiTweetDto.TweetComments,
+                            Tweeter = new Tweeter()
+                            {
+                                Name = apiTweetDto.Tweeter.Name,
+                                ScreenName = apiTweetDto.Tweeter.ScreenName
+                            },
+                            TweeterName = apiTweetDto.TweeterName,
+                            TweetId = apiTweetDto.TweetId
+                        };
+
+                        if (apiTweetDto.Hashtags != null)
+                          {
+                            tweetViewModel.Hashtags = string.Join(" ", apiTweetDto.Hashtags);
+                        }
+
+                        newTweesViewModel.Add(tweetViewModel);
+                    }
+                }
+
+                var profileViewModel = new TweeterProfileViewModel()
+                {
+                    Tweeter = tweeterViewModel,
+                    SavedTweets = savedTweetsViewModels,
+                    NewTweets = newTweesViewModel
+                };
+
+                return this.View(profileViewModel);
+
+            }
+            catch (Exception)
+            {
+                return Json("This tweeter is not saved. Please first save the tweeter in order to see its profile!");
             }
 
-            var profileViewModel = new TweeterProfileViewModel()
-            {
-                Tweeter = tweeterViewModel,
-                SavedTweets = savedTweetsViewModels,
-                NewTweets = newTweesViewModel
-            };
-
-            return this.View(profileViewModel);
         }
 
         #region Helpers

@@ -22,7 +22,7 @@ $(function () {
 
                         modalContent.load(url,
                             function () {
-                                $("#add-to-favorite-error").modal("show");
+                                $("#alert-modal-failure").modal("show");
                             });
                         return;
                     }

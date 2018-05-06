@@ -51,7 +51,6 @@
         <div class="bottom">
             @{
                 var action = Model.IsLikedFromUser ? "Remove" : "AddTweeterToFavourite";
-                var btnClass = Model.IsLikedFromUser ? "btn-following" : "btn-follow";
                 var followBtn = Model.IsLikedFromUser ? "none" : "inline-block";
                 var followingBtn = Model.IsLikedFromUser ? "inline-block" : "none";
 
