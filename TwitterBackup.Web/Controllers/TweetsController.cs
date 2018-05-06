@@ -82,7 +82,13 @@ namespace TwitterBackup.Web.Controllers
                 this.TempData["Result"] = "No saved SavedTweets at this moment!";
             }
 
-            return this.View("AllTweets", tweetViewModels);
+            var likedTweets = tweetViewModels.ToList();
+
+            likedTweets.ForEach(tweet => tweet.IsLikedFromUser = true);
+
+            this.ViewData["NoSavedTweetsMessage"] = "No saved tweets";
+
+            return this.View("AllTweets", likedTweets);
         }
 
         public async Task<IActionResult> TweeterTweetsLikedFromUser(string tweeterId)
@@ -93,18 +99,31 @@ namespace TwitterBackup.Web.Controllers
 
             var tweetsViewModel = this.mappingProvider.ProjectTo<TweetDto, TweetViewModel>(tweets);
 
-            return this.PartialView("AllTweets", tweetsViewModel);
+            var likedTweets = tweetsViewModel.ToList();
+
+            likedTweets.ForEach(tweet => tweet.IsLikedFromUser = true);
+
+            this.ViewData["NoSavedTweetsMessage"] = "No saved tweets";
+
+            return this.PartialView("AllTweets", likedTweets);
         }
 
         public async Task<IActionResult> TweeterNewTweets(string tweeterId)
         {
-            var tweets = await this.tweetApiService.GetUserTimelineAsync("realDonaldTrump");
+            var tweetsNew = await this.tweetApiService.GetUserTimelineAsync(tweeterId);
 
+            var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
+
+            var tweetsSaved = this.tweetService.GetAllTweetsByTweeterForUser(currentUser.Id, tweeterId);
+
+            var unsavedTweets = tweetsNew.ToList();
+
+            unsavedTweets.RemoveAll(newTweet => tweetsSaved.Any(savedTweet => savedTweet.TweetId == newTweet.TweetId));
 
             var tweetsViewModel = new List<TweetViewModel>();
-            if (tweets != null)
+            if (unsavedTweets != null)
             {
-                foreach (var apiTweetDto in tweets)
+                foreach (var apiTweetDto in unsavedTweets)
                 {
                     var tweetViewModel = new TweetViewModel()
                     {
@@ -118,9 +137,13 @@ namespace TwitterBackup.Web.Controllers
                         Tweeter = new Tweeter()
                         {
                             Name = apiTweetDto.Tweeter.Name,
-                            ScreenName = apiTweetDto.Tweeter.ScreenName
+                            ScreenName = apiTweetDto.Tweeter.ScreenName,
+                            ProfileImageUrl = apiTweetDto.Tweeter.ProfileImageUrl,
+                            TweeterId = apiTweetDto.TweetId
                         },
                         TweeterName = apiTweetDto.TweeterName,
+                        UserName = currentUser.UserName,
+                        TweetId = apiTweetDto.TweetId
                     };
 
                     if (apiTweetDto.Hashtags != null)
@@ -133,8 +156,9 @@ namespace TwitterBackup.Web.Controllers
             }
 
             // var tweetsViewModel = this.mappingProvider.ProjectTo<ApiTweetDto, TweetViewModel>(tweets);
+            this.ViewData["NoSavedTweetsMessage"] = "No new tweets";
 
-            return this.View("AllTweets", tweetsViewModel);
+            return this.PartialView("AllTweets", tweetsViewModel);
         }
 
         // GET: SavedTweets/Edit/5

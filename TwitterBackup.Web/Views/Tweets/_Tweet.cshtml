@@ -1,8 +1,7 @@
 ﻿@model TwitterBackup.Web.Models.TweetViewModels.TweetViewModel
 
-<link rel="stylesheet" href="css/tweeterProfilePage.css" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
+<link rel="stylesheet" href="~/css/tweeterProfilePage.css" />
 <div class="tweet">
     <div class="panel panel-default">
         <div class="btn-group pull-right postbtn">
@@ -14,10 +13,10 @@
         </div>
         <div class="col-md-12">
             <div class="media">
-                <div class="media-left"> <a href="javascript:void(0)"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="media-object"> </a> </div>
+                <div class="media-left"> <a href="javascript:void(0)"> <img src="@Model.Tweeter.ProfileImageUrl" alt="asd" class="media-object"> </a> </div>
                 <div class="media-body">
                     <h4 class="media-heading">
-                        @Model.Tweeter?.Name<br>
+                        <a class="twName" asp-controller="Tweeters" asp-action="Profile" asp-route-tweeterId="@Model.Tweeter.TweeterId">@Model.Tweeter.Name</a> @@@Model.Tweeter.ScreenName<br>
                         <small><i class="fa fa-clock-o"></i> @Model.CreatedAt</small>
                     </h4>
                     <p>@Model.Text</p>
@@ -31,51 +30,53 @@
         </div>
         <div class="col-md-12">
             <div class="media">
-                <div class="media-body">
+
+                @{
+                    var hide = !string.IsNullOrEmpty(Model.TweetComments) ? "" : "hide";
+                }
+                <div class="media-body @hide" id="media-body-@Model.TweetId">
                     @{
-                        if (!string.IsNullOrEmpty(Model.TweetComments))
-                        {
-                            <h4 class="media-heading">
-                                Your Comment
-                            </h4>
-                            <p> @Model.TweetComments</p>
-                        }
+                        <h4 class="media-heading">
+                            Your Note
+                        </h4>
+                        <p id="note-content-@Model.TweetId"> @Model.TweetComments</p>
                     }
                 </div>
             </div>
         </div>
         <div class="col-md-12 border-top">
             @{
-                if (!Model.IsLikedFromUser)
-                {
-                    <div class="save-tweet">
-                        <form class="save-twee-form" asp-controller="Tweets" asp-action="Add" method="post">
-                            <div style="display: none">
-                                <input name="tweetId" value="@Model.TweetId" type="text" class="form-control" />
-                            </div>
-                            <button type="submit" class="btn-save-tweet btn btn-success pull-left"> Save</button>
-                        </form>
-                    </div>
-                }
-                else
-                {
-                    <div class="status-upload">
-                        <form class="tweet-form" asp-controller="Tweets" asp-action="Edit" method="post">
-                            <div class="comment-field hidden">
-                                <label>AddNote</label>
-                                <textarea asp-for="TweetComments" class="comment-box form-control" placeholder="Add note here."></textarea>
-                            </div>
-                            <br>
-                            <div style="display: none">
-                                <input asp-for="UserName" class="form-control" />
-                                <input asp-for="TweetId" class="form-control" />
-                                <input asp-for="Text" class="form-control" />
-                            </div>
-                            <button type="submit" class="btn-comment btn btn-success pull-right">Add Note</button>
-                        </form>
-                    </div>
-                }
+                var hideSave = Model.IsLikedFromUser ? "hide" : "";
+                var hideNode = Model.IsLikedFromUser ? "" : "hide";
+
+                <div class="save-tweet">
+                    <form class="save-tweet-form @hideSave" asp-controller="Tweets" asp-action="Add" method="post">
+                        <div style="display: none">
+                            <input name="tweetId" value="@Model.Tweeter.TweeterId" type="text" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn-save-tweet btn btn-success pull-left"> Save</button>
+                    </form>
+                </div>
+                <div class="status-uploadm">
+                    <form class="tweet-note-form @hideNode" asp-controller="Tweets" asp-action="Edit" method="post" tweet-id="@Model.TweetId">
+                        <div class="comment-field hidden">
+                            <label>AddNote</label>
+                            <textarea asp-for="TweetComments" class="comment-box form-control" id="comment-box-@Model.TweetId" placeholder="Add note here."></textarea>
+                        </div>
+                        <br>
+                        <div style="display: none">
+                            <input asp-for="UserName" class="form-control" />
+                            <input asp-for="TweetId" class="form-control" />
+                            <input asp-for="Text" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn-comment btn btn-success pull-right">Add Note</button>
+                    </form>
+                </div>
             }
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/save-twet.js"></script>
+}

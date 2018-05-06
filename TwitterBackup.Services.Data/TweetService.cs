@@ -172,8 +172,6 @@ namespace TwitterBackup.Services.Data
             return tweetDtos;
         }
 
-
-
         public async Task AddNoteToSavedTweetForUserAsync(string userId, string tweetId, string note)
         {
             var userTweetForEdit = userTweetRepository
