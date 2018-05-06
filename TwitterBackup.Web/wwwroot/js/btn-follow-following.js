@@ -5,8 +5,8 @@ $(function () {
         $(document).on("click", ".form-follow",
         function (event) { event.preventDefault();
 
-            var url = this.action;
-            var data = $(this).serialize();
+                var url = this.action;
+                var data = $(this).serialize();
             var tweeterId = this.getAttribute("tweeter-id");
             var form = $(this);
             var tweeterBtn = $("#follow" + tweeterId);

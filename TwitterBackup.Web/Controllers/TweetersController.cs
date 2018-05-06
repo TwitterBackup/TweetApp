@@ -20,18 +20,15 @@ namespace TwitterBackup.Web.Controllers
     {
         private readonly ITweeterApiService tweeterApiService;
         private readonly IUserService userService;
-        private readonly IUserService userDbService;
         private readonly ITweeterService tweeterService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMappingProvider mappingProvider;
 
         public TweetersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider,
-            ITweeterService tweeterService, IUserService userDbService, IUserService userService,
-            ITweeterApiService tweeterApiService)
+            ITweeterService tweeterService, IUserService userService, ITweeterApiService tweeterApiService)
         {
             this.tweeterApiService = tweeterApiService ?? throw new ArgumentNullException(nameof(tweeterApiService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.userDbService = userDbService ?? throw new ArgumentNullException(nameof(userDbService));
             this.tweeterService = tweeterService ?? throw new ArgumentNullException(nameof(tweeterService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
@@ -45,21 +42,30 @@ namespace TwitterBackup.Web.Controllers
         }
 
         // GET: Tweeter
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName, string searchString)
         {
             IEnumerable<TweeterDto> tweetersDto;
             bool isAdmin = false;
 
             if (CurrentUserIsAdmin())
             {
-                tweetersDto = tweeterService.GetAllSavedTweetersForAdmin();
+                if (userName != null) //get tweets for specific user
+                {
+                    var userId = userService.FindUserIdByUserName(userName);
+                    tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForUser(userId, searchString) : tweeterService.GetUserFavouriteTweeters(userId);
+                }
+                else
+                {
+                    tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForAdmin(searchString) : tweeterService.GetAllSavedTweetersForAdmin();
+                }
                 isAdmin = true;
+
             }
             else
             {
                 var currentUser = await userManager.GetUserAsync(HttpContext.User);
-                tweetersDto = tweeterService.GetUserFavouriteTweeters(currentUser.Id);
-                //ViewData["IsAdmin"] = false;
+
+                tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForUser(currentUser.Id, searchString) : tweeterService.GetUserFavouriteTweeters(currentUser.Id);
             }
 
             var tweeterViewModels = mappingProvider.ProjectTo<TweeterDto, TweeterViewModel>(tweetersDto).ToList();
@@ -105,7 +111,7 @@ namespace TwitterBackup.Web.Controllers
 
                 try
                 {
-                    userId = this.CurrentUserIsAdmin() ? userDbService.FindUserIdByUserName(name) : currentUser.Id;
+                    userId = this.CurrentUserIsAdmin() ? userService.FindUserIdByUserName(name) : currentUser.Id;
                 }
 
                 catch (ArgumentException)
@@ -227,7 +233,6 @@ namespace TwitterBackup.Web.Controllers
                 }
 
                 var tweeter = mappingProvider.MapTo<TweeterViewModel>(tweeterDto);
-                tweeter.UserName = userName;
 
                 return PartialView(tweeter);
             }

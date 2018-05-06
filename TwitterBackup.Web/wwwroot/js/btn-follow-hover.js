@@ -15,13 +15,6 @@ $(document).on("mouseleave", ".btn-remove", function () {
 
 
 
-
-//$(".btn-follow").on("click", function() {
-//        var btn = $(this);
-//        btn.html('<i class="fa fa-twitter"></i> Favorite');
-//        //btn.css("background-color", "#427fed");
-//    });
-
 $(document).on("mouseenter", ".btn-follow", function () {
     var btn = $(this);
     console.log("enter");

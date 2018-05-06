@@ -125,12 +125,11 @@
     @await Html.PartialAsync("_ValidationScriptsPartial")
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#edit-tweet-modal-container").on("change",
-                function () {
+                function() {
                     $.validator.unobtrusive.parse("#edit-form");
                 });
         });
     </script>
-
 }

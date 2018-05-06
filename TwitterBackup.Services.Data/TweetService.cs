@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitterBackup.Data.Repository;
 using TwitterBackup.DTO.Tweets;
+using TwitterBackup.DTO.User;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Data.Contracts;

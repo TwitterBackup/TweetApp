@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.DTO.Tweets;
-using TwitterBackup.Models;
 
 namespace TwitterBackup.Services.Data.Contracts
 {

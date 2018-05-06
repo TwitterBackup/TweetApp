@@ -1,7 +1,11 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Reflection;
+using AutoMapper;
 using TwitterBackup.DTO.Tweeters;
 using TwitterBackup.DTO.Tweets;
+using TwitterBackup.DTO.User;
 using TwitterBackup.Models;
+using TwitterBackup.Web.Areas.Admin.Models;
 using TwitterBackup.Web.Models.TweeterViewModels;
 using TwitterBackup.Web.Models.TweetViewModels;
 
@@ -38,24 +42,21 @@ namespace TwitterBackup.Infrastructure.Providers
             this.CreateMap<TweetDto, TweetViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
-            this.CreateMap<TweeterDto, TweeterViewModel>()
+            this.CreateMap<TweetDto, EditTweetViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
-            this.CreateMap<TweetDto, EditTweetViewModel>()
+            this.CreateMap<TweeterDto, TweeterViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
             this.CreateMap<TweeterDto, EditTweeterViewModel>()
                 .ForMember(destination => destination.UserName, options => options.MapFrom(source => source.User.UserName));
 
             this.CreateMap<TweeterDto, Tweeter>()
-                .ForMember(destination => destination.IsDeleted, opt => opt.Ignore())
-                .ForMember(destination => destination.DeletedOn, opt => opt.Ignore())
-                .ForMember(destination => destination.Tweets, opt => opt.Ignore())
-                .ForMember(destination => destination.UserTweeters, opt => opt.Ignore());
+                .ForMember(destination => destination.IsDeleted, options => options.Ignore())
+                .ForMember(destination => destination.DeletedOn, options => options.Ignore())
+                .ForMember(destination => destination.Tweets, options => options.Ignore())
+                .ForMember(destination => destination.UserTweeters, options => options.Ignore());
 
-            //this.CreateMap<TweetDto, TweeterViewModel>().ReverseMap();
-
-            //this.CreateMap<>()
         }
     }
 }

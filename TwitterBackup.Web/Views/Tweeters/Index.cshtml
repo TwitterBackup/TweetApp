@@ -31,6 +31,17 @@
 @{
     if (Model != null)
     {
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color" style="margin-top: 60px; position:relative">
+                <p>
+                    <input type="text" class="form-control" style="width: 30%; min-width: 100px" placeholder="Enter any string to search for tweeter" name="SearchString" value="@ViewData["currentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-info" /> |
+                    <a asp-action="Index">Back to Full List</a>
+                </p>
+            </div>
+        </form>
+
+        
         <table class="table">
             <tbody>
                 <tr>

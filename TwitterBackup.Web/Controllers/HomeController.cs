@@ -6,6 +6,7 @@ using TwitterBackup.Web.Models;
 
 namespace TwitterBackup.Web.Controllers
 {
+    [ResponseCache(Duration = 120)]
     public class HomeController : Controller
     {
         public IConfiguration Configuration { get; set; }
