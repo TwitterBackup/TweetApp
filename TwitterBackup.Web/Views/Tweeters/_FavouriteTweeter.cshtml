@@ -18,7 +18,7 @@
             <div class="twPc-divUser">
 
                 <div class="twPc-divName">
-                    <a class="twName" href="https://twitter.com/@Model.ScreenName">@Model.Name</a>
+                    <a class="twName" asp-controller="Tweeters" asp-action="Profile" asp-route-tweeterId="@Model.TweeterId">@Model.Name</a>
                 </div>
                 <span>
                     <a class="twScreenName" href="https://twitter.com/@Model.ScreenName"><span>@@@Model.ScreenName</span></a>

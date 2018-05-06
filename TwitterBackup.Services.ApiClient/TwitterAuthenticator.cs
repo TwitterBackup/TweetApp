@@ -1,22 +1,16 @@
 ﻿using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using TwitterBackup.Services.ApiClient.Contracts;
 
 namespace TwitterBackup.Services.ApiClient
 {
-    public class TwitterAuthenticator : Contracts.ITwitterAuthenticator
+    public class TwitterAuthenticator : ITwitterAuthenticator
     {
         private const string ClientNullExceptionMessage = "Could not authenticate null Client";
         private const string RequestNullExceptionMessage = "Could not authenticate null Request";
-
-        private const string BaseFormat =
-        "oauth_consumer_key={0}&" +
-        "oauth_nonce={1}&" +
-        "oauth_signature_method={2}&" +
-        "oauth_timestamp={3}&" +
-        "oauth_token={4}&" +
-        "oauth_version={5}";
 
         private const string HeaderFormat =
         "OAuth " +
@@ -68,16 +62,15 @@ namespace TwitterBackup.Services.ApiClient
             var oAuthNonce = this.GenerateOAuthNonce();
             var oAuthTimeStamp = this.CalculateOAuthTimeStamp();
 
-            var baseFormat = BaseFormat;
-
-            var baseString = string.Format(baseFormat,
-                this.OauthConsumerKey,
-                oAuthNonce,
-                this.OauthSignatureMethod,
-                oAuthTimeStamp,
-                this.ОauthToken,
-                this.OauthVersion
-            );
+            var baseformatParameters = new List<string>
+            {
+                "oauth_consumer_key=" + this.OauthConsumerKey,
+                "oauth_nonce=" + oAuthNonce,
+                "oauth_signature_method=" + this.OauthSignatureMethod,
+                "oauth_timestamp=" + oAuthTimeStamp,
+                "oauth_token=" + this.ОauthToken,
+                "oauth_version=" + this.OauthVersion
+            };
 
             var resource = request.Resource;
 
@@ -89,12 +82,7 @@ namespace TwitterBackup.Services.ApiClient
 
                 foreach (var parameter in parameters)
                 {
-                    var sides = parameter.Split("=");
-
-                    if (sides.Length == 2)
-                    {
-                        baseString += $"&{sides[0]}={sides[1]}";
-                    }
+                    baseformatParameters.Add(parameter);
                 }
             }
 
@@ -102,6 +90,9 @@ namespace TwitterBackup.Services.ApiClient
 
             var fullUrl = client.BaseUrl + request.Resource;
             var resourceUrl = fullUrl.Split("?")[0];
+
+            baseformatParameters.Sort();
+            var baseString = string.Join("&", baseformatParameters);
 
             baseString = string.Concat(method, "&", Uri.EscapeDataString(resourceUrl), "&", Uri.EscapeDataString(baseString));
 

@@ -174,7 +174,7 @@ namespace TwitterBackup.Data.Repository
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             entities.Add(entity);
-            await context.SaveChangesAsync();
+            // await context.SaveChangesAsync();
             return entity;
         }
 

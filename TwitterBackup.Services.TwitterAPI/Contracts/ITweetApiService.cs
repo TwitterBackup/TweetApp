@@ -8,7 +8,7 @@ namespace TwitterBackup.Services.TwitterAPI.Contracts
     {
         Task<ApiTweetDto> GetTweetByIdAsync(string tweetId);
 
-        Task<IEnumerable<ApiTweetDto>> GetUserTimelineAsync(string tweeterName);
+        Task<IEnumerable<ApiTweetDto>> GetUserTimelineAsync(string tweeterId);
 
         Task<IEnumerable<ApiTweetDto>> SearchTweetsAsync(string searchCriteria);
 

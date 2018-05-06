@@ -74,33 +74,37 @@ namespace TwitterBackup.Services.Data
             {
                 //no such tweet => 1. create it, 2. add relation User - Tweet, 3. Add its hashtags
                 var newTweet = mappingProvider.MapTo<Tweet>(apiTweetDto);
+                newTweet.TweeterId = apiTweetDto.Tweeter.TweeterId;
+                newTweet.Tweeter = null;
+
                 await tweetRepository.AddAsync(newTweet);
                 await unitOfWork.CompleteWorkAsync();
 
                 await AddRelationUserTweetAsync(userId, apiTweetDto);
-                if (apiTweetDto.Hashtags.Count > 0)
+                if (apiTweetDto.Hashtags != null && apiTweetDto.Hashtags.Count > 0)
                 {
                     await AddHashtagsToTweetAsync(apiTweetDto.Hashtags, apiTweetDto.TweetId);
                 }
             }
         }
 
-        private async Task AddHashtagsToTweetAsync(ICollection<Hashtag> hashtags, string tweetId)
+        private async Task AddHashtagsToTweetAsync(ICollection<HashtagDto> hashtags, string tweetId)
         {
             foreach (var tag in hashtags)
             {
+                var tagModel = this.mappingProvider.MapTo<Hashtag>(tag);
                 //check whether hashtag exist
                 if (!hashtagRepository.Any(t => t.Text == tag.Text))
                 {
-                    await hashtagRepository.AddAsync(tag);
+                    await hashtagRepository.AddAsync(tagModel);
                 }
-                await AddRelationTweetHashtagAsync(tweetId, tag);
+                await AddRelationTweetHashtagAsync(tweetId, tagModel);
             }
         }
 
         private async Task AddRelationTweetHashtagAsync(string tweetId, Hashtag tag)
         {
-            //add new relation Tweet - Hashtag
+            //add new relation Tweet - HashtagDto
             var tweetHashtag = new TweetHashtag()
             {
                 HashtagId = hashtagRepository.SingleOrDefault(t => t.Text == tag.Text).HashtagId,
@@ -207,6 +211,17 @@ namespace TwitterBackup.Services.Data
                 userTweet.IsDeleted = true;
             }
             await unitOfWork.CompleteWorkAsync();
+        }
+
+        public IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId)
+        {
+            var userTweets = userTweetRepository
+                .IncludeDbSet(x => x.Tweet, x => x.User, x => x.Tweet.Tweeter)
+                .Where(x => x.IsDeleted == false && x.User.Id == userId && x.Tweet.Tweeter.TweeterId == tweeterId);
+
+            var tweetDtos = mappingProvider.ProjectTo<UserTweet, TweetDto>(userTweets);
+
+            return tweetDtos;
         }
 
         private async Task AddRelationUserTweetAsync(string userId, ApiTweetDto apiTweetDto)

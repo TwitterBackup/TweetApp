@@ -1,7 +1,7 @@
 ﻿.card {
     padding-top: 20px;
     margin: 10px 0 20px 0;
-    background-color: rgba(214, 224, 226, 0.2);
+    background-color: rgba(214, 224, 226, 0.6);
     border-top-width: 0;
     border-bottom-width: 2px;
     -webkit-border-radius: 3px;
@@ -165,6 +165,13 @@
                 color: #404040;
             }
 
+.card.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgba(214, 224, 226, 0.6);
+}
             .card.people .card-info .desc {
                 display: block;
                 margin: 8px 14px 0 14px;

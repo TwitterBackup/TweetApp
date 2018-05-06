@@ -23,5 +23,7 @@ namespace TwitterBackup.Services.Data.Contracts
         Task RemoveSavedTweetForUserAsync(string userId, string tweetId);
 
         Task RemoveSavedTweetForAllUsersAsync(string tweetId);
+
+        IEnumerable<TweetDto> GetAllTweetsByTweeterForUser(string userId, string tweeterId);
     }
 }

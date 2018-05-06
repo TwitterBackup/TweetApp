@@ -1,0 +1,52 @@
+body {
+    background-color: transparent;
+}
+
+.brand-heading {
+    color: white;
+    text-transform: uppercase;
+}
+
+
+
+.intro {
+    display: table;
+    height: auto;
+    padding: 100px 0;
+    color: #fff;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover
+}
+
+    .intro .intro-body {
+        display: table-cell;
+        vertical-align: middle;
+        position: absolute;
+        top: 100px;
+        left: 50px;
+    }
+
+        .intro .intro-body .brand-heading {
+            font-size: 40px
+        }
+
+        .intro .intro-body .intro-text {
+            font-size: 18px
+        }
+
+@media (min-width:768px) {
+    .intro {
+        height: 100%;
+        padding: 0
+    }
+
+        .intro .intro-body .brand-heading {
+            font-size: 100px
+        }
+
+        .intro .intro-body .intro-text {
+            font-size: 26px
+        }
+}

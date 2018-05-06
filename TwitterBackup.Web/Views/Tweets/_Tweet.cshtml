@@ -1,0 +1,81 @@
+﻿@model TwitterBackup.Web.Models.TweetViewModels.TweetViewModel
+
+<link rel="stylesheet" href="css/tweeterProfilePage.css" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="tweet">
+    <div class="panel panel-default">
+        <div class="btn-group pull-right postbtn">
+            <button type="button" class="dotbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="dots"></span> </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a href="javascript:void(0)">Remove</a></li>
+                <li><a href="javascript:void(0)">Remove for all</a></li>
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <div class="media">
+                <div class="media-left"> <a href="javascript:void(0)"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="media-object"> </a> </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        @Model.Tweeter?.Name<br>
+                        <small><i class="fa fa-clock-o"></i> @Model.CreatedAt</small>
+                    </h4>
+                    <p>@Model.Text</p>
+                    <ul class="nav nav-pills pull-left">
+                        <li><span title=""><i class="fa fa-thumbs-o-up"></i> @Model.FavoriteCount</span></li>
+                        <li><span title=""><i class="fa fa-retweet"></i> @Model.RetweetCount</span></li>
+                        <li><span title=""><i class="fa fa-quote-left"></i> @Model.QuoteCount</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="media">
+                <div class="media-body">
+                    @{
+                        if (!string.IsNullOrEmpty(Model.TweetComments))
+                        {
+                            <h4 class="media-heading">
+                                Your Comment
+                            </h4>
+                            <p> @Model.TweetComments</p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 border-top">
+            @{
+                if (!Model.IsLikedFromUser)
+                {
+                    <div class="save-tweet">
+                        <form class="save-twee-form" asp-controller="Tweets" asp-action="Add" method="post">
+                            <div style="display: none">
+                                <input name="tweetId" value="@Model.TweetId" type="text" class="form-control" />
+                            </div>
+                            <button type="submit" class="btn-save-tweet btn btn-success pull-left"> Save</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="status-upload">
+                        <form class="tweet-form" asp-controller="Tweets" asp-action="Edit" method="post">
+                            <div class="comment-field hidden">
+                                <label>AddNote</label>
+                                <textarea asp-for="TweetComments" class="comment-box form-control" placeholder="Add note here."></textarea>
+                            </div>
+                            <br>
+                            <div style="display: none">
+                                <input asp-for="UserName" class="form-control" />
+                                <input asp-for="TweetId" class="form-control" />
+                                <input asp-for="Text" class="form-control" />
+                            </div>
+                            <button type="submit" class="btn-comment btn btn-success pull-right">Add Note</button>
+                        </form>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -178,6 +178,8 @@ namespace TwitterBackup.Services.Data
 
         public IEnumerable<TweeterDto> SearchFavoriteTweetersForAdmin(string searchString)
         {
+            searchString = searchString.ToLower();
+
             var favoriteTweeters = this.userTweeterRepository
                 .IncludeDbSet(x => x.User, x => x.Tweeter)
                 .Where(userTweeter => userTweeter.IsDeleted == false

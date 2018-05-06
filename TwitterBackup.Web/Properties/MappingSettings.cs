@@ -57,6 +57,12 @@ namespace TwitterBackup.Infrastructure.Providers
                 .ForMember(destination => destination.Tweets, options => options.Ignore())
                 .ForMember(destination => destination.UserTweeters, options => options.Ignore());
 
+            this.CreateMap<ApiTweetDto, Tweet>()
+                .ForMember(destination => destination.IsDeleted, opt => opt.Ignore())
+                .ForMember(destination => destination.DeletedOn, opt => opt.Ignore())
+                .ForMember(destination => destination.TweetHashtags, opt => opt.AllowNull())
+                .ForMember(destination => destination.UserTweets, opt => opt.Ignore());
+
         }
     }
 }
