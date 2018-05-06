@@ -49,61 +49,6 @@ namespace TwitterBackup.Services.Data
             unitOfWork.CompleteWork();
             return mappingProvider.MapTo<TweetDto>(userTweet);
         }
-
-        //public IEnumerable<TweetDto> GetAllTweets()
-        //{
-        //    var userTweetsList = userTweetRepository
-        //        .IncludeDbSet(x => x.User, x => x.Tweet, x => x.Tweet.Tweeter, x => x.Tweet.TweetHashtags)
-        //        .Where(tweet => tweet.IsDeleted == false).ToList();
-
-        //    var tweetDtosList = this.mappingProvider.ProjectTo<UserTweet, TweetDto>(userTweetsList).ToList();
-
-        //    var tweetsDtosWithHashtags = GetHashtagsToTweetDtos(tweetDtosList, userTweetsList);
-
-        //    return tweetsDtosWithHashtags;
-        //}
-
-        //private IEnumerable<TweetDto> GetHashtagsToTweetDtos(List<TweetDto> tweetDtosList, List<UserTweet> userTweetsList)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<IEnumerable<TweetDto>> GetTweetsByUserIdAsync(string userId)
-        //{
-        //    var userTweets = await this.userTweetRepository
-        //            .FindAsync(userTweet => (userTweet.User.Id == userId) && userTweet.IsDeleted == false);
-        //    var savedTweetsList = userTweets.ToList();
-
-        //    var tweetDtosList = this.mappingProvider.ProjectTo<UserTweet, TweetDto>(savedTweetsList).ToList();
-
-        //    var tweetsDtosWithHashtags = GetHashtagsToTweetDtos(tweetDtosList, savedTweetsList);
-
-        //    return tweetsDtosWithHashtags;
-        //}
-
-        //public void UpdateTweet(EditTweeterDto editTweetDto, string userId)
-        //{
-        //    var userTweetForEdit = userTweetRepository.GetById(editTweetDto.TweetId);
-
-        //    userTweetForEdit.TweetComments = editTweetDto.TweetComments;
-        //    userTweetForEdit.ModifiedOn = DateTime.Now;
-
-        //    unitOfWork.CompleteWork();
-        //}
-
-        //public void SoftDeleteTweetByIdPerUserId(string tweetId, string userId)
-        //{
-        //    var userTweet = userTweetRepository.GetByCompositeId(userId, tweetId);
-
-        //    if (userTweet == null)
-        //    {
-        //        throw new ArgumentException();
-        //    }
-        //    userTweet.IsDeleted = true;
-        //    userTweet.DeletedOn = DateTime.Now;
-        //    unitOfWork.CompleteWork();
-        //}
-
         public async Task AddTweetForUserAsync(string userId, ApiTweetDto apiTweetDto)
         {
             //check whether such tweetId exist
