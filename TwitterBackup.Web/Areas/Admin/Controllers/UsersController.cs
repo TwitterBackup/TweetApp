@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using TwitterBackup.DTO.User;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
@@ -14,12 +15,14 @@ namespace TwitterBackup.Web.Areas.Admin.Controllers
 {
     public class UsersController : AdminController
     {
+        private readonly IMemoryCache memoryCache;
         private readonly IUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMappingProvider mappingProvider;
 
-        public UsersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider, IUserService userService)
+        public UsersController(UserManager<ApplicationUser> userManager, IMappingProvider mappingProvider, IUserService userService, IMemoryCache memoryCache)
         {
+            this.memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
