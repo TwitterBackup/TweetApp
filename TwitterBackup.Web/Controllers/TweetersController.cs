@@ -198,7 +198,17 @@ namespace TwitterBackup.Web.Controllers
             if (userName == null) //this happens only when Add tweeter to favorites and immediately try to remove it (without refresh)
                 userName = userManager.GetUserName(HttpContext.User);
 
-            ViewData["returnUrl"] = referer;
+            if (referer.Contains("Profile"))
+            {
+                ViewData["returnUrl"] = referer.Substring(0, referer.IndexOf("Profile"));
+
+            }
+            else
+            {
+                ViewData["returnUrl"] = referer;
+            }
+
+            
 
             if (string.IsNullOrWhiteSpace(userName))
             {
