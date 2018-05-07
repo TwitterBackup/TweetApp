@@ -33,6 +33,8 @@ A) **Documentation** of the project and project architecture (as .md file, inclu
 
 B) Setup   **CI/CD** with **Jenkins** on Kestrel behind a local IIS instance 
 
+https://github.com/TwitterBackup/TweetApp/blob/dev/Documentation/CI_workflow.png
+
 C) Functionality that provides **Login and register with a Twitter   Account /Social Login/ ** 
 
 D) Deployment in the Cloud (Azure)
