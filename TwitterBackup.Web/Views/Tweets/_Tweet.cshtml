@@ -4,11 +4,13 @@
 <link rel="stylesheet" href="~/css/tweeterProfilePage.css" />
 <div class="tweet">
     <div class="panel panel-default">
-        <div class="btn-group pull-right postbtn">
+        @{
+            var hideRemove = Model.IsLikedFromUser ? "" : "hide";
+        }
+        <div class="btn-group pull-right postbtn @hideRemove" id="remove-menu-@Model.TweetId">
             <button type="button" class="dotbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="dots"></span> </button>
             <ul class="dropdown-menu pull-right" role="menu">
-                <li><a href="javascript:void(0)">Remove</a></li>
-                <li><a href="javascript:void(0)">Remove for all</a></li>
+                <li><a class="remove-tweet" href="" type="button" id="remove-tweet-@Model.TweetId" tweetId="@Model.TweetId">Remove</a></li>
             </ul>
         </div>
         <div class="col-md-12">
@@ -50,9 +52,9 @@
                 var hideNote = Model.IsLikedFromUser ? "" : "hide";
 
                 <div class="save-tweet">
-                    <form class="save-tweet-form @hideSave" asp-controller="Tweets" asp-action="Add" method="post" tweet-id="@Model.TweetId">
+                    <form class="save-tweet-form @hideSave" asp-controller="Tweets" asp-action="Add" method="post" tweet-id="@Model.TweetId" id="save-@Model.TweetId">
                         <div style="display: none">
-                            <input name="tweetId" value="@Model.Tweeter.TweeterId" type="text" class="form-control" />
+                            <input name="tweetId" value="@Model.TweetId" type="text" class="form-control" />
                         </div>
                         <button type="submit" class="btn-save-tweet btn btn-primary pull-left"> Save</button>
                     </form>
@@ -81,6 +83,40 @@
     </div>
 </div>
 
+<div class="modal" id="modal-@Model.TweetId">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%; background-color: blanchedalmond">
+
+            <h3 position="center">Please, confirm removal of this tweet!</h3>
+            <div>
+
+                <dl class="dl-horizontal">
+                    <dt>
+                        Name
+                    </dt>
+                    <dd>
+                        @Model.Tweeter.Name
+                    </dd>
+                    <dt>
+                        Tweet
+                    </dt>
+                    <dd>
+                        @Model.Text
+                    </dd>
+                </dl>
+
+                <form class="remove-tweet-form" asp-controller="Tweets" asp-action="Remove" method="post" tweet-id="@Model.TweetId">
+                    <input type="hidden" id="UserName" name="userName" value="@Model.UserName">
+                    <input type="hidden" data-val="true" data-val-required="The TweetId field is required." id="TweeterId" name="tweetId" value="@Model.TweetId">
+                    <input type="submit" value="Confirm" class="btn btn-default" autofocus="">
+                    <input type="button" class="btn btn-default" value="Close" data-dismiss="modal">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
+    <script src="~/js/add-tweet-note.js"></script>
     <script src="~/js/save-twet.js"></script>
+    <script src="~/js/remove-tweet.js"></script>
 }

@@ -121,38 +121,34 @@ namespace TwitterBackup.Web.Controllers
             unsavedTweets.RemoveAll(newTweet => tweetsSaved.Any(savedTweet => savedTweet.TweetId == newTweet.TweetId));
 
             var tweetsViewModel = new List<TweetViewModel>();
-            if (unsavedTweets != null)
+            foreach (var apiTweetDto in unsavedTweets)
             {
-                foreach (var apiTweetDto in unsavedTweets)
+                var tweetViewModel = new TweetViewModel()
                 {
-                    var tweetViewModel = new TweetViewModel()
+                    CreatedAt = apiTweetDto.CreatedAt,
+                    FavoriteCount = apiTweetDto.FavoriteCount,
+                    Language = apiTweetDto.Language,
+                    QuoteCount = apiTweetDto.QuoteCount,
+                    RetweetCount = apiTweetDto.RetweetCount,
+                    Text = apiTweetDto.Text,
+                    TweetComments = apiTweetDto.TweetComments,
+                    Tweeter = new Tweeter()
                     {
-                        CreatedAt = apiTweetDto.CreatedAt,
-                        FavoriteCount = apiTweetDto.FavoriteCount,
-                        Language = apiTweetDto.Language,
-                        QuoteCount = apiTweetDto.QuoteCount,
-                        RetweetCount = apiTweetDto.RetweetCount,
-                        Text = apiTweetDto.Text,
-                        TweetComments = apiTweetDto.TweetComments,
-                        Tweeter = new Tweeter()
-                        {
-                            Name = apiTweetDto.Tweeter.Name,
-                            ScreenName = apiTweetDto.Tweeter.ScreenName,
-                            ProfileImageUrl = apiTweetDto.Tweeter.ProfileImageUrl,
-                            TweeterId = apiTweetDto.TweetId
-                        },
-                        TweeterName = apiTweetDto.TweeterName,
-                        UserName = currentUser.UserName,
-                        TweetId = apiTweetDto.TweetId
-                    };
+                        Name = apiTweetDto.Tweeter.Name,
+                        ScreenName = apiTweetDto.Tweeter.ScreenName,
+                        ProfileImageUrl = apiTweetDto.Tweeter.ProfileImageUrl,
+                    },
+                    TweeterName = apiTweetDto.TweeterName,
+                    UserName = currentUser.UserName,
+                    TweetId = apiTweetDto.TweetId
+                };
 
-                    if (apiTweetDto.Hashtags != null)
-                    {
-                        tweetViewModel.Hashtags = string.Join(" ", apiTweetDto.Hashtags);
-                    }
-
-                    tweetsViewModel.Add(tweetViewModel);
+                if (apiTweetDto.Hashtags != null)
+                {
+                    tweetViewModel.Hashtags = string.Join(" ", apiTweetDto.Hashtags);
                 }
+
+                tweetsViewModel.Add(tweetViewModel);
             }
 
             // var tweetsViewModel = this.mappingProvider.ProjectTo<ApiTweetDto, TweetViewModel>(tweets);
