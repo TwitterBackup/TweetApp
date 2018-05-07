@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using TwitterBackup.Models;
 
 namespace TwitterBackup.DTO.Tweeters
 {
     public class TweeterDto
     {
+        private string profileImageUrl;
+
         public string UserName { get; set; }
 
         public ApplicationUser User { get; set; }
@@ -23,7 +25,11 @@ namespace TwitterBackup.DTO.Tweeters
         public string ScreenName { get; set; }
 
         [JsonProperty("profile_image_url_https")]
-        public string ProfileImageUrl { get; set; }
+        public string ProfileImageUrl
+        {
+            get => this.profileImageUrl;
+            set => this.profileImageUrl = value?.Replace("_normal", "");
+        }
 
         [JsonProperty("profile_banner_url")]
         public string ProfileBannerUrl { get; set; }

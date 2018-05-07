@@ -443,9 +443,13 @@ body {
 }
 
 .btn-save-tweet {
-    margin: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-retweet-tweet {
+    margin-bottom: 10px;
 }
 
 .btn-comment {
-    margin: 10px;
+    margin-bottom: 10px;
 }

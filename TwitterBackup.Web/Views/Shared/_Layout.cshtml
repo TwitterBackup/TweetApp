@@ -29,16 +29,10 @@
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
     @await Html.PartialAsync("_NavBarPartial")
 
-    <div class="container body-content" style="z-index: -1">
+    <div class="container body-content">
         @RenderBody()
 
     </div>
-    <footer>
-        <hr />
-        <div class="container text-center">
-            <p>Copyright &copy; Your Website 2016</p>
-        </div>
-    </footer>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -67,4 +61,10 @@
 
     @RenderSection("Scripts", required: false)
 </body>
+<footer>
+    <hr />
+    <div class="container text-center">
+        <p>Copyright &copy; Your Website 2016</p>
+    </div>
+</footer>
 </html>

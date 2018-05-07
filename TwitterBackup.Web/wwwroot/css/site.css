@@ -111,11 +111,10 @@
 }
 
 footer {
-    position: fixed;
+    position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #002a43;
     color: white;
     text-align: center;
     background: inherit;
@@ -131,4 +130,27 @@ html {
 
 body {
     background-color: transparent;
+}
+
+html,
+body {
+    margin:0;
+    padding:0;
+    height:100%;
+}
+.container {
+    min-height:100%;
+    position:relative;
+}
+header {
+    padding:10px;
+}
+body {
+    padding:10px;   /* Height of the footer */
+}
+footer {
+    position:relative;
+    bottom:0;
+    width:100%;
+    height:60px;   /* Height of the footer */
 }

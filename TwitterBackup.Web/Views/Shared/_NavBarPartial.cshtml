@@ -15,8 +15,7 @@
         <div class="collapse navbar-collapse navbar-main-collapse">
             <ul class="nav navbar-nav">
                 <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+
 
                 @if (User.Identity.IsAuthenticated)
                 {
@@ -26,9 +25,11 @@
 
                 @if (User.IsInRole("Admin"))
                 {
-                    <li><a asp-area="Admin" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
                     <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a></li>
+                    <li><a asp-area="Admin" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
                 }
+                <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
             </ul>
 
             <div class="nav navbar-nav navbar-right">

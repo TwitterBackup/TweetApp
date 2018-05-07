@@ -54,6 +54,8 @@ namespace TwitterBackup.Web.Controllers
             IEnumerable<TweeterDto> tweetersDto;
             bool isAdmin = false;
 
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+
             if (this.CurrentUserIsAdmin())
             {
                 if (userName != null) //get tweets for specific user
@@ -63,14 +65,13 @@ namespace TwitterBackup.Web.Controllers
                 }
                 else
                 {
-                    tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForAdmin(searchString) : tweeterService.GetAllSavedTweetersForAdmin();
+                    tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForUser(currentUser.Id, searchString) : tweeterService.GetUserFavouriteTweeters(currentUser.Id);
                 }
                 isAdmin = true;
 
             }
             else
             {
-                var currentUser = await userManager.GetUserAsync(HttpContext.User);
 
                 tweetersDto = searchString != null ? tweeterService.SearchFavoriteTweetersForUser(currentUser.Id, searchString) : tweeterService.GetUserFavouriteTweeters(currentUser.Id);
             }
@@ -208,7 +209,7 @@ namespace TwitterBackup.Web.Controllers
                 ViewData["returnUrl"] = referer;
             }
 
-            
+
 
             if (string.IsNullOrWhiteSpace(userName))
             {
