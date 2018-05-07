@@ -7,11 +7,14 @@
         var data = $(this).serialize();
 
         var form = $(this);
+        var tweetId = form.attr("tweet-id");
+
         
         $.post(url,
             data,
             function (response) {
                 form.toggleClass("hide");
-                $(".tweet-note-form").toggleClass("hide");
+                $("#edit-form-note-" + tweetId).toggleClass("hide");
+                $("#retweet-" +tweetId).toggleClass("hide");
             });
 });

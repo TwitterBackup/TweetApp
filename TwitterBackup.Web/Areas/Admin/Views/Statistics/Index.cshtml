@@ -4,60 +4,62 @@
 @{
     ViewData["Title"] = "Statistics";
 }
-
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    html, body, h1, h2, h3, h4, h5 {
+        font-family: "Raleway", sans-serif
+    }
+</style>
 <link href="~/css/statistics.css" rel="stylesheet" />
 
-<ul class="nav1">
-    <li style="background-color: red">
-        <div class="card card-media card-stats">
-            <div>
-                <div class="card-icon">
-                    <span class="glyphicon glyphicon-eye-open"></span>
-                    <span class="glyphicon glyphicon-chevron-down"></span>
-                    <span class="glyphicon glyphicon-eye-open"></span>
-                </div>
-                <p class="card-category">Users</p>
-                <h3 class="card-title">@ViewData["TotalUsers"]</h3>
-            </div>
-        </div>
-    </li>
-    <li style="background-color:navy">
-        <div class="card card-media card-stats">
-            <div>
-                <div class="card-icon">
-                    <img src="/images/twitter.png" alt="tweet" style="max-width: 45px;" />
-                </div>
-                <p class="card-category">Tweets</p>
-                <h3 class="card-title">@ViewData["TotalTweets"]</h3>
-            </div>
-        </div>
-    </li>
-    <li style="background-color:brown">
-        <div class="card">
-            <div>
+<header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+</header>
 
-                <div class="card-icon">
-                    <span class="glyphicon glyphicon glyphicon-heart"></span>
-                    <span class="glyphicon glyphicon glyphicon-user"></span>
-                </div>
-                <p class="card-category">Tweeters</p>
-                <h3 class="card-title">@ViewData["TotalTweeters"]</h3>
+<div class="w3-row-padding w3-margin-bottom">
+    <div class="w3-quarter">
+        <div class="w3-container w3-orange w3-text-white w3-padding-16">
+            <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalUsers"]</h3>
             </div>
+            <div class="w3-clear"></div>
+            <h4>Users</h4>
         </div>
-    </li>
-    <li style="background-color:yellow">
-        <div class="card card-actions card-stats">
-            <div>
-                <div class="card-icon">
-                    <span class="glyphicon glyphicon-retweet"></span>
-                </div>
-                <p class="card-category">ReTweets</p>
-                <h3 class="card-title"><span class="glyphicon glyphicon-refresh"></span>@ViewData["TotalReweets"]</h3>
+    </div>
+    <div class="w3-quarter">
+        <div class="w3-container w3-indigo w3-padding-16">
+            <div class="w3-left"><i class="fa fa-star w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalTweeters"]</h3>
             </div>
+            <div class="w3-clear"></div>
+            <h4>Tweeters</h4>
         </div>
-    </li>
-
-</ul>
+    </div>
+    <div class="w3-quarter">
+        <div class="w3-container w3-blue w3-padding-16">
+            <div class="w3-left"><i class="fa fa-twitter w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalTweets"]</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Tweets</h4>
+        </div>
+    </div>
+    <div class="w3-quarter">
+        <div class="w3-container w3-teal w3-padding-16">
+            <div class="w3-left"><i class="fa fa-retweet w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalRetweets"]</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Retweets</h4>
+        </div>
+    </div>
+</div>
 
 <h6 style="color: darkblue; font-style: italic">Last updated: @ViewData["LastUpdated"]</h6>
 

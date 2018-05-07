@@ -39,7 +39,7 @@ namespace TwitterBackup.Services.Data
 
                     existingRelationUserTweeter.IsDeleted = false;
                     existingRelationUserTweeter.ModifiedOn = DateTime.Now;
-                    await unitOfWork.CompleteWorkAsync();
+                    //await unitOfWork.CompleteWorkAsync();
                 }
                 else
                 {
@@ -55,9 +55,10 @@ namespace TwitterBackup.Services.Data
                 //await unitOfWork.CompleteWorkAsync();
 
                 await AddRelationUserTweeterAsync(userId, tweeterDto);
-                await unitOfWork.CompleteWorkAsync();
+                //await unitOfWork.CompleteWorkAsync();
             }
 
+            await unitOfWork.CompleteWorkAsync();
         }
 
         private async Task AddRelationUserTweeterAsync(string userId, TweeterDto tweeterDto)
