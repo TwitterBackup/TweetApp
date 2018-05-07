@@ -1,12 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using TwitterBackup.Data.Repository;
 using TwitterBackup.Infrastructure.Providers.Contracts;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Data;
 
-namespace UnitTestProject1.TweeterServiceTests
+namespace TwitterBackup.Services.Data.Tests.TweeterServiceTests
 {
     [TestClass]
     public class ConstructorShould
@@ -14,7 +14,7 @@ namespace UnitTestProject1.TweeterServiceTests
         [TestMethod]
         public void Create_TweeterDbService_When_Called_With_Valid_Parameters()
         {
-            var stubTweeterRepository = new Mock<EntityFrameworkRepository<Tweeter>>();
+            var stubTweeterRepository = new Mock<IRepository<Tweeter>>();
             var stubUnitOfWork = new Mock<IUnitOfWork>();
             var stubMappingProvider = new Mock<IMappingProvider>();
             var stubUserTweeterRepository = new Mock<IRepository<UserTweeter>>();
@@ -37,7 +37,7 @@ namespace UnitTestProject1.TweeterServiceTests
         [TestMethod]
         public void Throws_ArgumentNullException_When_Called_With_Null_UnitOfWork()
         {
-            var stubTweeterRepository = new Mock<EntityFrameworkRepository<Tweeter>>();
+            var stubTweeterRepository = new Mock<IRepository<Tweeter>>();
             var stubMappingProvider = new Mock<IMappingProvider>();
             var stubUserTweeterRepository = new Mock<IRepository<UserTweeter>>();
 
@@ -48,7 +48,7 @@ namespace UnitTestProject1.TweeterServiceTests
         public void Throws_ArgumentNullException_When_Called_With_Null_MappingProvider()
         {
             var stubUnitOfWork = new Mock<IUnitOfWork>();
-            var stubTweeterRepository = new Mock<EntityFrameworkRepository<Tweeter>>();
+            var stubTweeterRepository = new Mock<IRepository<Tweeter>>();
             var stubUserTweeterRepository = new Mock<IRepository<UserTweeter>>();
 
             Assert.ThrowsException<ArgumentNullException>(() => new TweeterService(stubTweeterRepository.Object, stubUnitOfWork.Object, null, stubUserTweeterRepository.Object));
@@ -58,7 +58,7 @@ namespace UnitTestProject1.TweeterServiceTests
         public void Throws_ArgumentNullException_When_Called_With_Null_RepositoryOfTypeUserTweeter()
         {
             var stubUnitOfWork = new Mock<IUnitOfWork>();
-            var stubTweeterRepository = new Mock<EntityFrameworkRepository<Tweeter>>();
+            var stubTweeterRepository = new Mock<IRepository<Tweeter>>();
             var stubMappingProvider = new Mock<IMappingProvider>();
 
             Assert.ThrowsException<ArgumentNullException>(() => new TweeterService(stubTweeterRepository.Object, stubUnitOfWork.Object, stubMappingProvider.Object, null));
