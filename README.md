@@ -29,9 +29,9 @@ This is a web application based on the following technologies, frameworks and de
 ---------------------------------------------------------------------------------------
 **In Addition this Application also comes equiped with:** 
 
-A) **Documentation** of the project and project architecture (as .md file, including screenshots) under Documentation folder
-B) Setup **CI/CD** with **Jenkins** on Kestrel behind a local IIS instance
-C) Functionality that provides **Login and register with a Twitter Account /Social Login/ **
+A) **Documentation** of the project and project architecture (as .md file, including creenshots) under Documentation folder 
+B) Setup   **CI/CD** with **Jenkins** on Kestrel behind a local IIS instance 
+C) Functionality that provides **Login and register with a Twitter   Account /Social Login/ ** 
 D) Deployment in the Cloud (Azure)
 
 
