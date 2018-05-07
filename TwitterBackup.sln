@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Services.ApiC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Services.TwitterAPI.Tests", "TwitterBackup.Services.TwitterAPI.Tests\TwitterBackup.Services.TwitterAPI.Tests.csproj", "{7983909F-38B4-42BE-8A33-D006FF049AC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services.Data.Tests", "UnitTestProject1\TwitterBackup.Services.Data.Tests.csproj", "{FF544FA4-FD28-4F73-A35F-7D5F0FC87A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Services.Data.Tests", "TwitterBackup.Services.Data.Tests\TwitterBackup.Services.Data.Tests.csproj", "{3416E92F-3D55-4FDE-B33A-78E932D193CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,10 +87,10 @@ Global
 		{7983909F-38B4-42BE-8A33-D006FF049AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7983909F-38B4-42BE-8A33-D006FF049AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7983909F-38B4-42BE-8A33-D006FF049AC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF544FA4-FD28-4F73-A35F-7D5F0FC87A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF544FA4-FD28-4F73-A35F-7D5F0FC87A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF544FA4-FD28-4F73-A35F-7D5F0FC87A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF544FA4-FD28-4F73-A35F-7D5F0FC87A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3416E92F-3D55-4FDE-B33A-78E932D193CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3416E92F-3D55-4FDE-B33A-78E932D193CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3416E92F-3D55-4FDE-B33A-78E932D193CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3416E92F-3D55-4FDE-B33A-78E932D193CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,7 +108,6 @@ Global
 		{E724F802-19FF-4E62-98EE-F9E462D8CBE7} = {7DFACEC8-CBFF-4811-99E0-50446181D9AF}
 		{207D9FAB-2218-42F5-937D-3CD255AD0413} = {6AF4BB8E-BF7C-4453-9EA6-98426596B885}
 		{7983909F-38B4-42BE-8A33-D006FF049AC4} = {6AF4BB8E-BF7C-4453-9EA6-98426596B885}
-		{FF544FA4-FD28-4F73-A35F-7D5F0FC87A24} = {6AF4BB8E-BF7C-4453-9EA6-98426596B885}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D93CA799-D62C-45E2-89B3-C1E4F00178A6}
