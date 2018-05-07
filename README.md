@@ -10,7 +10,7 @@ This is a web application based on the following technologies, frameworks and de
 2.  **Razor** template engine for generating the UI
 3.  **MS SQL Server** as database back-end
 
-4.  **Entity Framework Core** with a  Code-First approach to access the database
+4.  **Entity  Framework  Core** with a  Code-First approach to access the database
 5.  **Design patterns used**
 	Repository pattern and Unit of Work (Generic Entity Framework implementation)
 	Service layer and Data Transfer Objects (DTO)
