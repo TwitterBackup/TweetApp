@@ -37,5 +37,7 @@ D) Deployment in the Cloud (Azure)
 
 OUR FULLY DEDICATED **TEAM**
 ---------------------------------------------------------------------------------------
-Angel - github: **aniget**
-Alex - github: **AlxxlA**
+
+ - Angel - github: **aniget** 
+ - Alex - github: **AlxxlA**
+
