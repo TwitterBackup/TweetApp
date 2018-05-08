@@ -277,7 +277,7 @@ namespace TwitterBackup.Web.Controllers
             this.ViewData["ReturnUrl"] = returnUrl;
 
             var foundUser = await userManager.FindByEmailAsync(model.Email);
-            if (foundUser != null) 
+            if (foundUser != null)
             {
                 ModelState.AddModelError(string.Empty, "This Email is already taken.");
                 return View(model);
@@ -301,7 +301,7 @@ namespace TwitterBackup.Web.Controllers
 
                     var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = this.Url.EmailConfirmationLink(user.Id, code, this.Request.Scheme);
-                    await this.emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    //await this.emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await this.signInManager.SignInAsync(user, isPersistent: false);
                     this.logger.LogInformation("User created a new account with password.");
