@@ -1,0 +1,67 @@
+﻿@using TwitterBackup.Web.Models.TweeterViewModels
+@model IEnumerable<TwitterBackup.Web.Models.TweeterViewModels.TweeterViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*Modal PopUp of PartialView goes here*@
+<div id="remove-modal" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%; background-color: blanchedalmond">
+
+
+        </div>
+    </div>
+</div>
+
+<div id="edit-tweeter-modal-container" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%">
+
+
+        </div>
+    </div>
+</div>
+
+
+@{
+    if (Model != null)
+    {
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color" style="margin-top: 60px; position:relative">
+                <p>
+                    <input type="text" class="form-control" style="width: 30%; min-width: 100px" placeholder="Enter any string to search for tweeter" name="SearchString" value="@ViewData["currentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-info" /> |
+                    <a asp-action="Index">Back to Full List</a>
+                </p>
+            </div>
+        </form>
+
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>
+                        @foreach (var tweeterViewModel in Model)
+                        {
+                            await Html.RenderPartialAsync("_FavouriteTweeter", tweeterViewModel);
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>No results found.</h1>
+    }
+}
+
+
+
+@section Scripts
+    {
+    <script src="/js/btn-follow-following.js"></script>
+    <script src="/js/btn-follow-hover.js"></script>
+}

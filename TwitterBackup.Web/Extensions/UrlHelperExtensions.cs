@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using TwitterBackup.Web.Controllers;
 
-namespace TwitterBackup.Web.Extensions
+namespace Microsoft.AspNetCore.Mvc
 {
     public static class UrlHelperExtensions
     {

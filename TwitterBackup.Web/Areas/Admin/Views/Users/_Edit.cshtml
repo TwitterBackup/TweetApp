@@ -1,0 +1,46 @@
+﻿@model TwitterBackup.Web.Areas.Admin.Models.EditUserViewModel
+
+@*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>*@
+@*<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>*@
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+
+
+<form asp-controller="Users" asp-action="Edit" class="edit-user-class">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Edit User Detail</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="form-group">
+                <input type="hidden" asp-for="UserName" value=@Model.UserName />
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" value=@Model.FirstName  class="form-control col-md-5" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control col-md-5" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control col-md-5" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer ">
+        <button type="submit" class="btn btn-warning btn-lg update-button" style="width: 100%;"> Update</button>
+    </div>
+</form>
+
+@section Sctripts{
+
+
+
+}

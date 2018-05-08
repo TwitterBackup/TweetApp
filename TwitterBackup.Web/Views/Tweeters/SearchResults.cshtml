@@ -1,0 +1,92 @@
+﻿@using System.Security.Cryptography
+@model IEnumerable<TwitterBackup.Web.Models.TweeterViewModels.TweeterViewModel>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>$title$</title>
+</head>
+
+
+<body>
+
+
+    <!-- Modal -->
+    <div id="remove-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color: blanchedalmond">
+                @*<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>*@
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        <h1>Search Results</h1>
+        @{
+            if (Model.Any())
+            {
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                @foreach (var tweeterViewModel in Model)
+                                {
+                                    await Html.RenderPartialAsync("_FavouriteTweeter", tweeterViewModel);
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h1>No results found.</h1>
+            }
+        }
+    </div>
+
+    <div id="alert-modal-failure" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" id="error-modal">
+                <div class="modal-header" style="background-color: red; color: white">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h2 class="modal-title">Error</h2>
+                </div>
+                <div class="modal-body">
+
+                    <h4 class="modal-error-message" id="alert-modal-failure-message" style="position: center"></h4>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</body>
+</html>
+
+@section Scripts
+    {
+
+    <script src="~/js/btn-follow-following.js"></script>
+    <script src="~/js/btn-follow-hover.js"></script>
+    <script src="~/js/alert-profile-not-saved.js"></script>
+}

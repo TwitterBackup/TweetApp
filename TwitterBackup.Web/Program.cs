@@ -15,6 +15,4 @@ namespace TwitterBackup.Web
                 .UseStartup<Startup>()
                 .Build();
     }
-
-
 }

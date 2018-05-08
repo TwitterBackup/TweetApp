@@ -1,0 +1,134 @@
+﻿@model IEnumerable<TwitterBackup.Web.Models.TweetViewModels.TweetViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+
+@*Modal PopUp of PartialView goes here*@
+<div id="delete-tweet-modal-container" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%">
+
+
+        </div>
+    </div>
+</div>
+
+<div id="edit-tweet-modal-container" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%">
+
+
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            @if ((bool)ViewData["IsAdmin"])
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.TweeterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TweetId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hashtags)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TweetComments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FavoriteCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Language)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuoteCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RetweetCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if ((bool)ViewData["IsAdmin"])
+                {
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.TweeterName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TweetId)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hashtags)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TweetComments)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FavoriteCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Language)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuoteCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RetweetCount)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TweetId" asp-route-name="@item.UserName" data-target="#edit-tweet-modal-container" data-toggle="modal">Edit</a> |
+                    <a asp-action="Remove" asp-route-id="@item.TweetId" asp-route-name="@item.UserName" data-target="#delete-tweet-modal-container" data-toggle="modal">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $(document).ready(function() {
+            $("#edit-tweet-modal-container").on("change",
+                function() {
+                    $.validator.unobtrusive.parse("#edit-form");
+                });
+        });
+    </script>
+}

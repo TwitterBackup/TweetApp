@@ -1,0 +1,163 @@
+﻿@using TwitterBackup.Models
+@model TwitterBackup.Web.Models.TweeterViewModels.TweeterProfileViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div id="remove-modal" class="modal fade hidden-print" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%; background-color: blanchedalmond">
+
+
+        </div>
+    </div>
+</div>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center ">
+            <div class="panel panel-default">
+                <div class="userprofile social" style="background: url(@Model.Tweeter.ProfileBannerUrl); height: 300px;">
+                    <div class="userpic">
+                        <img src="@Model.Tweeter.ProfileImageUrl" alt="" class="userpicimg">
+                    </div>
+                </div>
+                <div class="col-md-12 border-top border-bottom">
+                    <ul class="nav nav-pills pull-left countlist" role="tablist">
+                        <li role="presentation">
+                            <p class="username">
+                                <span style="font-size: 18px;">@Model.Tweeter.Name</span><br>
+                                <span style="font-size: 12px;">@@@Model.Tweeter.ScreenName</span>
+                            </p>
+                        </li>
+                        <li role="presentation">
+                            <p>
+                                TWEETS<br>
+                                <span>@Model.Tweeter.TweetsCount</span>
+                            </p>
+                        </li>
+                        <li role="presentation">
+                            <p>
+                                FOLLOWERS<br>
+                                <span>@Model.Tweeter.FollowersCount</span>
+                            </p>
+                        </li>
+                        <li role="presentation">
+                            <p>
+                                FRIENDS<br>
+                                <span>@Model.Tweeter.FriendsCount</span>
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="pull-right" style="margin: 30px">
+                        @{
+                            var action = Model.Tweeter.IsLikedFromUser ? "Remove" : "AddTweeterToFavourite";
+                            var followBtn = Model.Tweeter.IsLikedFromUser ? "none" : "inline-block";
+                            var followingBtn = Model.Tweeter.IsLikedFromUser ? "inline-block" : "none";
+
+                            <form class="form-follow" asp-controller="Tweeters" asp-action=@action method="post" tweeter-id="@Model.Tweeter.TweeterId">
+                                <div style="display: none;">
+                                    <input asp-for="Tweeter.TweeterId" class="form-control" />
+                                    <input asp-for="Tweeter.ScreenName" class="form-control" />
+                                </div>
+                                <div class="follow-div">
+                                    <button style="display: @followBtn" type="submit" class="btn-follow btn-tweeter btn-follow-pic"
+                                            btn-follow-id="@Model.Tweeter.TweeterId" id="follow@(Model.Tweeter.TweeterId)">
+                                        <i class="fa fa-twitter"></i>
+                                        Add To Favorite
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="follow-div">
+                                <button style="display:@followingBtn" class="btn-following btn-tweeter btn-follow-pic"
+                                        btn-following-id="@Model.Tweeter.TweeterId" id="following@(Model.Tweeter.TweeterId)">
+                                    <i class="fa fa-twitter"></i>
+                                    Favorite
+                                </button>
+                            </div>
+                            <div class="follow-div">
+                                <a style="display: none" class="btn-remove btn-follow-pic" btn-remove-id="@Model.Tweeter.TweeterId" id="remove@(Model.Tweeter.TweeterId)" asp-controller="Tweeters" asp-action="Remove" method="get" asp-route-tweeterId="@Model.Tweeter.TweeterId" asp-route-userName="@Model.Tweeter.UserName" asp-route-screeneName="@Model.Tweeter.ScreenName" class="btn-info btn-lg" data-toggle="modal" data-target="#remove-modal">Remove</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+        <div class="col-md-3 col-sm-12 pull-left">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="page-subtitle small">@Model.Tweeter.Description</p>
+                </div>
+                <div class="col-md-12">
+                    <ul class="list-group">
+                        @{
+                            if (Model.Tweeter.Verified)
+                            {
+                                <li class="list-group-item"><span class="fa fa-check-circle-o"></span> Verified</li>
+                            }
+                            if (!string.IsNullOrWhiteSpace(Model.Tweeter.Location))
+                            {
+                                <li class="list-group-item"><span class="fa fa-map-marker"></span> @Model.Tweeter.Location</li>
+                            }
+                        }
+                        <li class="list-group-item"><span class="fa fa-calendar"></span> @Model.Tweeter.CreatedAt</li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-12 pull-left posttimeline">
+            @{
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a tweeter-id="@Model.Tweeter.TweeterId" user-name="@Model.Tweeter.UserName" href="#saved">Saved Tweets</a></li>
+                    <li><a tweeter-id="@Model.Tweeter.TweeterId" user-name="@Model.Tweeter.UserName" href="#new">New Tweets</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="saved">
+                        @{
+                            foreach (var tweetViewModel in Model.SavedTweets)
+                            {
+                                tweetViewModel.Tweeter = new Tweeter();
+                                tweetViewModel.Tweeter.Name = Model.Tweeter.Name;
+                                tweetViewModel.Tweeter.ScreenName = Model.Tweeter.ScreenName;
+                                tweetViewModel.Tweeter.ProfileImageUrl = Model.Tweeter.ProfileImageUrl;
+                                tweetViewModel.Tweeter.TweeterId = Model.Tweeter.TweeterId;
+                            }
+
+                            await Html.RenderPartialAsync("~/Views/Tweets/AllTweets.cshtml", Model.SavedTweets);
+                        }
+                    </div>
+                    <div class="tab-pane" id="new">
+                        @{
+                            foreach (var tweetViewModel in Model.NewTweets)
+                            {
+                                tweetViewModel.Tweeter = new Tweeter();
+                                tweetViewModel.Tweeter.Name = Model.Tweeter.Name;
+                                tweetViewModel.Tweeter.ScreenName = Model.Tweeter.ScreenName;
+                                tweetViewModel.Tweeter.ProfileImageUrl = Model.Tweeter.ProfileImageUrl;
+                                tweetViewModel.Tweeter.TweeterId = Model.Tweeter.TweeterId;
+                            }
+
+                            await Html.RenderPartialAsync("~/Views/Tweets/AllTweets.cshtml", Model.NewTweets);
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/btn-follow-following.js"></script>
+    <script src="~/js/btn-follow-hover.js"></script>
+    <script src="~/js/add-tweet-note.js"></script>
+    <script src="~/js/remove-tweet.js"></script>
+}

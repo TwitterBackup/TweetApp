@@ -1,0 +1,131 @@
+﻿@model IEnumerable<TwitterBackup.Web.Areas.Admin.Models.StatisticsViewModel>
+
+<div style="margin-top: 60px;"></div>
+@{
+    ViewData["Title"] = "Statistics";
+}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    html, body, h1, h2, h3, h4, h5 {
+        font-family: "Raleway", sans-serif
+    }
+</style>
+<link href="~/css/statistics.css" rel="stylesheet" />
+
+<header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+</header>
+
+<div class="w3-row-padding w3-margin-bottom">
+    <div class="w3-quarter">
+        <div class="w3-container w3-orange w3-text-white w3-padding-16">
+            <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalUsers"]</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Users</h4>
+        </div>
+    </div>
+    <div class="w3-quarter">
+        <div class="w3-container w3-indigo w3-padding-16">
+            <div class="w3-left"><i class="fa fa-star w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalTweeters"]</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Tweeters</h4>
+        </div>
+    </div>
+    <div class="w3-quarter">
+        <div class="w3-container w3-blue w3-padding-16">
+            <div class="w3-left"><i class="fa fa-twitter w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalTweets"]</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Tweets</h4>
+        </div>
+    </div>
+    <div class="w3-quarter">
+        <div class="w3-container w3-teal w3-padding-16">
+            <div class="w3-left"><i class="fa fa-retweet w3-xxxlarge"></i></div>
+            <div class="w3-right">
+                <h3>@ViewData["TotalRetweets"]</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4>Retweets</h4>
+        </div>
+    </div>
+</div>
+
+<h6 style="color: darkblue; font-style: italic">Last updated: @ViewData["LastUpdated"]</h6>
+
+@if (Model != null)
+{
+
+
+
+    <div class="col-md-12">
+
+        <div class="table-responsive">
+            <table id="statistics-table" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumberOfTweeters)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumberOfTweets)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumberOfRetweets)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td style="font-weight: bold; text-align: center">
+                                @Html.DisplayFor(modelItem => item.NumberOfTweeters)
+                            </td>
+                            <td style="font-weight: bold; text-align: center">
+                                @Html.DisplayFor(modelItem => item.NumberOfTweets)
+                            </td>
+                            <td style="font-weight: bold; text-align: center">
+                                @Html.DisplayFor(modelItem => item.NumberOfRetweets)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}
+else
+{
+    <h3>ViewData["NoData"] = "No active users at this stage"</h3>
+}

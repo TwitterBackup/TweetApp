@@ -1,0 +1,23 @@
+﻿@model System.Collections.Generic.IEnumerable<TwitterBackup.Web.Models.TweetViewModels.TweetViewModel>
+
+
+@{
+    if (Model == null || !Model.Any())
+    {
+        <h2>@this.ViewData["NoSavedTweetsMessage"]</h2>
+    }
+    else
+    {
+        foreach (var tweetViewModel in Model)
+        {
+            await Html.RenderPartialAsync("~/Views/Tweets/_Tweet.cshtml", tweetViewModel);
+        }
+    }
+}
+
+
+@section Scripts {
+    <script src="~/js/add-tweet-note.js"></script>
+    <script src="~/js/save-twet.js"></script>
+    <script src="~/js/remove-tweet.js"></script>
+}

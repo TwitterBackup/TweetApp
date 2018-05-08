@@ -1,0 +1,122 @@
+﻿@model TwitterBackup.Web.Models.TweetViewModels.TweetViewModel
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/tweeterProfilePage.css" />
+<div class="tweet">
+    <div class="panel panel-default">
+        @{
+            var hideRemove = Model.IsLikedFromUser ? "" : "hide";
+        }
+        <div class="btn-group pull-right postbtn @hideRemove" id="remove-menu-@Model.TweetId">
+            <button type="button" class="dotbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="dots"></span> </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li><a class="remove-tweet" href="" type="button" id="remove-tweet-@Model.TweetId" tweetId="@Model.TweetId">Remove</a></li>
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <div class="media">
+                <div class="media-left"> <a href="javascript:void(0)"> <img src="@Model.Tweeter.ProfileImageUrl" alt="asd" class="media-object"> </a> </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a class="twName" asp-controller="Tweeters" asp-action="Profile" asp-route-tweeterId="@Model.Tweeter.TweeterId" asp-route-userName="@Model.UserName">@Model.Tweeter.Name</a> @@@Model.Tweeter.ScreenName<br>
+                        <small><i class="fa fa-clock-o"></i> @Model.CreatedAt</small>
+                    </h4>
+                    <p>@Model.Text</p>
+                    <ul class="nav nav-pills pull-left">
+                        <li><span title=""><i class="fa fa-thumbs-o-up"></i> @Model.FavoriteCount</span></li>
+                        <li><span title=""><i class="fa fa-retweet"></i> @Model.RetweetCount</span></li>
+                        <li><span title=""><i class="fa fa-quote-left"></i> @Model.QuoteCount</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="media">
+
+                @{
+                    var hide = !string.IsNullOrEmpty(Model.TweetComments) ? "" : "hide";
+                }
+                <div class="media-body @hide" id="media-body-@Model.TweetId">
+                    @{
+                        <h4 class="media-heading">
+                            Your Note
+                        </h4>
+                        <p id="note-content-@Model.TweetId"> @Model.TweetComments</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 border-top">
+            @{
+                var hideSave = Model.IsLikedFromUser ? "hide" : "";
+                var hideNote = Model.IsLikedFromUser ? "" : "hide";
+
+                <div class="save-tweet">
+                    <form class="save-tweet-form @hideSave" asp-controller="Tweets" asp-action="Add" method="post" tweet-id="@Model.TweetId" id="save-@Model.TweetId">
+                        <div style="display: none">
+                            <input name="tweetId" value="@Model.TweetId" type="text" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn-save-tweet btn btn-primary pull-left"> Save</button>
+                    </form>
+                </div>
+                <div class="status-uploadm">
+                    <form class="tweet-note-form @hideNote" id="edit-form-note-@Model.TweetId" asp-controller="Tweets" asp-action="Edit" method="post" tweet-id="@Model.TweetId">
+                        <div class="comment-field hidden">
+                            <label>AddNote</label>
+                            <textarea asp-for="TweetComments" class="comment-box form-control" id="comment-box-@Model.TweetId" placeholder="Add note here."></textarea>
+                        </div>
+                        <br>
+                        <div style="display: none">
+                            <input asp-for="UserName" class="form-control" />
+                            <input asp-for="TweetId" class="form-control" />
+                            <input asp-for="Text" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn-comment btn btn-success pull-right">Add Note</button>
+                    </form>
+                </div>
+                <div class="retweet-tweet @hideNote" id="retweet-@Model.TweetId">
+                    <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+                    <a class="btn btn-primary btn-retweet-tweet" href="https://twitter.com/intent/retweet?tweet_id=@Model.TweetId">Retweet</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-@Model.TweetId">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding: 10%; background-color: blanchedalmond">
+
+            <h3 position="center">Please, confirm removal of this tweet!</h3>
+            <div>
+
+                <dl class="dl-horizontal">
+                    <dt>
+                        Name
+                    </dt>
+                    <dd>
+                        @Model.Tweeter.Name
+                    </dd>
+                    <dt>
+                        Tweet
+                    </dt>
+                    <dd>
+                        @Model.Text
+                    </dd>
+                </dl>
+
+                <form class="remove-tweet-form" asp-controller="Tweets" asp-action="Remove" method="post" tweet-id="@Model.TweetId">
+                    <input type="hidden" id="UserName" name="userName" value="@Model.UserName">
+                    <input type="hidden" data-val="true" data-val-required="The TweetId field is required." id="TweeterId" name="tweetId" value="@Model.TweetId">
+                    <input type="submit" value="Confirm" class="btn btn-default" autofocus="">
+                    <input type="button" class="btn btn-default" value="Close" data-dismiss="modal">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/add-tweet-note.js"></script>
+    <script src="~/js/save-twet.js"></script>
+    <script src="~/js/remove-tweet.js"></script>
+}

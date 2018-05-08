@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Routing
+@using TwitterBackup.Models
+
+<div class="navbar-widgets">
+    @{
+        if (Context.User.Identity.IsAuthenticated)
+        {
+            <div class="search-bar nav navbar-nav m-t-xs">
+                <form asp-area="" asp-controller="Tweeters" asp-action="SearchResults" method="get">
+                    <input type="search" name="searchString" placeholder="Search Twitter" />
+                </form>
+            </div>
+        }
+
+        @await Html.PartialAsync("_LoginPartial")
+    }
+</div>

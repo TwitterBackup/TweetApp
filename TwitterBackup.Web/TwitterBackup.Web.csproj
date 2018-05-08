@@ -2,14 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <UserSecretsId>aspnet-TwitterBackup.Web-06D9AC43-BD44-43B1-B5CB-B26A0A5B7AE8</UserSecretsId>
+    <UserSecretsId>aspnet-TwitterBackup.Web-4A8595D9-A0F5-44E2-BB62-47F7CFB45669</UserSecretsId>
   </PropertyGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="2.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" PrivateAssets="All" />
   </ItemGroup>
 
@@ -17,13 +20,19 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.2" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Infrastructure\TwitterBackup.Infrastructure.csproj" />
     <ProjectReference Include="..\TwitterBackup.Services.ApiClient\TwitterBackup.Services.ApiClient.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Services.Data\TwitterBackup.Services.Data.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Services.Email\TwitterBackup.Services.Email.csproj" />
     <ProjectReference Include="..\TwitterBackup.Services.TwitterAPI\TwitterBackup.Services.TwitterAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TweetViewModels\" />
   </ItemGroup>
 
 </Project>
