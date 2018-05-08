@@ -91,11 +91,13 @@ namespace TwitterBackup.Web.Controllers
             return this.View("AllTweets", likedTweets);
         }
 
-        public async Task<IActionResult> TweeterTweetsLikedFromUser(string tweeterId)
+        public async Task<IActionResult> TweeterTweetsLikedFromUser(string tweeterId, string userName)
         {
             var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
 
-            var tweets = this.tweetService.GetAllTweetsByTweeterForUser(currentUser.Id, tweeterId);
+            var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(userName) : currentUser.Id;
+
+            var tweets = this.tweetService.GetAllTweetsByTweeterForUser(userId, tweeterId);
 
             var tweetsViewModel = this.mappingProvider.ProjectTo<TweetDto, TweetViewModel>(tweets);
 

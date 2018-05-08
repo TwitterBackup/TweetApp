@@ -465,15 +465,16 @@ namespace TwitterBackup.Web.Controllers
 
         }
 
-        public async Task<IActionResult> Profile(string tweeterId)
+        public async Task<IActionResult> Profile(string tweeterId, string userName)
         {
             try
             {
-
                 var currentUser = await this.userManager.GetUserAsync(this.HttpContext.User);
 
-                var tweeter = this.tweeterService.GetTweeterForUser(currentUser.Id, tweeterId);
-                var savedTweets = this.tweetService.GetAllTweetsByTweeterForUser(currentUser.Id, tweeterId);
+                var userId = CurrentUserIsAdmin() ? userService.FindUserIdByUserName(userName) : currentUser.Id;
+
+                var tweeter = this.tweeterService.GetTweeterForUser(userId, tweeterId);
+                var savedTweets = this.tweetService.GetAllTweetsByTweeterForUser(userId, tweeterId);
                 var newTweets = await this.tweetApiService.GetUserTimelineAsync(tweeterId);
 
                 var tweeterViewModel = this.mappingProvider.MapTo<TweeterViewModel>(tweeter);
@@ -529,6 +530,8 @@ namespace TwitterBackup.Web.Controllers
                     SavedTweets = savedTweetsViewModels,
                     NewTweets = newTweesViewModel
                 };
+
+                this.ViewData["NoSavedTweetsMessage"] = "No saved tweets";
 
                 return this.View(profileViewModel);
 

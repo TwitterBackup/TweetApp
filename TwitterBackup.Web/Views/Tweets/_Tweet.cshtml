@@ -18,7 +18,7 @@
                 <div class="media-left"> <a href="javascript:void(0)"> <img src="@Model.Tweeter.ProfileImageUrl" alt="asd" class="media-object"> </a> </div>
                 <div class="media-body">
                     <h4 class="media-heading">
-                        <a class="twName" asp-controller="Tweeters" asp-action="Profile" asp-route-tweeterId="@Model.Tweeter.TweeterId">@Model.Tweeter.Name</a> @@@Model.Tweeter.ScreenName<br>
+                        <a class="twName" asp-controller="Tweeters" asp-action="Profile" asp-route-tweeterId="@Model.Tweeter.TweeterId" asp-route-userName="@Model.UserName">@Model.Tweeter.Name</a> @@@Model.Tweeter.ScreenName<br>
                         <small><i class="fa fa-clock-o"></i> @Model.CreatedAt</small>
                     </h4>
                     <p>@Model.Text</p>
