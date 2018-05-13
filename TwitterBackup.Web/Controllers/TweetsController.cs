@@ -59,14 +59,23 @@ namespace TwitterBackup.Web.Controllers
         }
 
         // GET: SavedTweets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName)
         {
             IEnumerable<TweetDto> tweetsDto;
 
             if (this.CurrentUserIsAdmin())
             {
-                tweetsDto = this.tweetService.GetAllTweetsForAdmin();
-                this.ViewData["IsAdmin"] = true;
+                if (userName == null)
+                {
+                    tweetsDto = this.tweetService.GetAllTweetsForAdmin();
+                    this.ViewData["IsAdmin"] = true;
+                }
+                else
+                {
+                    var userId = this.userService.FindUserIdByUserName(userName);
+                    tweetsDto = this.tweetService.GetAllTweetsForUser(userId);
+                    this.ViewData["IsAdmin"] = true;
+                }
             }
             else
             {
