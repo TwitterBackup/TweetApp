@@ -10,6 +10,7 @@ using TwitterBackup.Services.Data.Contracts;
 
 namespace TwitterBackup.Services.Data
 {
+    //all services related to Tweeter
     public class TweeterService : ITweeterService
     {
         private readonly IRepository<UserTweeter> userTweeterRepository;
