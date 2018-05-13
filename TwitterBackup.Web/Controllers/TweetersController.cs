@@ -17,7 +17,7 @@ using EditTweeterDto = TwitterBackup.DTO.Tweeters.EditTweeterDto;
 
 namespace TwitterBackup.Web.Controllers
 {
-    [Authorize]
+    [Authorize] //require users to login
     public class TweetersController : Controller
     {
         private readonly ITweeterApiService tweeterApiService;
