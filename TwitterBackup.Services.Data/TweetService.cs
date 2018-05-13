@@ -11,6 +11,7 @@ using TwitterBackup.Services.Data.Contracts;
 
 namespace TwitterBackup.Services.Data
 {
+    //all services related to Tweet
     public class TweetService : ITweetService
     {
         private readonly IRepository<Hashtag> hashtagRepository;
