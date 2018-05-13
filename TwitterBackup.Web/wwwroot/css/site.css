@@ -121,7 +121,7 @@ footer {
 }
 
 html {
-    background: url(https://marketingland.com/wp-content/ml-loads/2015/10/twitter-bird-logo-beach-ss-1920.jpg) no-repeat center center fixed;
+    background: url("../images/home.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
