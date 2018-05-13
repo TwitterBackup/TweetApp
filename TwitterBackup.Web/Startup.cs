@@ -26,6 +26,7 @@ namespace TwitterBackup.Web
 {
     public class Startup
     {
+        //TODO: review and refactor if needed
         public Startup(IConfiguration configuration)
         {
             this.Configuration = configuration;
